@@ -1,41 +1,55 @@
-/**
- * Retrieves the translation of text.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-i18n/
- */
 import { __ } from '@wordpress/i18n';
+import { 
+	useBlockProps,
+	BlockControls,
+	InspectorControls,
+	MediaPlaceholder,
+	MediaUpload,
+	MediaUploadCheck 
+} from '@wordpress/block-editor';
 
-/**
- * React hook that is used to mark the block wrapper element.
- * It provides all the necessary props like the class name.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
- */
-import { useBlockProps } from '@wordpress/block-editor';
+import {
+	Button,
+	PanelBody,
+	RangeControl,
+	TextControl,
+	SelectControl,
+	ToolbarGroup,
+	ToolbarItem
+} from '@wordpress/components'
 
-/**
- * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
- * Those files can contain any CSS code that gets applied to the editor.
- *
- * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
- */
 import './editor.scss';
 
-/**
- * The edit function describes the structure of your block in the context of the
- * editor. This represents what the editor will render when the block is used.
- *
- * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-edit-save/#edit
- *
- * @return {WPElement} Element to render.
- */
+const ALLOWED_MEDIA_TYPES = [ 'image' ];
+
 export default function Edit() {
 	return (
-		<p { ...useBlockProps() }>
-			{ __(
-				'Wordpress Block Carousel – hello from the editor!',
-				'wordpress-block-carousel'
-			) }
-		</p>
+		<>
+			<BlockControls>
+			<ToolbarGroup>
+						<ToolbarItem>
+							{ () => (
+								<MediaUploadCheck>
+									<MediaUpload
+											allowedTypes={ ALLOWED_MEDIA_TYPES }
+											render={ ( { open } ) => (
+												<Button
+													onClick={ open }
+													className=""
+													label={ __( 'Edit Slider', '' ) }
+													isSmall
+													icon="image"
+												/>
+											) }
+										/>
+								</MediaUploadCheck>
+							)}
+						</ToolbarItem>
+					</ToolbarGroup>
+			</BlockControls>
+			<p { ...useBlockProps() }>
+				"These pretzels are making me thirsty."
+			</p>
+		</>
 	);
 }
