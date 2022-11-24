@@ -1,0 +1,20 @@
+{
+  "deploy.reloaded": {
+    "packages": [
+      {
+        "name": "local",
+        "description": "package deployment for wordpress-block-carousel",
+        "exclude": ["node_modules/**"],
+        "deployOnSave": ["local"]   
+      }
+    ],
+    "targets": [
+      {
+        "type": "local",
+        "name": "local",
+        "description": "local...",
+        "dir": "C:\\Users\\bryan\\Local Sites\\carousel\\app\\public\\wp-content\\plugins\\wordpress-block-carousel"
+      }
+    ]
+  }
+}
