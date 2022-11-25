@@ -1,6 +1,9 @@
 import { __ } from '@wordpress/i18n';
+import { image } from '@wordpress/icons'; 
+
 import { 
 	useBlockProps,
+	InnerBlocks,
 	BlockControls,
 	InspectorControls,
 	MediaPlaceholder,
@@ -8,8 +11,6 @@ import {
 	MediaUploadCheck 
 } from '@wordpress/block-editor';
 
-import { image } 
-from '@wordpress/icons'; 
 
 import {
 	Button,
@@ -27,35 +28,12 @@ const ALLOWED_MEDIA_TYPES = [ 'image' ];
 
 export default function Edit() {
 	return (
-		<>
-			<BlockControls>
-				<ToolbarGroup>
-							<ToolbarItem>
-								{ () => (
-									<MediaUploadCheck>
-										<MediaUpload
-												allowedTypes={ ALLOWED_MEDIA_TYPES }
-												render={ ( { open } ) => (
-													<Button
-														onClick={ open }
-														className=""
-														label={ __( 'Add background', '' ) }
-														isSmall
-														icon={ image }
-													/>
-												) }
-											/>
-									</MediaUploadCheck>
-								)}
-							</ToolbarItem>
-					</ToolbarGroup>
-			</BlockControls>
-			<p { ...useBlockProps() }>
-				"These pretzels are making me thirsty."
-			</p>
-			<PanelBody>
-
-			</PanelBody>
-		</>
+		<div { ...useBlockProps() }>
+			<div class="slide">
+				<div class="slide-content">
+					<InnerBlocks />
+				</div>
+			</div>
+		</div>
 	);
 }
