@@ -1,5 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { image } from '@wordpress/icons'; 
+import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
 import { 
 	useBlockProps,
@@ -13,13 +14,7 @@ import {
 
 
 import {
-	Button,
-	PanelBody,
-	RangeControl,
-	TextControl,
-	SelectControl,
-	ToolbarGroup,
-	ToolbarItem
+	Button
 } from '@wordpress/components'
 
 import './editor.scss';
@@ -29,11 +24,12 @@ const ALLOWED_MEDIA_TYPES = [ 'image' ];
 export default function Edit() {
 	return (
 		<div { ...useBlockProps() }>
-			<div class="slide">
-				<div class="slide-content">
+			<div className="slide">
+				<div className="slide-content">
 					<InnerBlocks />
 				</div>
 			</div>
+			<Button>Add a Slide</Button>
 		</div>
 	);
 }
