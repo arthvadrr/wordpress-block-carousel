@@ -1,35 +1,39 @@
 import { __ } from '@wordpress/i18n';
-import { image } from '@wordpress/icons'; 
-import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 
 import { 
 	useBlockProps,
 	InnerBlocks,
-	BlockControls,
-	InspectorControls,
-	MediaPlaceholder,
-	MediaUpload,
-	MediaUploadCheck 
+	BlockControls
 } from '@wordpress/block-editor';
 
+import { image } from '@wordpress/icons';
 
 import {
-	Button
-} from '@wordpress/components'
+	ToolbarButton
+} from '@wordpress/components';
 
 import './editor.scss';
 
-const ALLOWED_MEDIA_TYPES = [ 'image' ];
+export default function Edit({ attributes, setAttributes }) {
 
-export default function Edit() {
+	const styles = "background:blue;";
+
 	return (
 		<div { ...useBlockProps() }>
-			<div className="slide">
+
+			<div className="slide" style={{ styles }}>
+				<BlockControls group="other">
+					<ToolbarButton
+						title={ __('Background Image', 'wp-block-carousel') }
+						icon= { image }
+						onClick={()=>{}}
+					/>
+				</BlockControls>
 				<div className="slide-content">
 					<InnerBlocks />
 				</div>
+			<button onClick={ ( e ) => {} }>Add a Slide</button>
 			</div>
-			<Button>Add a Slide</Button>
 		</div>
 	);
 }
