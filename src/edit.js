@@ -3,10 +3,14 @@ import { __ } from '@wordpress/i18n';
 import { 
 	useBlockProps,
 	InnerBlocks,
-	BlockControls
+	BlockControls,
+	MediaUpload,
+	MediaUploadCheck
 } from '@wordpress/block-editor';
 
 import { image } from '@wordpress/icons';
+
+import { useEffect } from '@wordpress/element';
 
 import {
 	ToolbarButton
@@ -14,14 +18,31 @@ import {
 
 import './editor.scss';
 
-export default function Edit({ attributes, setAttributes }) {
+const ALLOWED_MEDIA_TYPES = ['image'];
 
-	const styles = "background:blue;";
+export default function Edit({ attributes, setAttributes }) {
+	
+	const { slideUrl } = attributes;
+
+	const slideStyle = {
+		backgroundImage: `url(${attributes.slideUrl})`
+	}
 
 	return (
 		<div { ...useBlockProps() }>
 
-			<div className="slide" style={{ styles }}>
+			<div className="slide" style={ slideStyle }>
+				<MediaUploadCheck>
+					<MediaUpload
+						onSelect={( media ) => setAttributes({ slideUrl: media.url})}
+						value={	'foo' }
+						render={ ( { open } ) => (
+							<button onClick={ open }>
+								<img src={ slideUrl }/>
+							</button>
+						)}
+					/>					
+				</MediaUploadCheck>
 				<BlockControls group="other">
 					<ToolbarButton
 						title={ __('Background Image', 'wp-block-carousel') }
@@ -32,7 +53,7 @@ export default function Edit({ attributes, setAttributes }) {
 				<div className="slide-content">
 					<InnerBlocks />
 				</div>
-			<button onClick={ ( e ) => {} }>Add a Slide</button>
+			<button onClick={ ( e ) => uploadMedia()}>Add a Slide</button>
 			</div>
 		</div>
 	);
