@@ -38,7 +38,7 @@ export default function Edit({ attributes, setAttributes }) {
 						value={	'foo' }
 						render={ ( { open } ) => (
 							<button onClick={ open }>
-								<img src={ slideUrl }/>
+								{!slideUrl && <span>Choose an Image</span>}
 							</button>
 						)}
 					/>					
