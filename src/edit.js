@@ -1,9 +1,12 @@
 import { __ } from '@wordpress/i18n';
 
+import { RangeControl } from '@wordpress/components';
+
 import { 
 	useBlockProps,
 	InnerBlocks,
 	BlockControls,
+	InspectorControls,
 	MediaUpload,
 	MediaUploadCheck
 } from '@wordpress/block-editor';
@@ -22,14 +25,26 @@ const ALLOWED_MEDIA_TYPES = ['image'];
 
 export default function Edit({ attributes, setAttributes }) {
 	
-	const { slideUrl } = attributes;
+	const { slideUrl, slideAmount } = attributes;
 
 	const slideStyle = {
 		backgroundImage: `url(${attributes.slideUrl})`
 	}
 
+	const updateSlideAmount = e => {
+		e.target.value
+	}
+
 	return (
 		<div { ...useBlockProps() }>
+			<InspectorControls>
+				<RangeControl
+					value={ slideAmount }
+					onChange={value  => setAttributes({slideAmount: value})}
+					min={1}
+					max={10}
+				/>
+			</InspectorControls>
 
 			<div className="slide" style={ slideStyle }>
 				<MediaUploadCheck>
@@ -53,7 +68,9 @@ export default function Edit({ attributes, setAttributes }) {
 				<div className="slide-content">
 					<InnerBlocks />
 				</div>
-			<button onClick={ ( e ) => uploadMedia()}>Add a Slide</button>
+			<div>
+				Slide amount: {slideAmount}
+			</div>
 			</div>
 		</div>
 	);
