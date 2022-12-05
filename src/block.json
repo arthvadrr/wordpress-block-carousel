@@ -8,10 +8,19 @@
 	"icon": "cover-image",
 	"description": "Example block scaffolded with Create Block tool.",
 	"attributes": {
-		"slideUrl" : {
-			"type": "string"
+		"slideData" : {
+			"type": "array",
+			"default": [
+				{
+					"backgroundImageUrl": ""
+				}
+			]
 		},
 		"slideAmount": {
+			"type": "number",
+			"default": 1
+		},
+		"currentSlide": {
 			"type": "number",
 			"default": 0
 		}

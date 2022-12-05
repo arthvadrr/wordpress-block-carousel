@@ -10,29 +10,65 @@ import {
 	MediaUpload,
 	MediaUploadCheck
 } from '@wordpress/block-editor';
-
 import { image } from '@wordpress/icons';
-
 import { useEffect } from '@wordpress/element';
-
 import {
 	ToolbarButton
 } from '@wordpress/components';
-
 import './editor.scss';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
 
 export default function Edit({ attributes, setAttributes }) {
-	
-	const { slideUrl, slideAmount } = attributes;
 
-	const slideStyle = {
-		backgroundImage: `url(${attributes.slideUrl})`
+	const { slideData, slideAmount, currentSlide } = attributes;
+
+	const slideDataArr = slideData.map(a => a);
+
+	const updateSlideDataArr = () => {
+		setAttributes({slideData: slideDataArr})
 	}
 
-	const updateSlideAmount = e => {
-		e.target.value
+	const updateBackgroundImageUrl = url => {
+		slideDataArr[currentSlide].backgroundImageUrl = url;
+		updateSlideDataArr();
+	}
+
+	const slideObjSchema = {
+		"backgroundImageUrl": ""
+	}
+
+	const updateSlideAmount = val => {
+		const diff = Math.abs(val - slideAmount);
+
+		if (val < slideAmount) {
+			for (let i = 0; i < diff; i++) slideDataArr.pop();
+			setAttributes({currentSlide: val - 1})
+		} else {
+			for (let i = 0; i < diff; i++) slideDataArr.push(slideObjSchema);
+			setAttributes({currentSlide: val - 1})
+		}
+
+		updateSlideDataArr();
+		setAttributes({slideAmount: val})
+	}
+
+	const slideStyle = {
+		backgroundImage: `url(${slideDataArr[currentSlide].backgroundImageUrl})`
+	}
+
+	const createSlideBtns = () => {
+		const btnArr = [];
+
+		const btnOnClick = i => setAttributes({currentSlide: i})
+
+		for (let i = 0; i < slideAmount; i++) {
+			btnArr.push(
+			<button key={`slide-${i}`} onClick={() => btnOnClick(i)}>Goto Slide {i}</button>
+			);
+		}
+
+		return btnArr;
 	}
 
 	return (
@@ -40,7 +76,7 @@ export default function Edit({ attributes, setAttributes }) {
 			<InspectorControls>
 				<RangeControl
 					value={ slideAmount }
-					onChange={value  => setAttributes({slideAmount: value})}
+					onChange={value => updateSlideAmount(value)}
 					min={1}
 					max={10}
 				/>
@@ -49,11 +85,11 @@ export default function Edit({ attributes, setAttributes }) {
 			<div className="slide" style={ slideStyle }>
 				<MediaUploadCheck>
 					<MediaUpload
-						onSelect={( media ) => setAttributes({ slideUrl: media.url})}
+						onSelect={( media ) => updateBackgroundImageUrl(media.url)}
 						value={	'foo' }
 						render={ ( { open } ) => (
 							<button onClick={ open }>
-								{!slideUrl && <span>Choose an Image</span>}
+								{!slideDataArr[currentSlide].backgroundImageUrl && <span>Choose an Image</span>}
 							</button>
 						)}
 					/>					
@@ -68,9 +104,13 @@ export default function Edit({ attributes, setAttributes }) {
 				<div className="slide-content">
 					<InnerBlocks />
 				</div>
-			<div>
-				Slide amount: {slideAmount}
-			</div>
+				<div>
+					Slide amount: {slideAmount}<br/>
+					Current slide: {currentSlide}<br/>
+				</div>
+				<div className="slide-btn-container">
+					{ createSlideBtns() }
+				</div>
 			</div>
 		</div>
 	);
