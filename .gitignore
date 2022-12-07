@@ -28,3 +28,9 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+# Macos finder preferences
+.DS_store
+
+# Intellij settings
+.idea
