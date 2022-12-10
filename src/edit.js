@@ -1,10 +1,15 @@
 import { __ } from '@wordpress/i18n';
 
-import { 
+import {
+	Button, 
 	RangeControl,
 	Panel,
 	PanelBody,
-	PanelRow
+	PanelRow,
+	TextareaControl,
+	ExternalLink,
+	FocalPointPicker,
+	ToggleControl
 } from '@wordpress/components';
 
 import { 
@@ -16,7 +21,7 @@ import {
 	MediaUploadCheck
 } from '@wordpress/block-editor';
 import { image } from '@wordpress/icons';
-import { useEffect } from '@wordpress/element';
+import { Fragment, useEffect, useState } from '@wordpress/element';
 import {
 	ToolbarButton
 } from '@wordpress/components';
@@ -28,44 +33,67 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const { slideData, slideAmount, currentSlide } = attributes;
 
-	const slideDataArr = slideData.map(a => a);
+	const [selectedSlide, setSelectedSlide] = useState(currentSlide);
+	const [slideDataArr, setSlideDataArr] 	= useState(slideData);
+//	const slideDataArr = slideData.map(a => a);
 
-	const updateSlideDataArr = () => {
+	useEffect(() => {
 		setAttributes({slideData: slideDataArr})
+		setAttributes({currentSlide: selectedSlide})
+	})
+
+	const updateBackgroundImageUrl = (url) => {
+		console.log(`selectedSlide : ${selectedSlide}`)
+		console.log(typeof selectedSlide);
+		console.log('before')
+		console.table(slideDataArr);
+		slideDataArr[currentSlide].backgroundImageUrl = url;
+		setSlideDataArr(slideDataArr);
+		console.log('actual')
+		console.table(slideDataArr);
 	}
 
-	const updateBackgroundImageUrl = url => {
-		slideDataArr[currentSlide].backgroundImageUrl = url;
-		updateSlideDataArr();
+	const toggleParallax = () => {
+		const shallowArr = Array.from(slideDataArr);
+		slideDataArr[selectedSlide].hasParallax === "true" ? "false" : "true";
+		setSlideDataArr(shallowArr);
 	}
 
 	const slideObjSchema = {
-		"backgroundImageUrl": ""
+		"backgroundImageUrl": "",
+		"imageAlt": "",
+		"showFocalPointPicker": "",
+		"imperativeFocalPointPreview": "",
+		"focalPoint": "",
+		"hasParallax": "",
+		"toggleParallax": "false"
 	}
 
-	const updateSlideAmount = val => {
-		const diff = Math.abs(val - slideAmount);
+	const updateSlideAmount = value => {
+		const shallowArr = Array.from(slideDataArr);
+		const diff = Math.abs(value - slideAmount);
 
-		if (val < slideAmount) {
-			for (let i = 0; i < diff; i++) slideDataArr.pop();
-			setAttributes({currentSlide: val - 1})
+		if (value < slideAmount) {
+	
+			if (selectedSlide > value - 1) {
+				setSelectedSlide(value - 1)
+			}
+
+			for (let i = 0; i < diff; i++) shallowArr.pop();
 		} else {
-			for (let i = 0; i < diff; i++) slideDataArr.push(slideObjSchema);
-			setAttributes({currentSlide: val - 1})
+			for (let i = 0; i < diff; i++) shallowArr.push(slideObjSchema);
 		}
 
-		updateSlideDataArr();
-		setAttributes({slideAmount: val})
+		setSlideDataArr(shallowArr);
+		setAttributes({slideAmount: value})
 	}
 
 	const slideStyle = {
-		backgroundImage: `url(${slideDataArr[currentSlide].backgroundImageUrl})`
+		backgroundImage: `url(${slideDataArr[selectedSlide].backgroundImageUrl})`
 	}
 
 	const createSlidePanels = () => {
-		const panels = Array.from({length: slideAmount})
-
-		return panels.map(() => (
+		return (
 			<PanelRow>
 				<MediaUploadCheck>
 					<MediaUpload
@@ -73,36 +101,28 @@ export default function Edit({ attributes, setAttributes }) {
 						value={	'foo' }
 						render={ ( { open } ) => (
 							<button onClick={ open }>
-								{!slideDataArr[currentSlide].backgroundImageUrl && <span>Choose an Image</span>}
+								{!slideDataArr[selectedSlide].backgroundImageUrl && <span>Choose an Image</span>}
 							</button>
 						)}
 					/>					
 				</MediaUploadCheck>
-				{ !! url && (
+				{ !! slideDataArr[selectedSlide].backgroundImageUrl && (
 					<PanelBody title={ __( 'Media settings' ) }>
-						{ isImageBackground && (
 							<Fragment>
 								<ToggleControl
 									label={ __( 'Fixed background' ) }
-									checked={ hasParallax }
+									checked={ slideDataArr[selectedSlide].hasParallax }
 									onChange={ toggleParallax }
 								/>
-
-								<ToggleControl
-									label={ __( 'Repeated background' ) }
-									checked={ isRepeated }
-									onChange={ toggleIsRepeated }
-								/>
 							</Fragment>
-						) }
-						{ showFocalPointPicker && (
+						{ slideDataArr[selectedSlide].showFocalPointPicker && (
 							<FocalPointPicker
 								__nextHasNoMarginBottom
 								label={ __( 'Focal point picker' ) }
-								url={ url }
-								onDragStart={ imperativeFocalPointPreview }
-								value={ focalPoint }
-								onDrag={ imperativeFocalPointPreview }
+								url={ slideDataArr[selectedSlide].backgroundImageUrl }
+								onDragStart={ slideDataArr[selectedSlide].imperativeFocalPointPreview }
+								value={ slideDataArr[selectedSlide].focalPoint }
+								onDrag={ slideDataArr[selectedSlide].imperativeFocalPointPreview }
 								onChange={ ( newFocalPoint ) =>
 									setAttributes( {
 										focalPoint: newFocalPoint,
@@ -110,12 +130,12 @@ export default function Edit({ attributes, setAttributes }) {
 								}
 							/>
 						) }
-						{ ! slideDataArr[currentSlide].backgroundImageUrl (
+						{slideDataArr[selectedSlide].backgroundImageUrl &&
 								<TextareaControl
 									label={ __(
 										'Alt text (alternative text)'
 									) }
-									value={ slideDataArr[currentSlide].imageAlt }
+									value={ slideDataArr[selectedSlide].imageAlt }
 									onChange={ ( newAlt ) =>
 										setAttributes( { alt: newAlt } )
 									}
@@ -132,23 +152,13 @@ export default function Edit({ attributes, setAttributes }) {
 										</>
 									}
 								/>
-							) }
+							}
 						<PanelRow>
 							<Button
 								variant="secondary"
 								isSmall
 								className="block-library-cover__reset-button"
-								onClick={ () =>
-									setAttributes( {
-										url: undefined,
-										id: undefined,
-										backgroundType: undefined,
-										focalPoint: undefined,
-										hasParallax: undefined,
-										isRepeated: undefined,
-										useFeaturedImage: false,
-									} )
-								}
+								onClick={ () => updateBackgroundImageUrl("")}
 							>
 								{ __( 'Clear Media' ) }
 							</Button>
@@ -156,13 +166,13 @@ export default function Edit({ attributes, setAttributes }) {
 					</PanelBody>
 				) }
 			</PanelRow>
-		))
+		);
 	}
 
 	const createSlideBtns = () => {
 		const btnArr = [];
 
-		const btnOnClick = i => setAttributes({currentSlide: i})
+		const btnOnClick = i => setSelectedSlide(i)
 
 		for (let i = 0; i < slideAmount; i++) {
 			btnArr.push(
@@ -201,7 +211,7 @@ export default function Edit({ attributes, setAttributes }) {
 				</div>
 				<div>
 					Slide amount: {slideAmount}<br/>
-					Current slide: {currentSlide}<br/>
+					Current slide: {selectedSlide}<br/>
 				</div>
 				<div className="slide-btn-container">
 					{ createSlideBtns() }

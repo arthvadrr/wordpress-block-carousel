@@ -13,7 +13,12 @@
 			"default": [
 				{
 					"backgroundImageUrl": "",
-					"imageAlt": ""
+					"imageAlt": "",
+					"showFocalPointPicker": "",
+					"imperativeFocalPointPreview": "",
+					"focalPoint": "",
+					"hasParallax": "",
+					"toggleParallax": "false"
 				}
 			]
 		},

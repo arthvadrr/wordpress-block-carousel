@@ -69,45 +69,63 @@ function Edit(_ref) {
     slideAmount,
     currentSlide
   } = attributes;
-  const slideDataArr = slideData.map(a => a);
-  const updateSlideDataArr = () => {
+  const [selectedSlide, setSelectedSlide] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(currentSlide);
+  const [slideDataArr, setSlideDataArr] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(slideData);
+  //	const slideDataArr = slideData.map(a => a);
+
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setAttributes({
       slideData: slideDataArr
     });
-  };
+    setAttributes({
+      currentSlide: selectedSlide
+    });
+  });
   const updateBackgroundImageUrl = url => {
+    console.log(`selectedSlide : ${selectedSlide}`);
+    console.log(typeof selectedSlide);
+    console.log('before');
+    console.table(slideDataArr);
     slideDataArr[currentSlide].backgroundImageUrl = url;
-    updateSlideDataArr();
+    setSlideDataArr(slideDataArr);
+    console.log('actual');
+    console.table(slideDataArr);
+  };
+  const toggleParallax = () => {
+    const shallowArr = Array.from(slideDataArr);
+    slideDataArr[selectedSlide].hasParallax === "true" ? "false" : "true";
+    setSlideDataArr(shallowArr);
   };
   const slideObjSchema = {
-    "backgroundImageUrl": ""
+    "backgroundImageUrl": "",
+    "imageAlt": "",
+    "showFocalPointPicker": "",
+    "imperativeFocalPointPreview": "",
+    "focalPoint": "",
+    "hasParallax": "",
+    "toggleParallax": "false"
   };
-  const updateSlideAmount = val => {
-    const diff = Math.abs(val - slideAmount);
-    if (val < slideAmount) {
-      for (let i = 0; i < diff; i++) slideDataArr.pop();
-      setAttributes({
-        currentSlide: val - 1
-      });
+  const updateSlideAmount = value => {
+    const shallowArr = Array.from(slideDataArr);
+    const diff = Math.abs(value - slideAmount);
+    if (value < slideAmount) {
+      if (selectedSlide > value - 1) {
+        setSelectedSlide(value - 1);
+      }
+      for (let i = 0; i < diff; i++) shallowArr.pop();
     } else {
-      for (let i = 0; i < diff; i++) slideDataArr.push(slideObjSchema);
-      setAttributes({
-        currentSlide: val - 1
-      });
+      for (let i = 0; i < diff; i++) shallowArr.push(slideObjSchema);
     }
-    updateSlideDataArr();
+    setSlideDataArr(shallowArr);
     setAttributes({
-      slideAmount: val
+      slideAmount: value
     });
   };
   const slideStyle = {
-    backgroundImage: `url(${slideDataArr[currentSlide].backgroundImageUrl})`
+    backgroundImage: `url(${slideDataArr[selectedSlide].backgroundImageUrl})`
   };
   const createSlidePanels = () => {
-    const panels = Array.from({
-      length: slideAmount
-    });
-    return panels.map(() => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUpload, {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUpload, {
       onSelect: media => updateBackgroundImageUrl(media.url),
       value: 'foo',
       render: _ref2 => {
@@ -116,57 +134,43 @@ function Edit(_ref) {
         } = _ref2;
         return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
           onClick: open
-        }, !slideDataArr[currentSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Choose an Image"));
+        }, !slideDataArr[selectedSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Choose an Image"));
       }
-    })), !!url && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+    })), !!slideDataArr[selectedSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Media settings')
-    }, isImageBackground && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ToggleControl, {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Fixed background'),
-      checked: hasParallax,
+      checked: slideDataArr[selectedSlide].hasParallax,
       onChange: toggleParallax
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ToggleControl, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Repeated background'),
-      checked: isRepeated,
-      onChange: toggleIsRepeated
-    })), showFocalPointPicker && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(FocalPointPicker, {
+    })), slideDataArr[selectedSlide].showFocalPointPicker && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.FocalPointPicker, {
       __nextHasNoMarginBottom: true,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Focal point picker'),
-      url: url,
-      onDragStart: imperativeFocalPointPreview,
-      value: focalPoint,
-      onDrag: imperativeFocalPointPreview,
+      url: slideDataArr[selectedSlide].backgroundImageUrl,
+      onDragStart: slideDataArr[selectedSlide].imperativeFocalPointPreview,
+      value: slideDataArr[selectedSlide].focalPoint,
+      onDrag: slideDataArr[selectedSlide].imperativeFocalPointPreview,
       onChange: newFocalPoint => setAttributes({
         focalPoint: newFocalPoint
       })
-    }), !slideDataArr[currentSlide].backgroundImageUrl((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(TextareaControl, {
+    }), slideDataArr[selectedSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt text (alternative text)'),
-      value: slideDataArr[currentSlide].imageAlt,
+      value: slideDataArr[selectedSlide].imageAlt,
       onChange: newAlt => setAttributes({
         alt: newAlt
       }),
-      help: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(ExternalLink, {
+      help: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ExternalLink, {
         href: "https://www.w3.org/WAI/tutorials/images/decision-tree"
       }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Describe the purpose of the image')), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Leave empty if the image is purely decorative.'))
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
       variant: "secondary",
       isSmall: true,
       className: "block-library-cover__reset-button",
-      onClick: () => setAttributes({
-        url: undefined,
-        id: undefined,
-        backgroundType: undefined,
-        focalPoint: undefined,
-        hasParallax: undefined,
-        isRepeated: undefined,
-        useFeaturedImage: false
-      })
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Clear Media'))))));
+      onClick: () => updateBackgroundImageUrl("")
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Clear Media')))));
   };
   const createSlideBtns = () => {
     const btnArr = [];
-    const btnOnClick = i => setAttributes({
-      currentSlide: i
-    });
+    const btnOnClick = i => setSelectedSlide(i);
     for (let i = 0; i < slideAmount; i++) {
       btnArr.push((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
         key: `slide-${i}`,
@@ -194,7 +198,7 @@ function Edit(_ref) {
     onClick: () => {}
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slide-content"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Slide amount: ", slideAmount, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Current slide: ", currentSlide, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Slide amount: ", slideAmount, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Current slide: ", selectedSlide, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slide-btn-container"
   }, createSlideBtns())));
 }
@@ -370,7 +374,7 @@ module.exports = window["wp"]["primitives"];
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundImageUrl":"","imageAlt":""}]},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundImageUrl":"","imageAlt":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":"","hasParallax":"","toggleParallax":"false"}]},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 
