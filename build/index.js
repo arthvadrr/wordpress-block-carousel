@@ -71,8 +71,6 @@ function Edit(_ref) {
   } = attributes;
   const [selectedSlide, setSelectedSlide] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(currentSlide);
   const [slideDataArr, setSlideDataArr] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(slideData);
-  //	const slideDataArr = slideData.map(a => a);
-
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
     setAttributes({
       slideData: slideDataArr
@@ -80,16 +78,15 @@ function Edit(_ref) {
     setAttributes({
       currentSlide: selectedSlide
     });
+    console.table(slideDataArr);
   });
   const updateBackgroundImageUrl = url => {
-    console.log(`selectedSlide : ${selectedSlide}`);
-    console.log(typeof selectedSlide);
-    console.log('before');
-    console.table(slideDataArr);
     slideDataArr[currentSlide].backgroundImageUrl = url;
     setSlideDataArr(slideDataArr);
-    console.log('actual');
-    console.table(slideDataArr);
+  };
+  const setSlideBackgroundImageAltText = newAltText => {
+    slideDataArr[currentSlide].backgroundImageAltText = newAltText;
+    setSlideDataArr(slideDataArr);
   };
   const toggleParallax = () => {
     const shallowArr = Array.from(slideDataArr);
@@ -98,7 +95,7 @@ function Edit(_ref) {
   };
   const slideObjSchema = {
     "backgroundImageUrl": "",
-    "imageAlt": "",
+    "backgroundImageAltText": "",
     "showFocalPointPicker": "",
     "imperativeFocalPointPreview": "",
     "focalPoint": "",
@@ -121,13 +118,19 @@ function Edit(_ref) {
       slideAmount: value
     });
   };
+  const getCurrentImageUrl = () => slideDataArr[currentSlide].backgroundImageUrl;
   const slideStyle = {
     backgroundImage: `url(${slideDataArr[selectedSlide].backgroundImageUrl})`
   };
   const createSlidePanels = () => {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUpload, {
-      onSelect: media => updateBackgroundImageUrl(media.url),
-      value: 'foo',
+      onSelect: media => {
+        slideDataArr[currentSlide].backgroundImageUrl = media.url;
+        setSlideDataArr(slideDataArr);
+        console.log('fired!');
+        console.table(slideDataArr);
+      },
+      value: getCurrentImageUrl(),
       render: _ref2 => {
         let {
           open
@@ -154,10 +157,8 @@ function Edit(_ref) {
       })
     }), slideDataArr[selectedSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt text (alternative text)'),
-      value: slideDataArr[selectedSlide].imageAlt,
-      onChange: newAlt => setAttributes({
-        alt: newAlt
-      }),
+      value: slideDataArr[currentSlide].backgroundImageAltText,
+      onChange: newAlt => setSlideBackgroundImageAltText(newAlt),
       help: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ExternalLink, {
         href: "https://www.w3.org/WAI/tutorials/images/decision-tree"
       }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Describe the purpose of the image')), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Leave empty if the image is purely decorative.'))
@@ -279,7 +280,7 @@ function save(_ref) {
   let {
     attributes
   } = _ref;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save(), attributes.url);
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_1__.useBlockProps.save(), attributes.url, attributes.slideData);
 }
 
 /***/ }),
@@ -374,7 +375,7 @@ module.exports = window["wp"]["primitives"];
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundImageUrl":"","imageAlt":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":"","hasParallax":"","toggleParallax":"false"}]},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundImageUrl":"foo","backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":"","hasParallax":"","toggleParallax":"false"}]},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

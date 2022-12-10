@@ -31,26 +31,29 @@ const ALLOWED_MEDIA_TYPES = ['image'];
 
 export default function Edit({ attributes, setAttributes }) {
 
-	const { slideData, slideAmount, currentSlide } = attributes;
+	const { 
+		slideData, 
+		slideAmount, 
+		currentSlide 
+	} = attributes;
 
 	const [selectedSlide, setSelectedSlide] = useState(currentSlide);
 	const [slideDataArr, setSlideDataArr] 	= useState(slideData);
-//	const slideDataArr = slideData.map(a => a);
 
 	useEffect(() => {
 		setAttributes({slideData: slideDataArr})
 		setAttributes({currentSlide: selectedSlide})
+		console.table(slideDataArr);
 	})
 
 	const updateBackgroundImageUrl = (url) => {
-		console.log(`selectedSlide : ${selectedSlide}`)
-		console.log(typeof selectedSlide);
-		console.log('before')
-		console.table(slideDataArr);
 		slideDataArr[currentSlide].backgroundImageUrl = url;
 		setSlideDataArr(slideDataArr);
-		console.log('actual')
-		console.table(slideDataArr);
+	}
+
+	const setSlideBackgroundImageAltText = newAltText => {
+		slideDataArr[currentSlide].backgroundImageAltText = newAltText;
+		setSlideDataArr(slideDataArr);
 	}
 
 	const toggleParallax = () => {
@@ -61,7 +64,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const slideObjSchema = {
 		"backgroundImageUrl": "",
-		"imageAlt": "",
+		"backgroundImageAltText": "",
 		"showFocalPointPicker": "",
 		"imperativeFocalPointPreview": "",
 		"focalPoint": "",
@@ -88,6 +91,8 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({slideAmount: value})
 	}
 
+	const getCurrentImageUrl = () => slideDataArr[currentSlide].backgroundImageUrl;
+
 	const slideStyle = {
 		backgroundImage: `url(${slideDataArr[selectedSlide].backgroundImageUrl})`
 	}
@@ -97,8 +102,13 @@ export default function Edit({ attributes, setAttributes }) {
 			<PanelRow>
 				<MediaUploadCheck>
 					<MediaUpload
-						onSelect={( media ) => updateBackgroundImageUrl(media.url)}
-						value={	'foo' }
+						onSelect={( media ) => {
+							slideDataArr[currentSlide].backgroundImageUrl = media.url;
+							setSlideDataArr(slideDataArr);
+							console.log('fired!')
+							console.table(slideDataArr);
+						}}
+						value={	getCurrentImageUrl() }
 						render={ ( { open } ) => (
 							<button onClick={ open }>
 								{!slideDataArr[selectedSlide].backgroundImageUrl && <span>Choose an Image</span>}
@@ -135,10 +145,8 @@ export default function Edit({ attributes, setAttributes }) {
 									label={ __(
 										'Alt text (alternative text)'
 									) }
-									value={ slideDataArr[selectedSlide].imageAlt }
-									onChange={ ( newAlt ) =>
-										setAttributes( { alt: newAlt } )
-									}
+									value={ slideDataArr[currentSlide].backgroundImageAltText }
+									onChange={ ( newAlt ) => setSlideBackgroundImageAltText(newAlt)}
 									help={
 										<>
 											<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">

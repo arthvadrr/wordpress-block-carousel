@@ -12,8 +12,8 @@
       "type": "array",
       "default": [
         {
-          "backgroundImageUrl": "",
-          "imageAlt": "",
+          "backgroundImageUrl": "foo",
+          "backgroundImageAltText": "",
           "showFocalPointPicker": "",
           "imperativeFocalPointPreview": "",
           "focalPoint": "",
