@@ -2,34 +2,6 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/@wordpress/icons/build-module/library/image.js":
-/*!*********************************************************************!*\
-  !*** ./node_modules/@wordpress/icons/build-module/library/image.js ***!
-  \*********************************************************************/
-/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/primitives */ "@wordpress/primitives");
-/* harmony import */ var _wordpress_primitives__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__);
-
-
-/**
- * WordPress dependencies
- */
-
-const image = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.SVG, {
-  viewBox: "0 0 24 24",
-  xmlns: "http://www.w3.org/2000/svg"
-}, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_primitives__WEBPACK_IMPORTED_MODULE_1__.Path, {
-  d: "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 4.5h14c.3 0 .5.2.5.5v8.4l-3-2.9c-.3-.3-.8-.3-1 0L11.9 14 9 12c-.3-.2-.6-.2-.8 0l-3.6 2.6V5c-.1-.3.1-.5.4-.5zm14 15H5c-.3 0-.5-.2-.5-.5v-2.4l4.1-3 3 1.9c.3.2.7.2.9-.1L16 12l3.5 3.4V19c0 .3-.2.5-.5.5z"
-}));
-/* harmony default export */ __webpack_exports__["default"] = (image);
-//# sourceMappingURL=image.js.map
-
-/***/ }),
-
 /***/ "./src/edit.js":
 /*!*********************!*\
   !*** ./src/edit.js ***!
@@ -44,12 +16,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
-/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
-/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/icons */ "./node_modules/@wordpress/icons/build-module/library/image.js");
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/hooks */ "@wordpress/hooks");
+/* harmony import */ var _wordpress_hooks__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./src/editor.scss");
+
 
 
 
@@ -59,6 +33,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const ALLOWED_MEDIA_TYPES = ['image'];
+const slideMediaUpload = () => _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUpload;
+(0,_wordpress_hooks__WEBPACK_IMPORTED_MODULE_2__.addFilter)('editor.MediaUpload', 'core/edit-post/components/media-upload/replace-media-upload', slideMediaUpload);
 function Edit(_ref) {
   let {
     attributes,
@@ -69,29 +45,26 @@ function Edit(_ref) {
     slideAmount,
     currentSlide
   } = attributes;
-  const [selectedSlide, setSelectedSlide] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(currentSlide);
-  const [slideDataArr, setSlideDataArr] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(slideData);
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+  const updateBackgroundImageUrl = media => {
+    const shallowArr = Array.from(slideData);
+    shallowArr[currentSlide].backgroundImageUrl = media.url;
     setAttributes({
-      slideData: slideDataArr
+      slideData: shallowArr
     });
-    setAttributes({
-      currentSlide: selectedSlide
-    });
-    console.table(slideDataArr);
-  });
-  const updateBackgroundImageUrl = url => {
-    slideDataArr[currentSlide].backgroundImageUrl = url;
-    setSlideDataArr(slideDataArr);
   };
   const setSlideBackgroundImageAltText = newAltText => {
-    slideDataArr[currentSlide].backgroundImageAltText = newAltText;
-    setSlideDataArr(slideDataArr);
+    const shallowArr = Array.from(slideData);
+    shallowArr[currentSlide].backgroundImageAltText = newAltText;
+    setAttributes({
+      slideData: shallowArr
+    });
   };
   const toggleParallax = () => {
-    const shallowArr = Array.from(slideDataArr);
-    slideDataArr[selectedSlide].hasParallax === "true" ? "false" : "true";
-    setSlideDataArr(shallowArr);
+    const shallowArr = Array.from(slideData);
+    shallowArr[currentSlide].hasParallax === "true" ? "false" : "true";
+    setAttributes({
+      slideData: shallowArr
+    });
   };
   const slideObjSchema = {
     "backgroundImageUrl": "",
@@ -103,33 +76,41 @@ function Edit(_ref) {
     "toggleParallax": "false"
   };
   const updateSlideAmount = value => {
-    const shallowArr = Array.from(slideDataArr);
+    const shallowArr = Array.from(slideData);
     const diff = Math.abs(value - slideAmount);
+    let selectedSlide = currentSlide;
     if (value < slideAmount) {
-      if (selectedSlide > value - 1) {
-        setSelectedSlide(value - 1);
+      if (currentSlide > value - 1) {
+        selectedSlide = value - 1;
       }
       for (let i = 0; i < diff; i++) shallowArr.pop();
     } else {
       for (let i = 0; i < diff; i++) shallowArr.push(slideObjSchema);
     }
-    setSlideDataArr(shallowArr);
+    setAttributes({
+      slideData: shallowArr
+    });
+    setAttributes({
+      currentSlide: selectedSlide
+    });
     setAttributes({
       slideAmount: value
     });
   };
-  const getCurrentImageUrl = () => slideDataArr[currentSlide].backgroundImageUrl;
+  const getCurrentImageUrl = () => slideData[currentSlide].backgroundImageUrl;
   const slideStyle = {
-    backgroundImage: `url(${slideDataArr[selectedSlide].backgroundImageUrl})`
+    backgroundImage: `url(${slideData[currentSlide].backgroundImageUrl})`
+  };
+  const updateSlideMedia = url => {
+    const shallowArr = Array.from(slideData);
+    shallowArr[currentSlide].backgroundImageUrl = url;
+    setAttributes({
+      slideData: shallowArr
+    });
   };
   const createSlidePanels = () => {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUpload, {
-      onSelect: media => {
-        slideDataArr[currentSlide].backgroundImageUrl = media.url;
-        setSlideDataArr(slideDataArr);
-        console.log('fired!');
-        console.table(slideDataArr);
-      },
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUpload, {
+      onSelect: media => updateSlideMedia(media.url),
       value: getCurrentImageUrl(),
       render: _ref2 => {
         let {
@@ -137,32 +118,32 @@ function Edit(_ref) {
         } = _ref2;
         return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
           onClick: open
-        }, !slideDataArr[selectedSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Choose an Image"));
+        }, !slideData[currentSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Choose an Image"));
       }
-    })), !!slideDataArr[selectedSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+    })), !!slideData[currentSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Media settings')
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Fixed background'),
-      checked: slideDataArr[selectedSlide].hasParallax,
+      checked: slideData[currentSlide].hasParallax,
       onChange: toggleParallax
-    })), slideDataArr[selectedSlide].showFocalPointPicker && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.FocalPointPicker, {
+    })), slideData[currentSlide].showFocalPointPicker && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.FocalPointPicker, {
       __nextHasNoMarginBottom: true,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Focal point picker'),
-      url: slideDataArr[selectedSlide].backgroundImageUrl,
-      onDragStart: slideDataArr[selectedSlide].imperativeFocalPointPreview,
-      value: slideDataArr[selectedSlide].focalPoint,
-      onDrag: slideDataArr[selectedSlide].imperativeFocalPointPreview,
+      url: slideData[currentSlide].backgroundImageUrl,
+      onDragStart: slideData[currentSlide].imperativeFocalPointPreview,
+      value: slideData[currentSlide].focalPoint,
+      onDrag: slideData[currentSlide].imperativeFocalPointPreview,
       onChange: newFocalPoint => setAttributes({
         focalPoint: newFocalPoint
       })
-    }), slideDataArr[selectedSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
+    }), slideData[currentSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.TextareaControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt text (alternative text)'),
-      value: slideDataArr[currentSlide].backgroundImageAltText,
+      value: slideData[currentSlide].backgroundImageAltText,
       onChange: newAlt => setSlideBackgroundImageAltText(newAlt),
-      help: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ExternalLink, {
+      help: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ExternalLink, {
         href: "https://www.w3.org/WAI/tutorials/images/decision-tree"
       }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Describe the purpose of the image')), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Leave empty if the image is purely decorative.'))
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Button, {
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
       variant: "secondary",
       isSmall: true,
       className: "block-library-cover__reset-button",
@@ -180,26 +161,33 @@ function Edit(_ref) {
     }
     return btnArr;
   };
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.RangeControl, {
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.RangeControl, {
     value: slideAmount,
     onChange: value => updateSlideAmount(value),
     min: 1,
     max: 10
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
     title: "Slides",
     initialOpen: false
   }, createSlidePanels()))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slide",
     style: slideStyle
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.BlockControls, {
     group: "other"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToolbarButton, {
-    title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Background Image', 'wp-block-carousel'),
-    icon: _wordpress_icons__WEBPACK_IMPORTED_MODULE_5__["default"],
-    onClick: () => {}
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUpload, {
+    onSelect: media => updateSlideMedia(media.url),
+    value: getCurrentImageUrl(),
+    render: _ref3 => {
+      let {
+        open
+      } = _ref3;
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+        onClick: open
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", null, "Choose an Image"));
+    }
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slide-content"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Slide amount: ", slideAmount, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Current slide: ", selectedSlide, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.InnerBlocks, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Slide amount: ", slideAmount, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Current slide: ", currentSlide, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slide-btn-container"
   }, createSlideBtns())));
 }
@@ -349,6 +337,16 @@ module.exports = window["wp"]["element"];
 
 /***/ }),
 
+/***/ "@wordpress/hooks":
+/*!*******************************!*\
+  !*** external ["wp","hooks"] ***!
+  \*******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["hooks"];
+
+/***/ }),
+
 /***/ "@wordpress/i18n":
 /*!******************************!*\
   !*** external ["wp","i18n"] ***!
@@ -356,16 +354,6 @@ module.exports = window["wp"]["element"];
 /***/ (function(module) {
 
 module.exports = window["wp"]["i18n"];
-
-/***/ }),
-
-/***/ "@wordpress/primitives":
-/*!************************************!*\
-  !*** external ["wp","primitives"] ***!
-  \************************************/
-/***/ (function(module) {
-
-module.exports = window["wp"]["primitives"];
 
 /***/ }),
 
