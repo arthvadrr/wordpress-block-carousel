@@ -1,6 +1,11 @@
 import { __ } from '@wordpress/i18n';
 
-import { RangeControl } from '@wordpress/components';
+import { 
+	RangeControl,
+	Panel,
+	PanelBody,
+	PanelRow
+} from '@wordpress/components';
 
 import { 
 	useBlockProps,
@@ -57,6 +62,103 @@ export default function Edit({ attributes, setAttributes }) {
 		backgroundImage: `url(${slideDataArr[currentSlide].backgroundImageUrl})`
 	}
 
+	const createSlidePanels = () => {
+		const panels = Array.from({length: slideAmount})
+
+		return panels.map(() => (
+			<PanelRow>
+				<MediaUploadCheck>
+					<MediaUpload
+						onSelect={( media ) => updateBackgroundImageUrl(media.url)}
+						value={	'foo' }
+						render={ ( { open } ) => (
+							<button onClick={ open }>
+								{!slideDataArr[currentSlide].backgroundImageUrl && <span>Choose an Image</span>}
+							</button>
+						)}
+					/>					
+				</MediaUploadCheck>
+				{ !! url && (
+					<PanelBody title={ __( 'Media settings' ) }>
+						{ isImageBackground && (
+							<Fragment>
+								<ToggleControl
+									label={ __( 'Fixed background' ) }
+									checked={ hasParallax }
+									onChange={ toggleParallax }
+								/>
+
+								<ToggleControl
+									label={ __( 'Repeated background' ) }
+									checked={ isRepeated }
+									onChange={ toggleIsRepeated }
+								/>
+							</Fragment>
+						) }
+						{ showFocalPointPicker && (
+							<FocalPointPicker
+								__nextHasNoMarginBottom
+								label={ __( 'Focal point picker' ) }
+								url={ url }
+								onDragStart={ imperativeFocalPointPreview }
+								value={ focalPoint }
+								onDrag={ imperativeFocalPointPreview }
+								onChange={ ( newFocalPoint ) =>
+									setAttributes( {
+										focalPoint: newFocalPoint,
+									} )
+								}
+							/>
+						) }
+						{ ! slideDataArr[currentSlide].backgroundImageUrl (
+								<TextareaControl
+									label={ __(
+										'Alt text (alternative text)'
+									) }
+									value={ slideDataArr[currentSlide].imageAlt }
+									onChange={ ( newAlt ) =>
+										setAttributes( { alt: newAlt } )
+									}
+									help={
+										<>
+											<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
+												{ __(
+													'Describe the purpose of the image'
+												) }
+											</ExternalLink>
+											{ __(
+												'Leave empty if the image is purely decorative.'
+											) }
+										</>
+									}
+								/>
+							) }
+						<PanelRow>
+							<Button
+								variant="secondary"
+								isSmall
+								className="block-library-cover__reset-button"
+								onClick={ () =>
+									setAttributes( {
+										url: undefined,
+										id: undefined,
+										backgroundType: undefined,
+										focalPoint: undefined,
+										hasParallax: undefined,
+										isRepeated: undefined,
+										useFeaturedImage: false,
+									} )
+								}
+							>
+								{ __( 'Clear Media' ) }
+							</Button>
+						</PanelRow>
+					</PanelBody>
+				) }
+			</PanelRow>
+		))
+	}
+
 	const createSlideBtns = () => {
 		const btnArr = [];
 
@@ -80,20 +182,13 @@ export default function Edit({ attributes, setAttributes }) {
 					min={1}
 					max={10}
 				/>
+				<Panel>
+					<PanelBody title={"Slides"} initialOpen={false}>
+						{createSlidePanels()}
+					</PanelBody>
+				</Panel>
 			</InspectorControls>
-
 			<div className="slide" style={ slideStyle }>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={( media ) => updateBackgroundImageUrl(media.url)}
-						value={	'foo' }
-						render={ ( { open } ) => (
-							<button onClick={ open }>
-								{!slideDataArr[currentSlide].backgroundImageUrl && <span>Choose an Image</span>}
-							</button>
-						)}
-					/>					
-				</MediaUploadCheck>
 				<BlockControls group="other">
 					<ToolbarButton
 						title={ __('Background Image', 'wp-block-carousel') }
