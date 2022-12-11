@@ -32,96 +32,118 @@ import './editor.scss';
 const ALLOWED_MEDIA_TYPES = ['image'];
 
 export default function Edit({ attributes, setAttributes }) {
-	
 	const { 
 		slideData, 
 		slideAmount, 
 		currentSlide
 	} = attributes;
+
+	const [slideData_$array, setSlideData_$array] = useState(slideData);
+	const [slideAmount_$number, setSlideAmount_$number] = useState(slideAmount);
+	const [currentSlide_$number, setCurrentSlide_$number] = useState(currentSlide);
+
+	useEffect(() => {
+		console.log('fired useEffect');
+		setAttributes({slideData: slideData_$array})
+		setAttributes({slideAmount: slideAmount_$number})
+		setAttributes({currentSlide: currentSlide_$number})
+	}, [
+		slideData_$array,
+		slideAmount_$number,
+		currentSlide_$number
+	])
  
 	const setSlideBackgroundImageAltText = newAltText => {
-		slideData[currentSlide].backgroundImageAltText = newAltText;
-		setAttributes({slideData : slideData});
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].backgroundImageAltText = newAltText;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array})
 	}
 
-	const toggleParallax = hasParallax => {
-		console.log('fired!');
-		slideData[currentSlide].hasParallax = !hasParallax;
-		setAttributes({slideData: slideData});
+	const toggleParallax = () => {
+		const shallowArr = Array.from(slideData_$array);
+		const hasParallax = shallowArr[currentSlide_$number].hasParallax 
+		shallowArr[currentSlide_$number].hasParallax = !hasParallax
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array})
 	}
 
 	const updateSlideAmount = value => {
-		const diff = Math.abs(value - slideAmount);
+		const shallowArr = Array.from(slideData_$array);
+		const diff = Math.abs(value - slideAmount_$number);
 
-		if (value < slideAmount) {
+		if (value < slideAmount_$number) {
 
-			if (currentSlide > value - 1) {
-				setAttributes({currentSlide: value - 1})
+			if (currentSlide_$number > value - 1) {
+				setCurrentSlide_$number(value - 1);
+				setAttributes({currentSlide: currentSlide_$number})
 			}
-			for (let i = 0; i < diff; i++) slideData.pop();
+			for (let i = 0; i < diff; i++) shallowArr.pop();
 
 		} else {
 
-			for (let i = 0; i < diff; i++) slideData.push({
+			for (let i = 0; i < diff; i++) shallowArr.push({
 				"backgroundImageUrl": "",
 				"backgroundImageAltText": "",
 				"showFocalPointPicker": "",
 				"imperativeFocalPointPreview": "",
 				"focalPoint": "",
-				"hasParallax": "",
+				"hasParallax": false,
 			});
 
 		}
 
-		setAttributes({
-			slideAmount: value,
-			slideData: slideData
-		})
+		setSlideAmount_$number(value);
+ 		setSlideData_$array(shallowArr);
+		setAttributes({ slideData: slideData_$array  })
 	}
 
-	const updateSlideBackgroundImageUrl = ( media ) => {
-		slideData[currentSlide].backgroundImageUrl = media.url;
-		setAttributes({slideData: slideData});
+	const updateSlideBackgroundImageUrl = ( url ) => {
+		const shallowArr = Array.from(slideData_$array)
+		shallowArr[currentSlide_$number].backgroundImageUrl = url;
+		setSlideData_$array(shallowArr);
+		setAttributes( {slideData: slideData_$array} )
 	}
 
 	const slideStyles = {
-		backgroundImage: `url(${slideData[currentSlide].backgroundImageUrl})`,
-		backgroundAttachment: `${slideData[currentSlide].hasParallax === "true" ? 'fixed' : 'scroll'}`
+		backgroundImage: `url(${slideData_$array[currentSlide_$number].backgroundImageUrl})`,
+		backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`
 	}
 
 	const createSlidePanels = () => {
 		return (
 			<PanelRow>
-				{ !! slideData[currentSlide].backgroundImageUrl && (
+				{ !! slideData_$array[currentSlide_$number].backgroundImageUrl && (
 					<PanelBody title={ __( 'Media settings' ) }>
 							<Fragment>
 								<ToggleControl
 									label={ __( 'Fixed background' ) }
-									checked={ slideData[currentSlide].hasParallax }
-									onChange={ () => toggleParallax(slideData[currentSlide].hasParallax) }
+									checked={ slideData_$array[currentSlide_$number].hasParallax }
+									onChange={ () => toggleParallax() }
 								/>
 							</Fragment>
-						{ slideData[currentSlide].showFocalPointPicker && (
+						{ slideData_$array[currentSlide_$number].showFocalPointPicker && (
 							<FocalPointPicker
 								__nextHasNoMarginBottom
 								label={ __( 'Focal point picker' ) }
-								url={ slideData[currentSlide].backgroundImageUrl }
-								onDragStart={ slideData[currentSlide].imperativeFocalPointPreview }
-								value={ slideData[currentSlide].focalPoint }
-								onDrag={ slideData[currentSlide].imperativeFocalPointPreview }
-								onChange={ ( newFocalPoint ) =>
-									setAttributes( {
-										focalPoint: newFocalPoint,
-									} )
-								}
+								url={ slideData_$array[currentSlide_$number].backgroundImageUrl }
+								onDragStart={ slideData_$array[currentSlide_$number].imperativeFocalPointPreview }
+								value={ slideData_$array[currentSlide_$number].focalPoint }
+								onDrag={ slideData_$array[currentSlide_$number].imperativeFocalPointPreview }
+								onChange={ ( newFocalPoint ) => {
+									const shallowArr = Array.from(slideData_$array);
+									shallowArr[currentSlide_$number].focalPoint = newFocalPoint
+									setSlideData_$array(shallowArr);
+									setAttributes({slideData: slideData_$array})
+								}}
 							/>
 						) }
-						{slideData[currentSlide].backgroundImageUrl &&
+						{slideData_$array[currentSlide_$number].backgroundImageUrl &&
 								<TextareaControl
 									label={ __(
 										'Alt text (alternative text)'
 									) }
-									value={ slideData[currentSlide].backgroundImageAltText }
+									value={ slideData_$array[currentSlide_$number].backgroundImageAltText }
 									onChange={ ( newAlt ) => setSlideBackgroundImageAltText(newAlt)}
 									help={
 										<>
@@ -156,11 +178,11 @@ export default function Edit({ attributes, setAttributes }) {
 	const createSlideBtns = () => {
 		const btnArr = [];
 		
-		for (let i = 0; i < slideAmount; i++) {
+		for (let i = 0; i < slideAmount_$number; i++) {
 			btnArr.push(
 				<button 
 					key={`slide-${i}`} 
-					onClick={() => setAttributes({currentSlide: i})}
+					onClick={() => setCurrentSlide_$number(i)}
 				>
 					Goto Slide {i}
 				</button>
@@ -174,7 +196,7 @@ export default function Edit({ attributes, setAttributes }) {
 		<div { ...useBlockProps() }>
 			<InspectorControls>
 				<RangeControl
-					value={ slideAmount }
+					value={ slideAmount_$number }
 					onChange={value => updateSlideAmount(value)}
 					min={1}
 					max={10}
@@ -189,7 +211,7 @@ export default function Edit({ attributes, setAttributes }) {
 				<BlockControls group="other">
 					<MediaUploadCheck>
 						<MediaUpload
-							onSelect={( media ) => updateSlideBackgroundImageUrl( media )}
+							onSelect={( media ) => updateSlideBackgroundImageUrl( media.url )}
 							render={ ( { open } ) => (
 								<button onClick={ open }>
 									<span>Choose an Image</span>
@@ -202,8 +224,8 @@ export default function Edit({ attributes, setAttributes }) {
 					<InnerBlocks />
 				</div>
 				<div>
-					Slide amount: {slideAmount}<br/>
-					Current slide: {currentSlide}<br/>
+					Slide amount: {slideAmount_$number}<br/>
+					Current slide: {currentSlide_$number}<br/>
 				</div>
 				<div className="slide-btn-container">
 					{ createSlideBtns() }

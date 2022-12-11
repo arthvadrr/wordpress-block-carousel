@@ -38,73 +38,102 @@ function Edit(_ref) {
     slideAmount,
     currentSlide
   } = attributes;
-  const setSlideBackgroundImageAltText = newAltText => {
-    slideData[currentSlide].backgroundImageAltText = newAltText;
+  const [slideData_$array, setSlideData_$array] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(slideData);
+  const [slideAmount_$number, setSlideAmount_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(slideAmount);
+  const [currentSlide_$number, setCurrentSlide_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useState)(currentSlide);
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    console.log('fired useEffect');
     setAttributes({
-      slideData: slideData
+      slideData: slideData_$array
+    });
+    setAttributes({
+      slideAmount: slideAmount_$number
+    });
+    setAttributes({
+      currentSlide: currentSlide_$number
+    });
+  }, [slideData_$array, slideAmount_$number, currentSlide_$number]);
+  const setSlideBackgroundImageAltText = newAltText => {
+    const shallowArr = Array.from(slideData_$array);
+    shallowArr[currentSlide_$number].backgroundImageAltText = newAltText;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
     });
   };
-  const toggleParallax = hasParallax => {
-    console.log('fired!');
-    slideData[currentSlide].hasParallax = !hasParallax;
+  const toggleParallax = () => {
+    const shallowArr = Array.from(slideData_$array);
+    const hasParallax = shallowArr[currentSlide_$number].hasParallax;
+    shallowArr[currentSlide_$number].hasParallax = !hasParallax;
+    setSlideData_$array(shallowArr);
     setAttributes({
-      slideData: slideData
+      slideData: slideData_$array
     });
   };
   const updateSlideAmount = value => {
-    const diff = Math.abs(value - slideAmount);
-    if (value < slideAmount) {
-      if (currentSlide > value - 1) {
+    const shallowArr = Array.from(slideData_$array);
+    const diff = Math.abs(value - slideAmount_$number);
+    if (value < slideAmount_$number) {
+      if (currentSlide_$number > value - 1) {
+        setCurrentSlide_$number(value - 1);
         setAttributes({
-          currentSlide: value - 1
+          currentSlide: currentSlide_$number
         });
       }
-      for (let i = 0; i < diff; i++) slideData.pop();
+      for (let i = 0; i < diff; i++) shallowArr.pop();
     } else {
-      for (let i = 0; i < diff; i++) slideData.push({
+      for (let i = 0; i < diff; i++) shallowArr.push({
         "backgroundImageUrl": "",
         "backgroundImageAltText": "",
         "showFocalPointPicker": "",
         "imperativeFocalPointPreview": "",
         "focalPoint": "",
-        "hasParallax": ""
+        "hasParallax": false
       });
     }
+    setSlideAmount_$number(value);
+    setSlideData_$array(shallowArr);
     setAttributes({
-      slideAmount: value,
-      slideData: slideData
+      slideData: slideData_$array
     });
   };
-  const updateSlideBackgroundImageUrl = media => {
-    slideData[currentSlide].backgroundImageUrl = media.url;
+  const updateSlideBackgroundImageUrl = url => {
+    const shallowArr = Array.from(slideData_$array);
+    shallowArr[currentSlide_$number].backgroundImageUrl = url;
+    setSlideData_$array(shallowArr);
     setAttributes({
-      slideData: slideData
+      slideData: slideData_$array
     });
   };
   const slideStyles = {
-    backgroundImage: `url(${slideData[currentSlide].backgroundImageUrl})`,
-    backgroundAttachment: `${slideData[currentSlide].hasParallax === "true" ? 'fixed' : 'scroll'}`
+    backgroundImage: `url(${slideData_$array[currentSlide_$number].backgroundImageUrl})`,
+    backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`
   };
   const createSlidePanels = () => {
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, !!slideData[currentSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, !!slideData_$array[currentSlide_$number].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Media settings')
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Fixed background'),
-      checked: slideData[currentSlide].hasParallax,
-      onChange: () => toggleParallax(slideData[currentSlide].hasParallax)
-    })), slideData[currentSlide].showFocalPointPicker && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.FocalPointPicker, {
+      checked: slideData_$array[currentSlide_$number].hasParallax,
+      onChange: () => toggleParallax()
+    })), slideData_$array[currentSlide_$number].showFocalPointPicker && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.FocalPointPicker, {
       __nextHasNoMarginBottom: true,
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Focal point picker'),
-      url: slideData[currentSlide].backgroundImageUrl,
-      onDragStart: slideData[currentSlide].imperativeFocalPointPreview,
-      value: slideData[currentSlide].focalPoint,
-      onDrag: slideData[currentSlide].imperativeFocalPointPreview,
-      onChange: newFocalPoint => setAttributes({
-        focalPoint: newFocalPoint
-      })
-    }), slideData[currentSlide].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
+      url: slideData_$array[currentSlide_$number].backgroundImageUrl,
+      onDragStart: slideData_$array[currentSlide_$number].imperativeFocalPointPreview,
+      value: slideData_$array[currentSlide_$number].focalPoint,
+      onDrag: slideData_$array[currentSlide_$number].imperativeFocalPointPreview,
+      onChange: newFocalPoint => {
+        const shallowArr = Array.from(slideData_$array);
+        shallowArr[currentSlide_$number].focalPoint = newFocalPoint;
+        setSlideData_$array(shallowArr);
+        setAttributes({
+          slideData: slideData_$array
+        });
+      }
+    }), slideData_$array[currentSlide_$number].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt text (alternative text)'),
-      value: slideData[currentSlide].backgroundImageAltText,
+      value: slideData_$array[currentSlide_$number].backgroundImageAltText,
       onChange: newAlt => setSlideBackgroundImageAltText(newAlt),
       help: (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.ExternalLink, {
         href: "https://www.w3.org/WAI/tutorials/images/decision-tree"
@@ -118,18 +147,16 @@ function Edit(_ref) {
   };
   const createSlideBtns = () => {
     const btnArr = [];
-    for (let i = 0; i < slideAmount; i++) {
+    for (let i = 0; i < slideAmount_$number; i++) {
       btnArr.push((0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
         key: `slide-${i}`,
-        onClick: () => setAttributes({
-          currentSlide: i
-        })
+        onClick: () => setCurrentSlide_$number(i)
       }, "Goto Slide ", i));
     }
     return btnArr;
   };
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.RangeControl, {
-    value: slideAmount,
+    value: slideAmount_$number,
     onChange: value => updateSlideAmount(value),
     min: 1,
     max: 10
@@ -142,7 +169,7 @@ function Edit(_ref) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, {
     group: "other"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.MediaUpload, {
-    onSelect: media => updateSlideBackgroundImageUrl(media),
+    onSelect: media => updateSlideBackgroundImageUrl(media.url),
     render: _ref2 => {
       let {
         open
@@ -153,7 +180,7 @@ function Edit(_ref) {
     }
   }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slide-content"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Slide amount: ", slideAmount, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Current slide: ", currentSlide, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InnerBlocks, null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "Slide amount: ", slideAmount_$number, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), "Current slide: ", currentSlide_$number, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slide-btn-container"
   }, createSlideBtns())));
 }
