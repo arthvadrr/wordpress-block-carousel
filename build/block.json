@@ -12,12 +12,12 @@
       "type": "array",
       "default": [
         {
-          "backgroundImageUrl": "foo",
+          "backgroundImageUrl": "",
           "backgroundImageAltText": "",
           "showFocalPointPicker": "",
           "imperativeFocalPointPreview": "",
           "focalPoint": "",
-          "hasParallax": "",
+          "hasParallax": "false",
           "toggleParallax": "false"
         }
       ]

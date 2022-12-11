@@ -22,47 +22,33 @@ import {
 	MediaUpload,
 	MediaUploadCheck
 } from '@wordpress/block-editor';
-import { image } from '@wordpress/icons';
-import { Fragment, useEffect, useState } from '@wordpress/element';
-import {
-	ToolbarButton
-} from '@wordpress/components';
+
+import { 
+	Fragment, 
+	useEffect, 
+	useState 
+} from '@wordpress/element';
+
 import './editor.scss';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
 
-const slideMediaUpload = () => MediaUpload;
-
-addFilter(
-	'editor.MediaUpload',
-	'core/edit-post/components/media-upload/replace-media-upload',
-	slideMediaUpload
-);
-
 export default function Edit({ attributes, setAttributes }) {
-
+	
 	const { 
 		slideData, 
 		slideAmount, 
-		currentSlide 
+		currentSlide
 	} = attributes;
 
-	const updateBackgroundImageUrl = (media) => {
-		const shallowArr = Array.from(slideData);
-		shallowArr[currentSlide].backgroundImageUrl = media.url;
-		setAttributes({slideData: shallowArr});
-	}
-
 	const setSlideBackgroundImageAltText = newAltText => {
-		const shallowArr = Array.from(slideData);
-		shallowArr[currentSlide].backgroundImageAltText = newAltText;
-		setAttributes({slideData: shallowArr});
+		slideData[currentSlide].backgroundImageAltText = newAltText;
+		setAttributes({slideData : slideData});
 	}
 
 	const toggleParallax = () => {
-		const shallowArr = Array.from(slideData);
-		shallowArr[currentSlide].hasParallax === "true" ? "false" : "true";
-		setAttributes({slideData: shallowArr});
+		slideData[currentSlide].hasParallax =  slideData[currentSlide].hasParallax === "true" ? "false" : "false";
+		setAttributes({slideData: slideData});
 	}
 
 	const slideObjSchema = {
@@ -72,63 +58,69 @@ export default function Edit({ attributes, setAttributes }) {
 		"imperativeFocalPointPreview": "",
 		"focalPoint": "",
 		"hasParallax": "",
-		"toggleParallax": "false"
 	}
 
 	const updateSlideAmount = value => {
-		const shallowArr = Array.from(slideData);
 		const diff = Math.abs(value - slideAmount);
-		let selectedSlide = currentSlide;
 
 		if (value < slideAmount) {
 	
 			if (currentSlide > value - 1) {
-				selectedSlide = value - 1;
+				setAttributes({currentSlide: value - 1})
 			}
 
-			for (let i = 0; i < diff; i++) shallowArr.pop();
+			for (let i = 0; i < diff; i++) slideData.pop();
 		} else {
-			for (let i = 0; i < diff; i++) shallowArr.push(slideObjSchema);
+			for (let i = 0; i < diff; i++) slideData.push({
+				"backgroundImageUrl": "",
+				"backgroundImageAltText": "",
+				"showFocalPointPicker": "",
+				"imperativeFocalPointPreview": "",
+				"focalPoint": "",
+				"hasParallax": "",
+			});
 		}
 
-		setAttributes({slideData: shallowArr})
-		setAttributes({currentSlide: selectedSlide})
-		setAttributes({slideAmount: value})
+		setAttributes({
+			slideAmount: value,
+			slideData: slideData
+		})
 	}
 
-	const getCurrentImageUrl = () => slideData[currentSlide].backgroundImageUrl;
+	const updateSlideBackgroundImageUrl = ( media ) => {
+		let thing = currentSlide;
+		console.log(thing);
+		console.log(typeof thing)
+		console.log(`media : ${media}`)
+		console.log(`url : ${media.url}`)
+		slideData[currentSlide].backgroundImageUrl = media.url;
 
-	const slideStyle = {
-		backgroundImage: `url(${slideData[currentSlide].backgroundImageUrl})`
+		console.log('before')
+		console.table(slideData)
+		setAttributes({slideData: slideData})
+		console.log('after')
+		console.table(slideData)
 	}
 
-	const updateSlideMedia = ( url ) => {
-		const shallowArr = Array.from(slideData);
-		shallowArr[currentSlide].backgroundImageUrl = url;
-		setAttributes({slideData: shallowArr})
+	const slideStyles = {
+		backgroundImage: `url(${slideData[currentSlide].backgroundImageUrl})`,
+		backgroundAttachment: `${slideData[currentSlide].hasParallax === "true" ? 'fixed' : 'scroll'}`
+	}
+
+	const getHasParallax = () => {
+		return "true";
 	}
 
 	const createSlidePanels = () => {
 		return (
 			<PanelRow>
-				<MediaUploadCheck>
-					<MediaUpload
-						onSelect={( media ) => updateSlideMedia( media.url ) }
-						value={	getCurrentImageUrl() }
-						render={ ( { open } ) => (
-							<button onClick={ open }>
-								{!slideData[currentSlide].backgroundImageUrl && <span>Choose an Image</span>}
-							</button>
-						)}
-					/>					
-				</MediaUploadCheck>
 				{ !! slideData[currentSlide].backgroundImageUrl && (
 					<PanelBody title={ __( 'Media settings' ) }>
 							<Fragment>
 								<ToggleControl
 									label={ __( 'Fixed background' ) }
-									checked={ slideData[currentSlide].hasParallax }
-									onChange={ toggleParallax }
+									checked={ getHasParallax() }
+									onChange={ () => toggleParallax() }
 								/>
 							</Fragment>
 						{ slideData[currentSlide].showFocalPointPicker && (
@@ -172,7 +164,7 @@ export default function Edit({ attributes, setAttributes }) {
 								variant="secondary"
 								isSmall
 								className="block-library-cover__reset-button"
-								onClick={ () => updateBackgroundImageUrl("")}
+								onClick={ () => updateSlideBackgroundImageUrl("")}
 							>
 								{ __( 'Clear Media' ) }
 							</Button>
@@ -185,12 +177,15 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const createSlideBtns = () => {
 		const btnArr = [];
-
-		const btnOnClick = i => setSelectedSlide(i)
-
+		
 		for (let i = 0; i < slideAmount; i++) {
 			btnArr.push(
-			<button key={`slide-${i}`} onClick={() => btnOnClick(i)}>Goto Slide {i}</button>
+				<button 
+					key={`slide-${i}`} 
+					onClick={() => setAttributes({currentSlide: i})}
+				>
+					Goto Slide {i}
+				</button>
 			);
 		}
 
@@ -212,19 +207,18 @@ export default function Edit({ attributes, setAttributes }) {
 					</PanelBody>
 				</Panel>
 			</InspectorControls>
-			<div className="slide" style={ slideStyle }>
+			<div className="slide" style={ slideStyles }>
 				<BlockControls group="other">
 					<MediaUploadCheck>
 						<MediaUpload
-							onSelect={( media ) => updateSlideMedia( media.url )}
-							value={	getCurrentImageUrl() }
+							onSelect={( media ) => updateSlideBackgroundImageUrl( media )}
 							render={ ( { open } ) => (
 								<button onClick={ open }>
 									<span>Choose an Image</span>
 								</button>
 							)}
 						/>					
-				</MediaUploadCheck>
+					</MediaUploadCheck>
 				</BlockControls>
 				<div className="slide-content">
 					<InnerBlocks />
