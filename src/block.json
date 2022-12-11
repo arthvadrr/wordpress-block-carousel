@@ -17,8 +17,7 @@
 					"showFocalPointPicker": "",
 					"imperativeFocalPointPreview": "",
 					"focalPoint": "",
-					"hasParallax": "false",
-					"toggleParallax": "false"
+					"hasParallax": false
 				}
 			]
 		},

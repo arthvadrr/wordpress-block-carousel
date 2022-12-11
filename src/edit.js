@@ -1,7 +1,5 @@
 import { __ } from '@wordpress/i18n';
 
-import { addFilter } from '@wordpress/hooks';
-
 import {
 	Button, 
 	RangeControl,
@@ -40,37 +38,30 @@ export default function Edit({ attributes, setAttributes }) {
 		slideAmount, 
 		currentSlide
 	} = attributes;
-
+ 
 	const setSlideBackgroundImageAltText = newAltText => {
 		slideData[currentSlide].backgroundImageAltText = newAltText;
 		setAttributes({slideData : slideData});
 	}
 
-	const toggleParallax = () => {
-		slideData[currentSlide].hasParallax =  slideData[currentSlide].hasParallax === "true" ? "false" : "false";
+	const toggleParallax = hasParallax => {
+		console.log('fired!');
+		slideData[currentSlide].hasParallax = !hasParallax;
 		setAttributes({slideData: slideData});
-	}
-
-	const slideObjSchema = {
-		"backgroundImageUrl": "",
-		"backgroundImageAltText": "",
-		"showFocalPointPicker": "",
-		"imperativeFocalPointPreview": "",
-		"focalPoint": "",
-		"hasParallax": "",
 	}
 
 	const updateSlideAmount = value => {
 		const diff = Math.abs(value - slideAmount);
 
 		if (value < slideAmount) {
-	
+
 			if (currentSlide > value - 1) {
 				setAttributes({currentSlide: value - 1})
 			}
-
 			for (let i = 0; i < diff; i++) slideData.pop();
+
 		} else {
+
 			for (let i = 0; i < diff; i++) slideData.push({
 				"backgroundImageUrl": "",
 				"backgroundImageAltText": "",
@@ -79,6 +70,7 @@ export default function Edit({ attributes, setAttributes }) {
 				"focalPoint": "",
 				"hasParallax": "",
 			});
+
 		}
 
 		setAttributes({
@@ -88,27 +80,13 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	const updateSlideBackgroundImageUrl = ( media ) => {
-		let thing = currentSlide;
-		console.log(thing);
-		console.log(typeof thing)
-		console.log(`media : ${media}`)
-		console.log(`url : ${media.url}`)
 		slideData[currentSlide].backgroundImageUrl = media.url;
-
-		console.log('before')
-		console.table(slideData)
-		setAttributes({slideData: slideData})
-		console.log('after')
-		console.table(slideData)
+		setAttributes({slideData: slideData});
 	}
 
 	const slideStyles = {
 		backgroundImage: `url(${slideData[currentSlide].backgroundImageUrl})`,
 		backgroundAttachment: `${slideData[currentSlide].hasParallax === "true" ? 'fixed' : 'scroll'}`
-	}
-
-	const getHasParallax = () => {
-		return "true";
 	}
 
 	const createSlidePanels = () => {
@@ -119,8 +97,8 @@ export default function Edit({ attributes, setAttributes }) {
 							<Fragment>
 								<ToggleControl
 									label={ __( 'Fixed background' ) }
-									checked={ getHasParallax() }
-									onChange={ () => toggleParallax() }
+									checked={ slideData[currentSlide].hasParallax }
+									onChange={ () => toggleParallax(slideData[currentSlide].hasParallax) }
 								/>
 							</Fragment>
 						{ slideData[currentSlide].showFocalPointPicker && (
