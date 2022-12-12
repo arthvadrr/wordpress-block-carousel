@@ -16,7 +16,10 @@
           "backgroundImageAltText": "",
           "showFocalPointPicker": "",
           "imperativeFocalPointPreview": "",
-          "focalPoint": "",
+          "focalPoint": {
+            "x": 0.5,
+            "y": 0.5
+          },
           "hasParallax": false
         }
       ]

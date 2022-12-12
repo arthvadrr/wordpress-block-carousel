@@ -107,7 +107,16 @@ function Edit(_ref) {
   };
   const slideStyles = {
     backgroundImage: `url(${slideData_$array[currentSlide_$number].backgroundImageUrl})`,
-    backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`
+    backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`,
+    backgroundPosition: `${slideData_$array[currentSlide_$number].focalPoint["x"] * 100}% ${slideData_$array[currentSlide_$number].focalPoint["y"] * 100}%`
+  };
+  const setFocalPoint = newFocalPoint => {
+    const shallowArr = Array.from(slideData_$array);
+    shallowArr[currentSlide_$number].focalPoint = newFocalPoint;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
   };
   const createSlidePanels = () => {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelRow, null, !!slideData_$array[currentSlide_$number].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
@@ -116,21 +125,13 @@ function Edit(_ref) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Fixed background'),
       checked: slideData_$array[currentSlide_$number].hasParallax,
       onChange: () => toggleParallax()
-    })), slideData_$array[currentSlide_$number].showFocalPointPicker && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.FocalPointPicker, {
-      __nextHasNoMarginBottom: true,
+    })), slideData_$array[currentSlide_$number].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.FocalPointPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Focal point picker'),
       url: slideData_$array[currentSlide_$number].backgroundImageUrl,
-      onDragStart: slideData_$array[currentSlide_$number].imperativeFocalPointPreview,
       value: slideData_$array[currentSlide_$number].focalPoint,
-      onDrag: slideData_$array[currentSlide_$number].imperativeFocalPointPreview,
-      onChange: newFocalPoint => {
-        const shallowArr = Array.from(slideData_$array);
-        shallowArr[currentSlide_$number].focalPoint = newFocalPoint;
-        setSlideData_$array(shallowArr);
-        setAttributes({
-          slideData: slideData_$array
-        });
-      }
+      onDragStart: setFocalPoint,
+      onDrag: setFocalPoint,
+      onChange: setFocalPoint
     }), slideData_$array[currentSlide_$number].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.TextareaControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Alt text (alternative text)'),
       value: slideData_$array[currentSlide_$number].backgroundImageAltText,
@@ -160,10 +161,7 @@ function Edit(_ref) {
     onChange: value => updateSlideAmount(value),
     min: 1,
     max: 10
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.PanelBody, {
-    title: "Slides",
-    initialOpen: false
-  }, createSlidePanels()))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_2__.Panel, null, createSlidePanels())), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "slide",
     style: slideStyles
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.BlockControls, {
@@ -346,7 +344,7 @@ module.exports = window["wp"]["i18n"];
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundImageUrl":"","backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":"","hasParallax":false}]},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundImageUrl":"","backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false}]},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

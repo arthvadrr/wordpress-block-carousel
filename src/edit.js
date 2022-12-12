@@ -107,7 +107,15 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const slideStyles = {
 		backgroundImage: `url(${slideData_$array[currentSlide_$number].backgroundImageUrl})`,
-		backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`
+		backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`,
+		backgroundPosition: `${ slideData_$array[currentSlide_$number].focalPoint["x"] * 100 }% ${slideData_$array[currentSlide_$number].focalPoint["y"] * 100 }%`,
+	}
+
+	const setFocalPoint = ( newFocalPoint ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].focalPoint = newFocalPoint
+		setSlideData_$array(shallowArr);
+		setAttributes( {slideData: slideData_$array} )
 	}
 
 	const createSlidePanels = () => {
@@ -122,20 +130,14 @@ export default function Edit({ attributes, setAttributes }) {
 									onChange={ () => toggleParallax() }
 								/>
 							</Fragment>
-						{ slideData_$array[currentSlide_$number].showFocalPointPicker && (
+						{ slideData_$array[currentSlide_$number].backgroundImageUrl && (
 							<FocalPointPicker
-								__nextHasNoMarginBottom
 								label={ __( 'Focal point picker' ) }
 								url={ slideData_$array[currentSlide_$number].backgroundImageUrl }
-								onDragStart={ slideData_$array[currentSlide_$number].imperativeFocalPointPreview }
 								value={ slideData_$array[currentSlide_$number].focalPoint }
-								onDrag={ slideData_$array[currentSlide_$number].imperativeFocalPointPreview }
-								onChange={ ( newFocalPoint ) => {
-									const shallowArr = Array.from(slideData_$array);
-									shallowArr[currentSlide_$number].focalPoint = newFocalPoint
-									setSlideData_$array(shallowArr);
-									setAttributes({slideData: slideData_$array})
-								}}
+								onDragStart={ setFocalPoint }
+                onDrag={ setFocalPoint }
+                onChange={ setFocalPoint }
 							/>
 						) }
 						{slideData_$array[currentSlide_$number].backgroundImageUrl &&
@@ -202,9 +204,7 @@ export default function Edit({ attributes, setAttributes }) {
 					max={10}
 				/>
 				<Panel>
-					<PanelBody title={"Slides"} initialOpen={false}>
 						{createSlidePanels()}
-					</PanelBody>
 				</Panel>
 			</InspectorControls>
 			<div className="slide" style={ slideStyles }>
