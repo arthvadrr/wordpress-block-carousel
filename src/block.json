@@ -12,6 +12,7 @@
 			"type": "array",
 			"default": [
 				{
+					"backgroundColor": "#ffffff",
 					"backgroundImageUrl": "",
 					"backgroundImageAltText": "",
 					"showFocalPointPicker": "",
@@ -20,6 +21,14 @@
 					"hasParallax": false
 				}
 			]
+		},
+		"slideHeight": {
+			"type": "number",
+			"default": 30
+		},
+		"indexBtnColor": {
+			"type": "string",
+			"default": "#ffffff"
 		},
 		"slideAmount": {
 			"type": "number",

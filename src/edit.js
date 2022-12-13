@@ -1,3 +1,18 @@
+/*
+TODO
+1. Index btn types
+1. width settings
+1. block margin/padding
+1. overlay
+1. overlay linear gradients
+1. background-image settings
+1. When an image is selected, "Choose image" should say "replace"
+1. innercontent positioning
+1. figure out what's wrong with inspector padding (panel?)
+1. icons for the block controls
+1. slide transitions
+*/
+
 import { __ } from '@wordpress/i18n';
 
 import {
@@ -9,7 +24,8 @@ import {
 	TextareaControl,
 	ExternalLink,
 	FocalPointPicker,
-	ToggleControl
+	ToggleControl,
+	ColorPicker
 } from '@wordpress/components';
 
 import { 
@@ -35,18 +51,27 @@ export default function Edit({ attributes, setAttributes }) {
 	const { 
 		slideData, 
 		slideAmount, 
-		currentSlide
+		currentSlide,
+		indexBtnColor,
+		slideHeight
 	} = attributes;
 
+	// Block state
 	const [slideData_$array, setSlideData_$array] = useState(slideData);
 	const [slideAmount_$number, setSlideAmount_$number] = useState(slideAmount);
 	const [currentSlide_$number, setCurrentSlide_$number] = useState(currentSlide);
+	const [indexBtnColor_$string, setIndexBtnColor_$string] = useState(indexBtnColor);
+	const [slideHeight_$number, setSlideHeight_$number] = useState(slideHeight);
+
+	// React state
+	const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = useState(false);
 
 	useEffect(() => {
-		console.log('fired useEffect');
-		setAttributes({slideData: slideData_$array})
-		setAttributes({slideAmount: slideAmount_$number})
-		setAttributes({currentSlide: currentSlide_$number})
+		setAttributes({slideData: slideData_$array});
+		setAttributes({slideAmount: slideAmount_$number});
+		setAttributes({currentSlide: currentSlide_$number});
+		setAttributes({indexBtnColor: indexBtnColor_$string});
+		setAttributes({slideHeight: slideHeight_$number});
 	}, [
 		slideData_$array,
 		slideAmount_$number,
@@ -99,16 +124,33 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	const updateSlideBackgroundImageUrl = ( url ) => {
-		const shallowArr = Array.from(slideData_$array)
+		const shallowArr = Array.from(slideData_$array);
 		shallowArr[currentSlide_$number].backgroundImageUrl = url;
+		setSlideData_$array(shallowArr);
+		setAttributes( {slideData: slideData_$array} );
+	}
+
+	const updateSlideBackgroundColor = ( color ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].backgroundColor = color;
 		setSlideData_$array(shallowArr);
 		setAttributes( {slideData: slideData_$array} )
 	}
 
+	const wordpressBlockCarouselStyles = {
+		height: `${slideHeight_$number}vh`,
+		backgroundColor: slideData_$array[currentSlide_$number].backgroundColor
+	}
+	
 	const slideStyles = {
 		backgroundImage: `url(${slideData_$array[currentSlide_$number].backgroundImageUrl})`,
 		backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`,
 		backgroundPosition: `${ slideData_$array[currentSlide_$number].focalPoint["x"] * 100 }% ${slideData_$array[currentSlide_$number].focalPoint["y"] * 100 }%`,
+		height: `${slideHeight_$number}vh`,
+	}
+
+	const indexBtnStyles = {
+		backgroundColor: `${indexBtnColor_$string}`
 	}
 
 	const setFocalPoint = ( newFocalPoint ) => {
@@ -182,11 +224,13 @@ export default function Edit({ attributes, setAttributes }) {
 		
 		for (let i = 0; i < slideAmount_$number; i++) {
 			btnArr.push(
-				<button 
+				<button
+					className="wp-car-btn slide-index-btn"
 					key={`slide-${i}`} 
 					onClick={() => setCurrentSlide_$number(i)}
+					aria-label={`Go to slide ${i}`}
+					style={ indexBtnStyles }
 				>
-					Goto Slide {i}
 				</button>
 			);
 		}
@@ -195,14 +239,32 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	return (
-		<div { ...useBlockProps() }>
+		<div { ...useBlockProps() } style={ wordpressBlockCarouselStyles }>
 			<InspectorControls>
 				<RangeControl
+					label={ __('Amount of slides for the carousel') }
 					value={ slideAmount_$number }
 					onChange={value => updateSlideAmount(value)}
 					min={1}
 					max={10}
 				/>
+				<RangeControl
+					label={ __('Block min height') }
+					value={ slideHeight_$number }
+					onChange={value => setSlideHeight_$number(value)}
+					min={10}
+					max={100}
+					step={2}
+				/>
+				<Panel>
+				<h3 className="block-editor-block-card__title">Slide index button color</h3>
+				<ColorPicker
+            color={ indexBtnColor_$string }
+            onChange={ color => setIndexBtnColor_$string(color)}
+            enableAlpha
+            defaultValue={indexBtnColor}
+        />
+				</Panel>
 				<Panel>
 						{createSlidePanels()}
 				</Panel>
@@ -213,12 +275,33 @@ export default function Edit({ attributes, setAttributes }) {
 						<MediaUpload
 							onSelect={( media ) => updateSlideBackgroundImageUrl( media.url )}
 							render={ ( { open } ) => (
-								<button onClick={ open }>
+								<button 
+									onClick={ open }
+									className="wp-car-btn"
+								>
 									<span>Choose an Image</span>
 								</button>
 							)}
 						/>					
 					</MediaUploadCheck>
+					<div 
+						className="slide-background-color-picker-container"
+					>
+						<button 
+							className={`wp-car-btn block-inspector-background-color-picker-toggle ${showSlideBackgroundColorPicker_$boolean && "toggled"}`}
+							onClick={ () => setShowSlideBackgroundColorPicker_$boolean(!showSlideBackgroundColorPicker_$boolean)}
+						>Background Color</button>
+						{ showSlideBackgroundColorPicker_$boolean &&
+							<ColorPicker
+								label={ __('Slide background color') }
+								className={"slide-background-color-picker"}
+								color={ slideData_$array[currentSlide_$number].backgroundColor }
+								onChange={ color => updateSlideBackgroundColor( color )}
+								enableAlpha
+								defaultValue={indexBtnColor}
+							/>
+						}
+					</div>
 				</BlockControls>
 				<div className="slide-content">
 					<InnerBlocks />

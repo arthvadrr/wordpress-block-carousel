@@ -8,5 +8,72 @@
 .wp-block-create-block-wordpress-block-carousel {
 	background-color: #21759b;
 	color: #fff;
-	padding: 2px;
+}
+
+.slide {
+	display: grid;
+	grid-template-rows: 1fr;
+	flex-direction: column;
+}
+
+.wp-car-btn {
+	background-color: #fff;
+	border: 1px solid #1E1E1E;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.slide-background-color-picker-container {
+	position: relative;
+	width: 100%;
+	height: 100%;
+
+	.block-inspector-background-color-picker-toggle {
+		position: relative;
+		width: 100%;
+		height: 100%;
+
+		&.toggled {
+			color: #0693e3;
+			border: 1px solid #0693e3;
+		}
+	}
+
+	.slide-background-color-picker {
+		position: absolute;
+		top: 0;
+		right: 0;
+		transform: translateX(100%);
+		background-color: #fff;
+		z-index: 10;
+		border: 1px solid #1E1E1E;
+	}
+}
+
+.slide-btn-container {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	justify-self: flex-end;
+	width: 100%;
+
+	.slide-index-btn {
+		border-radius: 50%;
+		padding: 10px;
+		margin: 5px;
+		border: none;
+		background-color: rgba(255, 255, 255, 0.9);
+		box-shadow: 0 7px 14px rgba(0,0,0,0.25), 0 5px 5px rgba(0,0,0,0.22);
+		filter: brightness(1);
+		transition: filter 60ms ease;
+
+		&:hover,
+		&:focus {
+			filter: brightness(1.1)
+		}
+		
+		&:active {
+			filter: brightness(1.2)
+		}
+	}
 }
