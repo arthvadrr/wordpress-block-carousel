@@ -14,6 +14,8 @@
 				{
 					"backgroundColor": "#ffffff",
 					"backgroundImageUrl": "",
+					"backgroundSizeContain": false,
+					"backgroundRepeat": false, 
 					"backgroundImageAltText": "",
 					"showFocalPointPicker": "",
 					"imperativeFocalPointPreview": "",
@@ -21,6 +23,9 @@
 					"hasParallax": false
 				}
 			]
+		},
+		"verticalAlignment" : {
+      "type": "string"
 		},
 		"slideHeight": {
 			"type": "number",
@@ -40,7 +45,8 @@
 		}
 	},
 	"supports": {
-		"html": false
+		"html": false,
+		"align": true
 	},
 	"textdomain": "wordpress-block-carousel",
 	"editorScript": "file:./index.js",

@@ -1,7 +1,7 @@
 /*
 TODO
 1. Index btn types
-1. width settings
+X. width settings
 1. block margin/padding
 1. overlay
 1. overlay linear gradients
@@ -34,7 +34,8 @@ import {
 	BlockControls,
 	InspectorControls,
 	MediaUpload,
-	MediaUploadCheck
+	MediaUploadCheck,
+	BlockVerticalAlignmentControl
 } from '@wordpress/block-editor';
 
 import { 
@@ -53,7 +54,10 @@ export default function Edit({ attributes, setAttributes }) {
 		slideAmount, 
 		currentSlide,
 		indexBtnColor,
-		slideHeight
+		slideHeight,
+		verticalAlignment,
+		backgroundSizeContain,
+		backgroundRepeat
 	} = attributes;
 
 	// Block state
@@ -62,6 +66,9 @@ export default function Edit({ attributes, setAttributes }) {
 	const [currentSlide_$number, setCurrentSlide_$number] = useState(currentSlide);
 	const [indexBtnColor_$string, setIndexBtnColor_$string] = useState(indexBtnColor);
 	const [slideHeight_$number, setSlideHeight_$number] = useState(slideHeight);
+	const [verticalAlignment_$string, setVerticalAlignment_$string] = useState(verticalAlignment);
+	const [backgroundSizeContain_$boolean, setBackgroundSizeContain_$boolean] = useState(backgroundSizeContain)
+	const [backgroundRepeat_$boolean, setBackgroundRepeat_$boolean] = useState(backgroundRepeat)
 
 	// React state
 	const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = useState(false);
@@ -91,6 +98,23 @@ export default function Edit({ attributes, setAttributes }) {
 		shallowArr[currentSlide_$number].hasParallax = !hasParallax
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array})
+	}
+
+	const toggleBackgroundSizeContain = () => {
+		const shallowArr = Array.from(slideData_$array);
+		const backgroundSize = shallowArr[currentSlide_$number].backgroundSizeContain;
+		shallowArr[currentSlide_$number].backgroundSizeContain = !backgroundSize;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	
+	const toggleBackgroundRepeat = () => {
+		const shallowArr = Array.from(slideData_$array);
+		const backgroundRepeat = shallowArr[currentSlide_$number].backgroundRepeat;
+		shallowArr[currentSlide_$number].backgroundRepeat = !backgroundRepeat;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
 	}
 
 	const updateSlideAmount = value => {
@@ -123,6 +147,8 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({ slideData: slideData_$array  })
 	}
 
+	const setVerticalAlignment = alignment => setVerticalAlignment_$string(alignment);
+
 	const updateSlideBackgroundImageUrl = ( url ) => {
 		const shallowArr = Array.from(slideData_$array);
 		shallowArr[currentSlide_$number].backgroundImageUrl = url;
@@ -145,8 +171,10 @@ export default function Edit({ attributes, setAttributes }) {
 	const slideStyles = {
 		backgroundImage: `url(${slideData_$array[currentSlide_$number].backgroundImageUrl})`,
 		backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`,
+		backgroundSize: `${slideData_$array[currentSlide_$number].backgroundSizeContain ? 'contain' : 'cover'}`,
+		backgroundRepeat: `${slideData_$array[currentSlide_$number].backgroundRepeat ? 'repeat' : 'no-repeat'}`,
 		backgroundPosition: `${ slideData_$array[currentSlide_$number].focalPoint["x"] * 100 }% ${slideData_$array[currentSlide_$number].focalPoint["y"] * 100 }%`,
-		height: `${slideHeight_$number}vh`,
+		height: `${slideHeight_$number}vh`
 	}
 
 	const indexBtnStyles = {
@@ -170,6 +198,16 @@ export default function Edit({ attributes, setAttributes }) {
 									label={ __( 'Fixed background' ) }
 									checked={ slideData_$array[currentSlide_$number].hasParallax }
 									onChange={ () => toggleParallax() }
+								/>
+								<ToggleControl
+									label={ __( 'Contain background' ) }
+									checked={ slideData_$array[currentSlide_$number].backgroundSizeContain }
+									onChange={ () => toggleBackgroundSizeContain() }
+								/>
+								<ToggleControl
+									label={ __( 'Repeat background' ) }
+									checked={ slideData_$array[currentSlide_$number].backgroundRepeat }
+									onChange={ () => toggleBackgroundRepeat() }
 								/>
 							</Fragment>
 						{ slideData_$array[currentSlide_$number].backgroundImageUrl && (
@@ -271,6 +309,10 @@ export default function Edit({ attributes, setAttributes }) {
 			</InspectorControls>
 			<div className="slide" style={ slideStyles }>
 				<BlockControls group="other">
+				<BlockVerticalAlignmentControl
+						onChange={ setVerticalAlignment }
+						value={ verticalAlignment_$string }
+					/>
 					<MediaUploadCheck>
 						<MediaUpload
 							onSelect={( media ) => updateSlideBackgroundImageUrl( media.url )}

@@ -27,7 +27,7 @@ __webpack_require__.r(__webpack_exports__);
 /*
 TODO
 1. Index btn types
-1. width settings
+X. width settings
 1. block margin/padding
 1. overlay
 1. overlay linear gradients
@@ -55,7 +55,10 @@ function Edit(_ref) {
     slideAmount,
     currentSlide,
     indexBtnColor,
-    slideHeight
+    slideHeight,
+    verticalAlignment,
+    backgroundSizeContain,
+    backgroundRepeat
   } = attributes;
 
   // Block state
@@ -64,6 +67,9 @@ function Edit(_ref) {
   const [currentSlide_$number, setCurrentSlide_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(currentSlide);
   const [indexBtnColor_$string, setIndexBtnColor_$string] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(indexBtnColor);
   const [slideHeight_$number, setSlideHeight_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(slideHeight);
+  const [verticalAlignment_$string, setVerticalAlignment_$string] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(verticalAlignment);
+  const [backgroundSizeContain_$boolean, setBackgroundSizeContain_$boolean] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(backgroundSizeContain);
+  const [backgroundRepeat_$boolean, setBackgroundRepeat_$boolean] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(backgroundRepeat);
 
   // React state
   const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
@@ -101,6 +107,24 @@ function Edit(_ref) {
       slideData: slideData_$array
     });
   };
+  const toggleBackgroundSizeContain = () => {
+    const shallowArr = Array.from(slideData_$array);
+    const backgroundSize = shallowArr[currentSlide_$number].backgroundSizeContain;
+    shallowArr[currentSlide_$number].backgroundSizeContain = !backgroundSize;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
+  const toggleBackgroundRepeat = () => {
+    const shallowArr = Array.from(slideData_$array);
+    const backgroundRepeat = shallowArr[currentSlide_$number].backgroundRepeat;
+    shallowArr[currentSlide_$number].backgroundRepeat = !backgroundRepeat;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
   const updateSlideAmount = value => {
     const shallowArr = Array.from(slideData_$array);
     const diff = Math.abs(value - slideAmount_$number);
@@ -128,6 +152,7 @@ function Edit(_ref) {
       slideData: slideData_$array
     });
   };
+  const setVerticalAlignment = alignment => setVerticalAlignment_$string(alignment);
   const updateSlideBackgroundImageUrl = url => {
     const shallowArr = Array.from(slideData_$array);
     shallowArr[currentSlide_$number].backgroundImageUrl = url;
@@ -151,6 +176,8 @@ function Edit(_ref) {
   const slideStyles = {
     backgroundImage: `url(${slideData_$array[currentSlide_$number].backgroundImageUrl})`,
     backgroundAttachment: `${slideData_$array[currentSlide_$number].hasParallax ? 'fixed' : 'scroll'}`,
+    backgroundSize: `${slideData_$array[currentSlide_$number].backgroundSizeContain ? 'contain' : 'cover'}`,
+    backgroundRepeat: `${slideData_$array[currentSlide_$number].backgroundRepeat ? 'repeat' : 'no-repeat'}`,
     backgroundPosition: `${slideData_$array[currentSlide_$number].focalPoint["x"] * 100}% ${slideData_$array[currentSlide_$number].focalPoint["y"] * 100}%`,
     height: `${slideHeight_$number}vh`
   };
@@ -172,6 +199,14 @@ function Edit(_ref) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Fixed background'),
       checked: slideData_$array[currentSlide_$number].hasParallax,
       onChange: () => toggleParallax()
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Contain background'),
+      checked: slideData_$array[currentSlide_$number].backgroundSizeContain,
+      onChange: () => toggleBackgroundSizeContain()
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Repeat background'),
+      checked: slideData_$array[currentSlide_$number].backgroundRepeat,
+      onChange: () => toggleBackgroundRepeat()
     })), slideData_$array[currentSlide_$number].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.FocalPointPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Focal point picker'),
       url: slideData_$array[currentSlide_$number].backgroundImageUrl,
@@ -233,7 +268,10 @@ function Edit(_ref) {
     style: slideStyles
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.BlockControls, {
     group: "other"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUpload, {
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.BlockVerticalAlignmentControl, {
+    onChange: setVerticalAlignment,
+    value: verticalAlignment_$string
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUpload, {
     onSelect: media => updateSlideBackgroundImageUrl(media.url),
     render: _ref2 => {
       let {
@@ -451,7 +489,7 @@ function _extends() {
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false}]},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false}]},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 
