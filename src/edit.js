@@ -5,15 +5,22 @@ X. width settings
 1. block margin/padding
 1. overlay
 1. overlay linear gradients
-1. background-image settings
-1. When an image is selected, "Choose image" should say "replace"
+X. background-image settings
+X. When an image is selected, "Choose image" should say "replace"
 1. innercontent positioning
+1. innercontent max-width
 1. figure out what's wrong with inspector padding (panel?)
 1. icons for the block controls
 1. slide transitions
+1. slide button padding
+1. add innerDiv for vertical alignment
+1. focal point picker reset button
+1. Create pre-defined blocks and inspector inputs to populate them
 */
 
 import { __ } from '@wordpress/i18n';
+
+import { select } from '@wordpress/data';
 
 import {
 	Button, 
@@ -35,20 +42,20 @@ import {
 	InspectorControls,
 	MediaUpload,
 	MediaUploadCheck,
-	BlockVerticalAlignmentControl
+	BlockVerticalAlignmentControl,
 } from '@wordpress/block-editor';
 
 import { 
 	Fragment, 
 	useEffect, 
-	useState 
+	useState,
 } from '@wordpress/element';
 
 import './editor.scss';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
 
-export default function Edit({ attributes, setAttributes }) {
+export default function Edit({ attributes, setAttributes, clientId }) {
 	const { 
 		slideData, 
 		slideAmount, 
@@ -56,8 +63,7 @@ export default function Edit({ attributes, setAttributes }) {
 		indexBtnColor,
 		slideHeight,
 		verticalAlignment,
-		backgroundSizeContain,
-		backgroundRepeat
+		innerContentMaxWidth,
 	} = attributes;
 
 	// Block state
@@ -67,9 +73,8 @@ export default function Edit({ attributes, setAttributes }) {
 	const [indexBtnColor_$string, setIndexBtnColor_$string] = useState(indexBtnColor);
 	const [slideHeight_$number, setSlideHeight_$number] = useState(slideHeight);
 	const [verticalAlignment_$string, setVerticalAlignment_$string] = useState(verticalAlignment);
-	const [backgroundSizeContain_$boolean, setBackgroundSizeContain_$boolean] = useState(backgroundSizeContain)
-	const [backgroundRepeat_$boolean, setBackgroundRepeat_$boolean] = useState(backgroundRepeat)
-
+	const [innerContentMaxWidth_$number, setInnerContentMaxWidth_$number] = useState(innerContentMaxWidth);
+	
 	// React state
 	const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = useState(false);
 
@@ -82,7 +87,7 @@ export default function Edit({ attributes, setAttributes }) {
 	}, [
 		slideData_$array,
 		slideAmount_$number,
-		currentSlide_$number
+		currentSlide_$number,
 	])
  
 	const setSlideBackgroundImageAltText = newAltText => {
@@ -125,7 +130,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 			if (currentSlide_$number > value - 1) {
 				setCurrentSlide_$number(value - 1);
-				setAttributes({currentSlide: currentSlide_$number})
+				setAttributes({currentSlide: currentSlide_$number});
 			}
 			for (let i = 0; i < diff; i++) shallowArr.pop();
 
@@ -175,6 +180,10 @@ export default function Edit({ attributes, setAttributes }) {
 		backgroundRepeat: `${slideData_$array[currentSlide_$number].backgroundRepeat ? 'repeat' : 'no-repeat'}`,
 		backgroundPosition: `${ slideData_$array[currentSlide_$number].focalPoint["x"] * 100 }% ${slideData_$array[currentSlide_$number].focalPoint["y"] * 100 }%`,
 		height: `${slideHeight_$number}vh`
+	}
+
+	const slideContentInnerStyles = {
+		maxWidth: `${innerContentMaxWidth_$number ? innerContentMaxWidth_$number + "px" : 'none'}`
 	}
 
 	const indexBtnStyles = {
@@ -294,6 +303,14 @@ export default function Edit({ attributes, setAttributes }) {
 					max={100}
 					step={2}
 				/>
+				<RangeControl
+					label={ __('Inner content max-width (0 is no max)') }
+					value={ innerContentMaxWidth_$number }
+					onChange={value => setInnerContentMaxWidth_$number(value)}
+					min={0}
+					max={1200}
+					step={1}
+				/>
 				<Panel>
 				<h3 className="block-editor-block-card__title">Slide index button color</h3>
 				<ColorPicker
@@ -321,7 +338,9 @@ export default function Edit({ attributes, setAttributes }) {
 									onClick={ open }
 									className="wp-car-btn"
 								>
-									<span>Choose an Image</span>
+									<span>
+										{`${slideData_$array[currentSlide_$number].backgroundImageUrl ? 'Replace Image' : 'Select Image'}`}
+									</span>
 								</button>
 							)}
 						/>					
@@ -346,11 +365,12 @@ export default function Edit({ attributes, setAttributes }) {
 					</div>
 				</BlockControls>
 				<div className="slide-content">
-					<InnerBlocks />
-				</div>
-				<div>
-					Slide amount: {slideAmount_$number}<br/>
-					Current slide: {currentSlide_$number}<br/>
+					<div 
+						className="slide-content-inner"  
+						style={ slideContentInnerStyles }
+					>
+						TODO insert pre-defined blocks
+					</div>
 				</div>
 				<div className="slide-btn-container">
 					{ createSlideBtns() }

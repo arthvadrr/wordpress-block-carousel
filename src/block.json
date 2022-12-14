@@ -20,9 +20,14 @@
 					"showFocalPointPicker": "",
 					"imperativeFocalPointPreview": "",
 					"focalPoint": {"x": 0.5, "y": 0.5},
-					"hasParallax": false
+					"hasParallax": false,
+					"verticalAlign": "center",
+					"innerBlocks": ["core/paragraph", {}]
 				}
 			]
+		},
+		"innerContentMaxWidth" : {
+			"type": "number"
 		},
 		"verticalAlignment" : {
       "type": "string"

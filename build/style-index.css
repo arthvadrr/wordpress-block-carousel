@@ -73,4 +73,13 @@
   filter: brightness(1.2);
 }
 
+.slide-content {
+  display: flex;
+  justify-content: center;
+}
+.slide-content .slide-content-inner {
+  display: flex;
+  flex-direction: column;
+}
+
 /*# sourceMappingURL=style-index.css.map*/

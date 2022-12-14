@@ -77,3 +77,13 @@
 		}
 	}
 }
+
+.slide-content {
+	display: flex;
+	justify-content: center;
+
+	.slide-content-inner {
+		display: flex;
+		flex-direction: column;
+	}
+}
