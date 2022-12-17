@@ -24,12 +24,52 @@
   height: 100%;
   width: 100%;
 }
+.slide-overlay-container .block-inspector-overlay-settings-inner {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(100%);
+  padding: 2rem;
+  background-color: #fff;
+  display: flex;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+.slide-overlay-container .block-inspector-overlay-settings-inner label {
+  display: block;
+}
+.slide-overlay-container .block-inspector-overlay-settings-inner .gradient-direction {
+  display: flex;
+  flex-direction: column;
+  width: 145px;
+}
+.slide-overlay-container .block-inspector-overlay-settings-inner .gradient-direction .set-gradient-dir {
+  padding: 4px;
+  font-size: 27px;
+  margin-right: 5px;
+  border-radius: none;
+  background-color: #fff;
+  box-shadow: none;
+}
+.slide-overlay-container .block-inspector-overlay-settings-inner .gradient-direction .set-gradient-dir.active {
+  background-color: #007CBA;
+  color: #ffffff;
+}
+.slide-overlay-container .slide-background-color-picker {
+  margin: 0 5px;
+  border: 1px solid #1E1E1E;
+}
+.slide-overlay-container .components-toggle-control {
+  width: 210px;
+}
 
 .wp-car-btn {
   background-color: #fff;
   border: 1px solid #1E1E1E;
   border-radius: 0;
   box-shadow: none;
+}
+.wp-car-btn.toggled {
+  color: #0693e3;
+  border: 1px solid #0693e3;
 }
 
 .slide-background-color-picker-container {
@@ -42,18 +82,16 @@
   width: 100%;
   height: 100%;
 }
-.slide-background-color-picker-container .block-inspector-background-color-picker-toggle.toggled {
-  color: #0693e3;
-  border: 1px solid #0693e3;
-}
 .slide-background-color-picker-container .slide-background-color-picker {
   position: absolute;
-  top: 0;
-  right: 0;
-  transform: translateX(100%);
+  bottom: 0;
+  left: 0;
+  width: auto;
+  transform: translateY(100%);
   background-color: #fff;
   z-index: 10;
   border: 1px solid #1E1E1E;
+  padding: 2rem;
 }
 
 .slide-btn-container {

@@ -23,10 +23,10 @@
 					"hasParallax": false,
 					"verticalAlign": "center",
 					"overlay": {
-						"color1": "#fff",
-						"color2": "#fff",
-						"direction": "to bottom",
-						"isGradient": false
+						"color1": "#ffffff00",
+						"color2": "#ffffff00",
+						"direction": "bottom",
+						"isGradient": true
 					}
 				}
 			]

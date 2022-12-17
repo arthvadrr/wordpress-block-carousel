@@ -178,6 +178,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	const setVerticalAlignment = alignment => setVerticalAlignment_$string(alignment);
 
+	const updateGradientDirection = dir => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].overlay.direction = dir;
+		setSlideData_$array(shallowArr);
+		setAttributes( {slideData: slideData_$array} );
+	}
+
 	const updateSlideBackgroundImageUrl = ( url ) => {
 		const shallowArr = Array.from(slideData_$array);
 		shallowArr[currentSlide_$number].backgroundImageUrl = url;
@@ -199,7 +206,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	const overlayStyles = {
 		backgroundColor: slideData_$array[currentSlide_$number].overlay["color1"],
-		backgroundImage: slideData_$array[currentSlide_$number].isGradient ? `linear-gradient(to bottom, ${slideData_$array[currentSlide_$number].overlay["color1"]}, ${slideData_$array[currentSlide_$number].overlay["color2"]}` : '',
+		backgroundImage: slideData_$array[currentSlide_$number].overlay.isGradient ? `linear-gradient(to ${slideData_$array[currentSlide_$number].overlay.direction}, ${slideData_$array[currentSlide_$number].overlay["color1"]}, ${slideData_$array[currentSlide_$number].overlay["color2"]}` : '',
 	}
 	
 	const slideStyles = {
@@ -224,6 +231,31 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		shallowArr[currentSlide_$number].focalPoint = newFocalPoint
 		setSlideData_$array(shallowArr);
 		setAttributes( {slideData: slideData_$array} )
+	}
+
+	const createGradientDirectionButtons = () => {
+		const dirArr = [
+			["top", "↑"], 
+			["top right", "↗"], 
+			["right", "→"], 
+			["bottom", "↓"], 
+			["bottom right", "↘"], 
+			["bottom left", "↙"], 
+			["left", "←"], 
+			["top left", "↖"]
+		];
+
+		return dirArr.map((arr, index) => {
+			return (
+				<button 
+					key={index} 
+					aria-label={`to ${arr[0]}`} 
+					onClick={() => updateGradientDirection(arr[0])}
+					className={slideData_$array[currentSlide_$number].overlay.direction === arr[0] ? 'set-gradient-dir active' : 'set-gradient-dir'}
+					>{arr[1]}
+				</button>
+			)
+		})
 	}
 
 	const createSlidePanels = () => {
@@ -386,8 +418,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								label={ __('Slide background color') }
 								className={"slide-background-color-picker"}
 								color={ slideData_$array[currentSlide_$number].backgroundColor }
-								onChange={ color => updateSlideBackgroundColor( color )}
-								onMouseLeave={ () => setShowSlideBackgroundColorPicker_$boolean(false)}
+								onChange={ color => updateSlideBackgroundColor( color )} 
 								enableAlpha
 								defaultValue={indexBtnColor}
 							/>
@@ -402,16 +433,19 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						>Overlay Settings</button>
 						{ showBackgroundOverlay_$boolean &&
 
-							<div 
-								className="block-inspector-overlay-settings-inner"
-								onMouseLeave={ () => setShowBackgroundOverlay_$boolean(false)}
-							>
-
+							<div className="block-inspector-overlay-settings-inner">
 								<ToggleControl
-									label={ __( 'Gradient background?' ) }
+									label={ __( 'Gradient overlay?' ) }
 									checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
 									onChange={ () => toggleGradientPicker() }
 								/>
+
+								{ slideData_$array[currentSlide_$number].overlay.isGradient &&
+									<div className="gradient-direction">
+										<h3 className="components-base-control__label">Gradient Direction</h3>
+										{createGradientDirectionButtons()}
+									</div>
+								}
 
 								<ColorPicker
 									label={ __('Slide overlay color start') }
