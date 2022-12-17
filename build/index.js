@@ -28,6 +28,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /*
 TODO
+1. fix media settings accordion
 1. Index btn types
 X. width settings
 1. block margin/padding
@@ -44,6 +45,7 @@ X. When an image is selected, "Choose image" should say "replace"
 1. add innerDiv for vertical alignment
 1. focal point picker reset button
 1. Create pre-defined blocks and inspector inputs to populate them
+1. Add default options/settings when a user creates a new instance of the block
 */
 
 
@@ -77,6 +79,7 @@ function Edit(_ref) {
   const [slideHeight_$number, setSlideHeight_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(slideHeight);
   const [verticalAlignment_$string, setVerticalAlignment_$string] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(verticalAlignment);
   const [innerContentMaxWidth_$number, setInnerContentMaxWidth_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(innerContentMaxWidth);
+  const [showBackgroundOverlay_$boolean, setShowBackgroundOverlay_$boolean] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
 
   // React state
   const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
@@ -100,6 +103,23 @@ function Edit(_ref) {
   const setSlideBackgroundImageAltText = newAltText => {
     const shallowArr = Array.from(slideData_$array);
     shallowArr[currentSlide_$number].backgroundImageAltText = newAltText;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
+  const toggleGradientPicker = () => {
+    const shallowArr = Array.from(slideData_$array);
+    const isGradient = shallowArr[currentSlide_$number].overlay.isGradient;
+    shallowArr[currentSlide_$number].overlay.isGradient = !isGradient;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
+  const setOverlayColor = (color, pos) => {
+    const shallowArr = Array.from(slideData_$array);
+    shallowArr[currentSlide_$number].overlay[pos] = color;
     setSlideData_$array(shallowArr);
     setAttributes({
       slideData: slideData_$array
@@ -150,7 +170,13 @@ function Edit(_ref) {
         "showFocalPointPicker": "",
         "imperativeFocalPointPreview": "",
         "focalPoint": "",
-        "hasParallax": false
+        "hasParallax": false,
+        "overlay": {
+          "color1": "#fff",
+          "color2": "#fff",
+          "direction": "to bottom",
+          "isGradient": false
+        }
       });
     }
     setSlideAmount_$number(value);
@@ -179,6 +205,10 @@ function Edit(_ref) {
   const wordpressBlockCarouselStyles = {
     height: `${slideHeight_$number}vh`,
     backgroundColor: slideData_$array[currentSlide_$number].backgroundColor
+  };
+  const overlayStyles = {
+    backgroundColor: slideData_$array[currentSlide_$number].overlay["color1"],
+    backgroundImage: slideData_$array[currentSlide_$number].isGradient ? `linear-gradient(to bottom, ${slideData_$array[currentSlide_$number].overlay["color1"]}, ${slideData_$array[currentSlide_$number].overlay["color2"]}` : ''
   };
   const slideStyles = {
     backgroundImage: `url(${slideData_$array[currentSlide_$number].backgroundImageUrl})`,
@@ -309,16 +339,46 @@ function Edit(_ref) {
     className: "slide-background-color-picker",
     color: slideData_$array[currentSlide_$number].backgroundColor,
     onChange: color => updateSlideBackgroundColor(color),
+    onMouseLeave: () => setShowSlideBackgroundColorPicker_$boolean(false),
     enableAlpha: true,
     defaultValue: indexBtnColor
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "slide-overlay-container"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
+    className: `wp-car-btn block-inspector-overlay-settings ${showBackgroundOverlay_$boolean && "toggled"}`,
+    onClick: () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean)
+  }, "Overlay Settings"), showBackgroundOverlay_$boolean && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "block-inspector-overlay-settings-inner",
+    onMouseLeave: () => setShowBackgroundOverlay_$boolean(false)
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient background?'),
+    checked: slideData_$array[currentSlide_$number].overlay.isGradient,
+    onChange: () => toggleGradientPicker()
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color start'),
+    className: "slide-background-color-picker",
+    color: slideData_$array[currentSlide_$number].overlay["color1"],
+    onChange: color => setOverlayColor(color, "color1"),
+    defaultValue: slideData_$array[currentSlide_$number].overlay["color1"],
+    enableAlpha: true
+  }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color end'),
+    className: "slide-background-color-picker",
+    color: slideData_$array[currentSlide_$number].overlay["color2"],
+    onChange: color => setOverlayColor(color, "color2"),
+    defaultValue: slideData_$array[currentSlide_$number].overlay["color2"],
+    enableAlpha: true
+  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "slide-overlay-container",
+    style: overlayStyles
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
     className: "slide-content"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
     className: "slide-content-inner",
     style: slideContentInnerStyles
   }, "TODO insert pre-defined blocks")), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
     className: "slide-btn-container"
-  }, createSlideBtns())));
+  }, createSlideBtns()))));
 }
 
 /***/ }),
@@ -519,7 +579,7 @@ function _extends() {
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","innerBlocks":["core/paragraph",{}]}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"color1":"#fff","color2":"#fff","direction":"to bottom","isGradient":false}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

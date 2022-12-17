@@ -11,9 +11,16 @@
 }
 
 .slide {
+	position: relative;
+}
+
+.slide-overlay-container {
 	display: grid;
+	position: relative;
 	grid-template-rows: 1fr;
 	flex-direction: column;
+	height: 100%;
+	width: 100%;
 }
 
 .wp-car-btn {
@@ -56,6 +63,7 @@
 	justify-content: center;
 	justify-self: flex-end;
 	width: 100%;
+	z-index: 10;
 
 	.slide-index-btn {
 		border-radius: 50%;

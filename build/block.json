@@ -25,10 +25,12 @@
           },
           "hasParallax": false,
           "verticalAlign": "center",
-          "innerBlocks": [
-            "core/paragraph",
-            {}
-          ]
+          "overlay": {
+            "color1": "#fff",
+            "color2": "#fff",
+            "direction": "to bottom",
+            "isGradient": false
+          }
         }
       ]
     },

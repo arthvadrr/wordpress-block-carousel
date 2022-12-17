@@ -1,5 +1,6 @@
 /*
 TODO
+1. fix media settings accordion
 1. Index btn types
 X. width settings
 1. block margin/padding
@@ -16,6 +17,7 @@ X. When an image is selected, "Choose image" should say "replace"
 1. add innerDiv for vertical alignment
 1. focal point picker reset button
 1. Create pre-defined blocks and inspector inputs to populate them
+1. Add default options/settings when a user creates a new instance of the block
 */
 
 import { __ } from '@wordpress/i18n';
@@ -63,7 +65,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		indexBtnColor,
 		slideHeight,
 		verticalAlignment,
-		innerContentMaxWidth,
+		innerContentMaxWidth
 	} = attributes;
 
 	// Block state
@@ -74,6 +76,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	const [slideHeight_$number, setSlideHeight_$number] = useState(slideHeight);
 	const [verticalAlignment_$string, setVerticalAlignment_$string] = useState(verticalAlignment);
 	const [innerContentMaxWidth_$number, setInnerContentMaxWidth_$number] = useState(innerContentMaxWidth);
+	const [showBackgroundOverlay_$boolean, setShowBackgroundOverlay_$boolean] = useState(false);
 	
 	// React state
 	const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = useState(false);
@@ -95,6 +98,21 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		shallowArr[currentSlide_$number].backgroundImageAltText = newAltText;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array})
+	}
+
+	const toggleGradientPicker = () => {
+		const shallowArr = Array.from(slideData_$array);
+		const isGradient = shallowArr[currentSlide_$number].overlay.isGradient;
+		shallowArr[currentSlide_$number].overlay.isGradient = !isGradient;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const setOverlayColor = (color, pos) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].overlay[pos] = color;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
 	}
 
 	const toggleParallax = () => {
@@ -143,6 +161,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				"imperativeFocalPointPreview": "",
 				"focalPoint": "",
 				"hasParallax": false,
+				"overlay": {
+					"color1": "#fff",
+					"color2": "#fff",
+					"direction": "to bottom",
+					"isGradient": false
+				}
 			});
 
 		}
@@ -171,6 +195,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	const wordpressBlockCarouselStyles = {
 		height: `${slideHeight_$number}vh`,
 		backgroundColor: slideData_$array[currentSlide_$number].backgroundColor
+	}
+
+	const overlayStyles = {
+		backgroundColor: slideData_$array[currentSlide_$number].overlay["color1"],
+		backgroundImage: slideData_$array[currentSlide_$number].isGradient ? `linear-gradient(to bottom, ${slideData_$array[currentSlide_$number].overlay["color1"]}, ${slideData_$array[currentSlide_$number].overlay["color2"]}` : '',
 	}
 	
 	const slideStyles = {
@@ -358,22 +387,69 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								className={"slide-background-color-picker"}
 								color={ slideData_$array[currentSlide_$number].backgroundColor }
 								onChange={ color => updateSlideBackgroundColor( color )}
+								onMouseLeave={ () => setShowSlideBackgroundColorPicker_$boolean(false)}
 								enableAlpha
 								defaultValue={indexBtnColor}
 							/>
 						}
 					</div>
-				</BlockControls>
-				<div className="slide-content">
 					<div 
-						className="slide-content-inner"  
-						style={ slideContentInnerStyles }
+						className="slide-overlay-container"
 					>
-						TODO insert pre-defined blocks
+						<button 
+							className={`wp-car-btn block-inspector-overlay-settings ${showBackgroundOverlay_$boolean && "toggled"}`}
+							onClick={ () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean)}
+						>Overlay Settings</button>
+						{ showBackgroundOverlay_$boolean &&
+
+							<div 
+								className="block-inspector-overlay-settings-inner"
+								onMouseLeave={ () => setShowBackgroundOverlay_$boolean(false)}
+							>
+
+								<ToggleControl
+									label={ __( 'Gradient background?' ) }
+									checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
+									onChange={ () => toggleGradientPicker() }
+								/>
+
+								<ColorPicker
+									label={ __('Slide overlay color start') }
+									className={"slide-background-color-picker"}
+									color={ slideData_$array[currentSlide_$number].overlay["color1"]}
+									onChange={ color => setOverlayColor(color, "color1")}
+									defaultValue={slideData_$array[currentSlide_$number].overlay["color1"]}
+									enableAlpha
+								/>
+
+								{
+									slideData_$array[currentSlide_$number].overlay.isGradient && 
+									<ColorPicker
+										label={ __('Slide overlay color end') }
+										className={"slide-background-color-picker"}
+										color={ slideData_$array[currentSlide_$number].overlay["color2"]}
+										onChange={ color => setOverlayColor(color, "color2")}
+										defaultValue={slideData_$array[currentSlide_$number].overlay["color2"]}
+										enableAlpha
+									/>
+								}
+
+							</div>
+						}
 					</div>
-				</div>
-				<div className="slide-btn-container">
-					{ createSlideBtns() }
+				</BlockControls>
+				<div className="slide-overlay-container" style={ overlayStyles }>
+					<div className="slide-content">
+						<div 
+							className="slide-content-inner"  
+							style={ slideContentInnerStyles }
+						>
+							TODO insert pre-defined blocks
+						</div>
+					</div>
+					<div className="slide-btn-container">
+						{ createSlideBtns() }
+					</div>
 				</div>
 			</div>
 		</div>
