@@ -5,7 +5,7 @@ TODO
 X. width settings
 1. block margin/padding
 1. overlay
-1. overlay linear gradients
+X. overlay linear gradients
 X. background-image settings
 X. When an image is selected, "Choose image" should say "replace"
 1. innercontent positioning
