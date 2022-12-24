@@ -1,4 +1,4 @@
-=== Wordpress Block Carousel ===
+#Wordpress Block Carousel
 Contributors:      javabryan
 Tags:              block
 Tested up to:      6.2
