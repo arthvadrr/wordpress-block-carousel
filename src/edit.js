@@ -18,8 +18,7 @@ X. When an image is selected, "Choose image" should say "replace"
 1. focal point picker reset button
 1. Create pre-defined blocks and inspector inputs to populate them
 1. Add default options/settings when a user creates a new instance of the block
-*/
-
+*/ 
 import { __ } from '@wordpress/i18n';
 
 import { select } from '@wordpress/data';
@@ -57,7 +56,7 @@ import './editor.scss';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
 
-export default function Edit({ attributes, setAttributes, clientId }) {
+export default function Edit({ attributes, setAttributes }) {
 	const { 
 		slideData, 
 		slideAmount, 
@@ -160,7 +159,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				"showFocalPointPicker": "",
 				"imperativeFocalPointPreview": "",
 				"focalPoint": "",
-				"hasParallax": false,
+ 				"hasParallax": false,
 				"overlay": {
 					"color1": "#fff",
 					"color2": "#fff",
