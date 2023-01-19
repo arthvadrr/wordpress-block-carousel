@@ -12,6 +12,14 @@
 			"type": "array",
 			"default": [
 				{
+					"title" : {
+						"enabled": true,
+						"content": ""
+					},
+					"subtitle" : {
+						"enabled": false,
+						"content": ""
+					},
 					"backgroundColor": "#ffffff",
 					"backgroundImageUrl": "",
 					"backgroundSizeContain": false,
@@ -19,7 +27,10 @@
 					"backgroundImageAltText": "",
 					"showFocalPointPicker": "",
 					"imperativeFocalPointPreview": "",
-					"focalPoint": {"x": 0.5, "y": 0.5},
+					"focalPoint": {
+						"x": 0.5, 
+						"y": 0.5
+					},
 					"hasParallax": false,
 					"verticalAlign": "center",
 					"overlay": {
