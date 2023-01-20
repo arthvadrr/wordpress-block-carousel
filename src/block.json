@@ -20,6 +20,11 @@
 						"enabled": false,
 						"content": ""
 					},
+					"slideInnerBlock": {
+						"margin": 0,
+						"padding": 0,
+						"reversed": false 
+					},
 					"backgroundColor": "#ffffff",
 					"backgroundImageUrl": "",
 					"backgroundSizeContain": false,
@@ -34,8 +39,8 @@
 					"hasParallax": false,
 					"verticalAlign": "center",
 					"overlay": {
-						"color1": "#ffffff00",
-						"color2": "#ffffff00",
+						"color1": "#ffffff4D",
+						"color2": "#ffffff4D",
 						"direction": "bottom",
 						"isGradient": true
 					}

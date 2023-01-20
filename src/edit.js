@@ -154,17 +154,37 @@ export default function Edit({ attributes, setAttributes }) {
 		} else {
 
 			for (let i = 0; i < diff; i++) shallowArr.push({
+				"title" : {
+					"enabled": true,
+					"content": ""
+				},
+				"subtitle" : {
+					"enabled": false,
+					"content": ""
+				},
+				"slideInnerBlock": {
+					"margin": 0,
+					"padding": 0,
+					"reversed": false 
+				},
+				"backgroundColor": "#ffffff",
 				"backgroundImageUrl": "",
+				"backgroundSizeContain": false,
+				"backgroundRepeat": false, 
 				"backgroundImageAltText": "",
 				"showFocalPointPicker": "",
 				"imperativeFocalPointPreview": "",
-				"focalPoint": "",
- 				"hasParallax": false,
+				"focalPoint": {
+					"x": 0.5, 
+					"y": 0.5
+				},
+				"hasParallax": false,
+				"verticalAlign": "center",
 				"overlay": {
-					"color1": "#fff",
-					"color2": "#fff",
-					"direction": "to bottom",
-					"isGradient": false
+					"color1": "#ffffff4D",
+					"color2": "#ffffff4D",
+					"direction": "bottom",
+					"isGradient": true
 				}
 			});
 
@@ -218,7 +238,9 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	const slideContentInnerStyles = {
-		maxWidth: `${innerContentMaxWidth_$number ? innerContentMaxWidth_$number + "px" : 'none'}`
+		maxWidth: `${innerContentMaxWidth_$number ? innerContentMaxWidth_$number + "px" : 'none'}`,
+		padding: `${slideData_$array[currentSlide_$number].slideInnerBlock.padding}`,
+		margin: `${slideData_$array[currentSlide_$number].slideInnerBlock.margin}`,
 	}
 
 	const indexBtnStyles = {

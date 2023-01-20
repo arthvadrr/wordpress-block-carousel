@@ -33,7 +33,7 @@ TODO
 X. width settings
 1. block margin/padding
 1. overlay
-1. overlay linear gradients
+X. overlay linear gradients
 X. background-image settings
 X. When an image is selected, "Choose image" should say "replace"
 1. innercontent positioning
@@ -53,13 +53,11 @@ X. When an image is selected, "Choose image" should say "replace"
 
 
 
-
 const ALLOWED_MEDIA_TYPES = ['image'];
 function Edit(_ref) {
   let {
     attributes,
-    setAttributes,
-    clientId
+    setAttributes
   } = _ref;
   const {
     slideData,
@@ -165,17 +163,37 @@ function Edit(_ref) {
       for (let i = 0; i < diff; i++) shallowArr.pop();
     } else {
       for (let i = 0; i < diff; i++) shallowArr.push({
+        "title": {
+          "enabled": true,
+          "content": ""
+        },
+        "subtitle": {
+          "enabled": false,
+          "content": ""
+        },
+        "slideInnerBlock": {
+          "margin": 0,
+          "padding": 0,
+          "reversed": false
+        },
+        "backgroundColor": "#ffffff",
         "backgroundImageUrl": "",
+        "backgroundSizeContain": false,
+        "backgroundRepeat": false,
         "backgroundImageAltText": "",
         "showFocalPointPicker": "",
         "imperativeFocalPointPreview": "",
-        "focalPoint": "",
+        "focalPoint": {
+          "x": 0.5,
+          "y": 0.5
+        },
         "hasParallax": false,
+        "verticalAlign": "center",
         "overlay": {
-          "color1": "#fff",
-          "color2": "#fff",
-          "direction": "to bottom",
-          "isGradient": false
+          "color1": "#ffffff4D",
+          "color2": "#ffffff4D",
+          "direction": "bottom",
+          "isGradient": true
         }
       });
     }
@@ -227,7 +245,9 @@ function Edit(_ref) {
     height: `${slideHeight_$number}vh`
   };
   const slideContentInnerStyles = {
-    maxWidth: `${innerContentMaxWidth_$number ? innerContentMaxWidth_$number + "px" : 'none'}`
+    maxWidth: `${innerContentMaxWidth_$number ? innerContentMaxWidth_$number + "px" : 'none'}`,
+    padding: `${slideData_$array[currentSlide_$number].slideInnerBlock.padding}`,
+    margin: `${slideData_$array[currentSlide_$number].slideInnerBlock.margin}`
   };
   const indexBtnStyles = {
     backgroundColor: `${indexBtnColor_$string}`
@@ -600,7 +620,7 @@ function _extends() {
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"color1":"#ffffff00","color2":"#ffffff00","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"content":""},"subtitle":{"enabled":false,"content":""},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 
