@@ -10,7 +10,6 @@ X. background-image settings
 X. When an image is selected, "Choose image" should say "replace"
 1. innercontent positioning
 1. innercontent max-width
-1. figure out what's wrong with inspector padding (panel?)
 1. icons for the block controls
 1. slide transitions
 1. slide button padding
