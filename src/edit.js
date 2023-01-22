@@ -46,7 +46,7 @@ import {
 } from '@wordpress/block-editor';
 
 import { 
-	Fragment, 
+	Fragment as Fragment, 
 	useEffect, 
 	useState,
 } from '@wordpress/element';
@@ -283,7 +283,7 @@ export default function Edit({ attributes, setAttributes }) {
 			<PanelRow>
 				{ !! slideData_$array[currentSlide_$number].backgroundImageUrl && (
 					<PanelBody title={ __( 'Media settings' ) }>
-							<Fragment>
+							<Panel>
 								<ToggleControl
 									label={ __( 'Fixed background' ) }
 									checked={ slideData_$array[currentSlide_$number].hasParallax }
@@ -299,7 +299,7 @@ export default function Edit({ attributes, setAttributes }) {
 									checked={ slideData_$array[currentSlide_$number].backgroundRepeat }
 									onChange={ () => toggleBackgroundRepeat() }
 								/>
-							</Fragment>
+							</Panel>
 						{ slideData_$array[currentSlide_$number].backgroundImageUrl && (
 							<FocalPointPicker
 								label={ __( 'Focal point picker' ) }
@@ -369,30 +369,32 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<div { ...useBlockProps() } style={ wordpressBlockCarouselStyles }>
 			<InspectorControls>
-				<RangeControl
-					label={ __('Amount of slides for the carousel') }
-					value={ slideAmount_$number }
-					onChange={value => updateSlideAmount(value)}
-					min={1}
-					max={10}
-				/>
-				<RangeControl
-					label={ __('Block min height') }
-					value={ slideHeight_$number }
-					onChange={value => setSlideHeight_$number(value)}
-					min={10}
-					max={100}
-					step={2}
-				/>
-				<RangeControl
-					label={ __('Inner content max-width (0 is no max)') }
-					value={ innerContentMaxWidth_$number }
-					onChange={value => setInnerContentMaxWidth_$number(value)}
-					min={0}
-					max={1200}
-					step={1}
-				/>
-				<Panel>
+				<Panel className="block-carousel-inspector-panel">
+					<RangeControl
+						label={ __('Amount of slides for the carousel') }
+						value={ slideAmount_$number }
+						onChange={value => updateSlideAmount(value)}
+						min={1}
+						max={10}
+					/>
+					<RangeControl
+						label={ __('Block min height') }
+						value={ slideHeight_$number }
+						onChange={value => setSlideHeight_$number(value)}
+						min={10}
+						max={100}
+						step={2}
+					/>
+					<RangeControl
+						label={ __('Inner content max-width (0 is no max)') }
+						value={ innerContentMaxWidth_$number }
+						onChange={value => setInnerContentMaxWidth_$number(value)}
+						min={0}
+						max={1200}
+						step={1}
+					/>
+				</Panel>
+				<Panel className="block-carousel-inspector-panel">
 				<h3 className="block-editor-block-card__title">Slide index button color</h3>
 				<ColorPicker
             color={ indexBtnColor_$string }
@@ -401,7 +403,7 @@ export default function Edit({ attributes, setAttributes }) {
             defaultValue={indexBtnColor}
         />
 				</Panel>
-				<Panel>
+				<Panel className="block-carousel-inspector-panel">
 						{createSlidePanels()}
 				</Panel>
 			</InspectorControls>
