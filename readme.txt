@@ -24,6 +24,9 @@ This block is to be used as a carousel cover block, able to display up to 10 sli
 
 1. No screenshots yet
 
+== Requirements ==
+Tested on PHP 8.1.9
+
 == Changelog ==
 
 = 0.1.0 =
