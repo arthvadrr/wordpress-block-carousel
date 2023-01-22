@@ -280,70 +280,122 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const createSlidePanels = () => {
 		return (
-			<PanelRow>
+			<Fragment>
+				<PanelBody title={ __( 'Media settings' ) }>
 				{ !! slideData_$array[currentSlide_$number].backgroundImageUrl && (
-					<PanelBody title={ __( 'Media settings' ) }>
-							<Panel>
-								<ToggleControl
-									label={ __( 'Fixed background' ) }
-									checked={ slideData_$array[currentSlide_$number].hasParallax }
-									onChange={ () => toggleParallax() }
+					<Fragment>
+
+								<Panel>
+									<ToggleControl
+										label={ __( 'Fixed background' ) }
+										checked={ slideData_$array[currentSlide_$number].hasParallax }
+										onChange={ () => toggleParallax() }
+									/>
+									<ToggleControl
+										label={ __( 'Contain background' ) }
+										checked={ slideData_$array[currentSlide_$number].backgroundSizeContain }
+										onChange={ () => toggleBackgroundSizeContain() }
+									/>
+									<ToggleControl
+										label={ __( 'Repeat background' ) }
+										checked={ slideData_$array[currentSlide_$number].backgroundRepeat }
+										onChange={ () => toggleBackgroundRepeat() }
+									/>
+								</Panel>
+							{ slideData_$array[currentSlide_$number].backgroundImageUrl && (
+								<FocalPointPicker
+									label={ __( 'Focal point picker' ) }
+									url={ slideData_$array[currentSlide_$number].backgroundImageUrl }
+									value={ slideData_$array[currentSlide_$number].focalPoint }
+									onDragStart={ setFocalPoint }
+									onDrag={ setFocalPoint }
+									onChange={ setFocalPoint }
 								/>
-								<ToggleControl
-									label={ __( 'Contain background' ) }
-									checked={ slideData_$array[currentSlide_$number].backgroundSizeContain }
-									onChange={ () => toggleBackgroundSizeContain() }
-								/>
-								<ToggleControl
-									label={ __( 'Repeat background' ) }
-									checked={ slideData_$array[currentSlide_$number].backgroundRepeat }
-									onChange={ () => toggleBackgroundRepeat() }
-								/>
-							</Panel>
-						{ slideData_$array[currentSlide_$number].backgroundImageUrl && (
-							<FocalPointPicker
-								label={ __( 'Focal point picker' ) }
-								url={ slideData_$array[currentSlide_$number].backgroundImageUrl }
-								value={ slideData_$array[currentSlide_$number].focalPoint }
-								onDragStart={ setFocalPoint }
-                onDrag={ setFocalPoint }
-                onChange={ setFocalPoint }
-							/>
-						) }
-						{slideData_$array[currentSlide_$number].backgroundImageUrl &&
-								<TextareaControl
-									label={ __(
-										'Alt text (alternative text)'
-									) }
-									value={ slideData_$array[currentSlide_$number].backgroundImageAltText }
-									onChange={ ( newAlt ) => setSlideBackgroundImageAltText(newAlt)}
-									help={
-										<>
-											<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
+							) }
+							{slideData_$array[currentSlide_$number].backgroundImageUrl &&
+									<TextareaControl
+										label={ __(
+											'Alt text (alternative text)'
+										) }
+										value={ slideData_$array[currentSlide_$number].backgroundImageAltText }
+										onChange={ ( newAlt ) => setSlideBackgroundImageAltText(newAlt)}
+										help={
+											<>
+												<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
+													{ __(
+														'Describe the purpose of the image'
+													) }
+												</ExternalLink>
 												{ __(
-													'Describe the purpose of the image'
+													'Leave empty if the image is purely decorative.'
 												) }
-											</ExternalLink>
-											{ __(
-												'Leave empty if the image is purely decorative.'
-											) }
-										</>
-									}
-								/>
-							}
-						<PanelRow>
-							<Button
-								variant="secondary"
-								isSmall
-								className="block-library-cover__reset-button"
-								onClick={ () => updateSlideBackgroundImageUrl("")}
-							>
-								{ __( 'Clear Media' ) }
-							</Button>
-						</PanelRow>
-					</PanelBody>
+											</>
+										}
+									/>
+								}
+							<PanelRow>
+								<Button
+									variant="secondary"
+									isSmall
+									className="block-library-cover__reset-button"
+									onClick={ () => updateSlideBackgroundImageUrl("")}
+								>
+									{ __( 'Clear Media' ) }
+								</Button>
+							</PanelRow>
+					</Fragment>
 				) }
-			</PanelRow>
+			</PanelBody>
+			<PanelBody title={ __( 'Overlay Settings' ) }>
+				<div 
+				className="slide-overlay-container"
+			>
+				<button 
+					className={`wp-car-btn block-inspector-overlay-settings ${showBackgroundOverlay_$boolean && "toggled"}`}
+					onClick={ () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean)}
+				>Overlay Settings</button>
+				{ showBackgroundOverlay_$boolean &&
+
+					<div className="block-inspector-overlay-settings-inner">
+						<ToggleControl
+							label={ __( 'Gradient overlay?' ) }
+							checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
+							onChange={ () => toggleGradientPicker() }
+						/>
+
+						{ slideData_$array[currentSlide_$number].overlay.isGradient &&
+							<div className="gradient-direction">
+								<h3 className="components-base-control__label">Gradient Direction</h3>
+								{createGradientDirectionButtons()}
+							</div>
+						}
+
+						<ColorPicker
+							label={ __('Slide overlay color start') }
+							className={"slide-background-color-picker"}
+							color={ slideData_$array[currentSlide_$number].overlay["color1"]}
+							onChange={ color => setOverlayColor(color, "color1")}
+							defaultValue={slideData_$array[currentSlide_$number].overlay["color1"]}
+							enableAlpha
+						/>
+
+						{
+							slideData_$array[currentSlide_$number].overlay.isGradient && 
+							<ColorPicker
+								label={ __('Slide overlay color end') }
+								className={"slide-background-color-picker"}
+								color={ slideData_$array[currentSlide_$number].overlay["color2"]}
+								onChange={ color => setOverlayColor(color, "color2")}
+								defaultValue={slideData_$array[currentSlide_$number].overlay["color2"]}
+								enableAlpha
+							/>
+						}
+
+					</div>
+				}
+				</div>								
+			</PanelBody>
+		</Fragment>
 		);
 	}
 
@@ -403,9 +455,9 @@ export default function Edit({ attributes, setAttributes }) {
             defaultValue={indexBtnColor}
         />
 				</Panel>
-				<Panel className="block-carousel-inspector-panel">
+				<div className="block-carousel-inspector-panel">
 						{createSlidePanels()}
-				</Panel>
+				</div>
 			</InspectorControls>
 			<div className="slide" style={ slideStyles }>
 				<BlockControls group="other">
