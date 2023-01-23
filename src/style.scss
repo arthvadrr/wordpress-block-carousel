@@ -6,7 +6,9 @@
  */
 
 .block-carousel-inspector-panel {
-	padding: 0.5rem;
+	.block-carousel-inspector-panel-inner {
+		padding: 1rem;
+	}
 }
 
 .wp-block-create-block-wordpress-block-carousel {

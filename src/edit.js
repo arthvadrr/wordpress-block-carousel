@@ -422,6 +422,7 @@ export default function Edit({ attributes, setAttributes }) {
 		<div { ...useBlockProps() } style={ wordpressBlockCarouselStyles }>
 			<InspectorControls>
 				<Panel className="block-carousel-inspector-panel">
+					<div className="block-carousel-inspector-panel-inner">
 					<RangeControl
 						label={ __('Amount of slides for the carousel') }
 						value={ slideAmount_$number }
@@ -445,19 +446,22 @@ export default function Edit({ attributes, setAttributes }) {
 						max={1200}
 						step={1}
 					/>
-				</Panel>
-				<Panel className="block-carousel-inspector-panel">
-				<h3 className="block-editor-block-card__title">Slide index button color</h3>
-				<ColorPicker
-            color={ indexBtnColor_$string }
-            onChange={ color => setIndexBtnColor_$string(color)}
-            enableAlpha
-            defaultValue={indexBtnColor}
-        />
+					</div>
 				</Panel>
 				<div className="block-carousel-inspector-panel">
 						{createSlidePanels()}
 				</div>
+				<Panel className="block-carousel-inspector-panel">
+					<div className="block-carousel-inspector-panel-inner">
+						<h3 className="block-editor-block-card__title">Slide index button color</h3>
+						<ColorPicker
+								color={ indexBtnColor_$string }
+								onChange={ color => setIndexBtnColor_$string(color)}
+								enableAlpha
+								defaultValue={indexBtnColor}
+						/>
+					</div>
+				</Panel>
 			</InspectorControls>
 			<div className="slide" style={ slideStyles }>
 				<BlockControls group="other">
