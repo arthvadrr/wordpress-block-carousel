@@ -4,10 +4,19 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-
+ 
 .block-carousel-inspector-panel {
 	.block-carousel-inspector-panel-inner {
 		padding: 1rem;
+	}
+
+	.wpbc-is-full-width {
+		width: 100%;
+		justify-content: center;
+	}
+
+	.wpbc-btn-no-left-margin {
+		margin-left: 0;
 	}
 }
 

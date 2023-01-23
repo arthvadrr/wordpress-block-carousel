@@ -282,29 +282,8 @@ export default function Edit({ attributes, setAttributes }) {
 		return (
 			<Fragment>
 				<PanelBody title={ __( 'Media settings' ) }>
-				{! slideData_$array[currentSlide_$number].backgroundImageUrl && (
-						<Fragment>
-							<MediaUploadCheck>
-						<MediaUpload
-							onSelect={( media ) => updateSlideBackgroundImageUrl( media.url )}
-							render={ ( { open } ) => (
-								<button 
-									onClick={ open }
-									className="wp-car-btn"
-								>
-									<span>
-										{`${slideData_$array[currentSlide_$number].backgroundImageUrl ? 'Replace Image' : 'Select Image'}`}
-									</span>
-								</button>
-							)}
-						/>					
-					</MediaUploadCheck>
-						</Fragment>
-					)
-				}
 				{ !! slideData_$array[currentSlide_$number].backgroundImageUrl && (
 					<Fragment>
-
 								<Panel>
 									<ToggleControl
 										label={ __( 'Fixed background' ) }
@@ -353,7 +332,25 @@ export default function Edit({ attributes, setAttributes }) {
 										}
 									/>
 								}
-							<PanelRow>
+					</Fragment>
+				) }
+				<PanelRow>
+							<MediaUploadCheck>
+									<MediaUpload
+										onSelect={( media ) => updateSlideBackgroundImageUrl( media.url )}
+										render={ ( { open } ) => (
+											<Button 
+												onClick={ open }
+												variant="secondary"
+												isSmall
+												className={`block-library-cover__reset-button wpbc-btn-no-left-margin ${slideData_$array[currentSlide_$number].backgroundImageUrl ? '' : 'wpbc-is-full-width'}`}
+											>
+												{`${slideData_$array[currentSlide_$number].backgroundImageUrl ? 'Replace Media' : 'Add Media'}`}
+											</Button>
+										)}
+									/>					
+								</MediaUploadCheck>
+								{ slideData_$array[currentSlide_$number].backgroundImageUrl && (
 								<Button
 									variant="secondary"
 									isSmall
@@ -362,9 +359,8 @@ export default function Edit({ attributes, setAttributes }) {
 								>
 									{ __( 'Clear Media' ) }
 								</Button>
+								) }
 							</PanelRow>
-					</Fragment>
-				) }
 			</PanelBody>
 			<PanelBody title={ __( 'Overlay Settings' ) }>
 				<div 

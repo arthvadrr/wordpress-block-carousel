@@ -10,6 +10,13 @@
 .block-carousel-inspector-panel .block-carousel-inspector-panel-inner {
   padding: 1rem;
 }
+.block-carousel-inspector-panel .wpbc-is-full-width {
+  width: 100%;
+  justify-content: center;
+}
+.block-carousel-inspector-panel .wpbc-btn-no-left-margin {
+  margin-left: 0;
+}
 
 .wp-block-create-block-wordpress-block-carousel {
   background-color: #21759b;
