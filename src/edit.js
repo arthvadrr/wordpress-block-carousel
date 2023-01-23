@@ -284,7 +284,21 @@ export default function Edit({ attributes, setAttributes }) {
 				<PanelBody title={ __( 'Media settings' ) }>
 				{! slideData_$array[currentSlide_$number].backgroundImageUrl && (
 						<Fragment>
-							<p>Select an image first</p>
+							<MediaUploadCheck>
+						<MediaUpload
+							onSelect={( media ) => updateSlideBackgroundImageUrl( media.url )}
+							render={ ( { open } ) => (
+								<button 
+									onClick={ open }
+									className="wp-car-btn"
+								>
+									<span>
+										{`${slideData_$array[currentSlide_$number].backgroundImageUrl ? 'Replace Image' : 'Select Image'}`}
+									</span>
+								</button>
+							)}
+						/>					
+					</MediaUploadCheck>
 						</Fragment>
 					)
 				}
