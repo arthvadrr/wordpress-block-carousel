@@ -282,6 +282,12 @@ export default function Edit({ attributes, setAttributes }) {
 		return (
 			<Fragment>
 				<PanelBody title={ __( 'Media settings' ) }>
+				{! slideData_$array[currentSlide_$number].backgroundImageUrl && (
+						<Fragment>
+							<p>Select an image first</p>
+						</Fragment>
+					)
+				}
 				{ !! slideData_$array[currentSlide_$number].backgroundImageUrl && (
 					<Fragment>
 
