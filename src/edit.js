@@ -363,18 +363,16 @@ export default function Edit({ attributes, setAttributes }) {
 							</PanelRow>
 			</PanelBody>
 			<PanelBody title={ __( 'Overlay Settings' ) }>
-				<div 
-				className="slide-overlay-container"
-			>
-				<button 
-					className={`wp-car-btn block-inspector-overlay-settings ${showBackgroundOverlay_$boolean && "toggled"}`}
-					onClick={ () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean)}
-				>Overlay Settings</button>
+				<div className="slide-overlay-container">
+				<ToggleControl
+									label={ __( 'Use Overlay' ) }
+									checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
+									onChange={ () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean) }
+								/>
 				{ showBackgroundOverlay_$boolean &&
-
 					<div className="block-inspector-overlay-settings-inner">
 						<ToggleControl
-							label={ __( 'Gradient overlay?' ) }
+							label={ __( 'Use Gradient' ) }
 							checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
 							onChange={ () => toggleGradientPicker() }
 						/>
@@ -494,7 +492,7 @@ export default function Edit({ attributes, setAttributes }) {
 									className="wp-car-btn"
 								>
 									<span>
-										{`${slideData_$array[currentSlide_$number].backgroundImageUrl ? 'Replace Image' : 'Select Image'}`}
+										{`${slideData_$array[currentSlide_$number].backgroundImageUrl ? 'Replace Media' : 'Add Media'}`}
 									</span>
 								</button>
 							)}
@@ -516,53 +514,6 @@ export default function Edit({ attributes, setAttributes }) {
 								enableAlpha
 								defaultValue={indexBtnColor}
 							/>
-						}
-					</div>
-					<div 
-						className="slide-overlay-container"
-					>
-						<button 
-							className={`wp-car-btn block-inspector-overlay-settings ${showBackgroundOverlay_$boolean && "toggled"}`}
-							onClick={ () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean)}
-						>Overlay Settings</button>
-						{ showBackgroundOverlay_$boolean &&
-
-							<div className="block-inspector-overlay-settings-inner">
-								<ToggleControl
-									label={ __( 'Gradient overlay?' ) }
-									checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
-									onChange={ () => toggleGradientPicker() }
-								/>
-
-								{ slideData_$array[currentSlide_$number].overlay.isGradient &&
-									<div className="gradient-direction">
-										<h3 className="components-base-control__label">Gradient Direction</h3>
-										{createGradientDirectionButtons()}
-									</div>
-								}
-
-								<ColorPicker
-									label={ __('Slide overlay color start') }
-									className={"slide-background-color-picker"}
-									color={ slideData_$array[currentSlide_$number].overlay["color1"]}
-									onChange={ color => setOverlayColor(color, "color1")}
-									defaultValue={slideData_$array[currentSlide_$number].overlay["color1"]}
-									enableAlpha
-								/>
-
-								{
-									slideData_$array[currentSlide_$number].overlay.isGradient && 
-									<ColorPicker
-										label={ __('Slide overlay color end') }
-										className={"slide-background-color-picker"}
-										color={ slideData_$array[currentSlide_$number].overlay["color2"]}
-										onChange={ color => setOverlayColor(color, "color2")}
-										defaultValue={slideData_$array[currentSlide_$number].overlay["color2"]}
-										enableAlpha
-									/>
-								}
-
-							</div>
 						}
 					</div>
 				</BlockControls>

@@ -321,13 +321,14 @@ function Edit(_ref) {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Overlay Settings')
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
       className: "slide-overlay-container"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
-      className: `wp-car-btn block-inspector-overlay-settings ${showBackgroundOverlay_$boolean && "toggled"}`,
-      onClick: () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean)
-    }, "Overlay Settings"), showBackgroundOverlay_$boolean && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Use Overlay'),
+      checked: slideData_$array[currentSlide_$number].overlay.isGradient,
+      onChange: () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean)
+    }), showBackgroundOverlay_$boolean && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
       className: "block-inspector-overlay-settings-inner"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient overlay?'),
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Use Gradient'),
       checked: slideData_$array[currentSlide_$number].overlay.isGradient,
       onChange: () => toggleGradientPicker()
     }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
@@ -419,7 +420,7 @@ function Edit(_ref) {
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
         onClick: open,
         className: "wp-car-btn"
-      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("span", null, `${slideData_$array[currentSlide_$number].backgroundImageUrl ? 'Replace Image' : 'Select Image'}`));
+      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("span", null, `${slideData_$array[currentSlide_$number].backgroundImageUrl ? 'Replace Media' : 'Add Media'}`));
     }
   })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
     className: "slide-background-color-picker-container"
@@ -433,36 +434,7 @@ function Edit(_ref) {
     onChange: color => updateSlideBackgroundColor(color),
     enableAlpha: true,
     defaultValue: indexBtnColor
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-    className: "slide-overlay-container"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
-    className: `wp-car-btn block-inspector-overlay-settings ${showBackgroundOverlay_$boolean && "toggled"}`,
-    onClick: () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean)
-  }, "Overlay Settings"), showBackgroundOverlay_$boolean && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-    className: "block-inspector-overlay-settings-inner"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient overlay?'),
-    checked: slideData_$array[currentSlide_$number].overlay.isGradient,
-    onChange: () => toggleGradientPicker()
-  }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-    className: "gradient-direction"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h3", {
-    className: "components-base-control__label"
-  }, "Gradient Direction"), createGradientDirectionButtons()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color start'),
-    className: "slide-background-color-picker",
-    color: slideData_$array[currentSlide_$number].overlay["color1"],
-    onChange: color => setOverlayColor(color, "color1"),
-    defaultValue: slideData_$array[currentSlide_$number].overlay["color1"],
-    enableAlpha: true
-  }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color end'),
-    className: "slide-background-color-picker",
-    color: slideData_$array[currentSlide_$number].overlay["color2"],
-    onChange: color => setOverlayColor(color, "color2"),
-    defaultValue: slideData_$array[currentSlide_$number].overlay["color2"],
-    enableAlpha: true
-  })))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
     className: "slide-overlay-container",
     style: overlayStyles
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
