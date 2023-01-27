@@ -39,6 +39,7 @@
 					"hasParallax": false,
 					"verticalAlign": "center",
 					"overlay": {
+						"enabled": false,
 						"color1": "#ffffff4D",
 						"color2": "#ffffff4D",
 						"direction": "bottom",

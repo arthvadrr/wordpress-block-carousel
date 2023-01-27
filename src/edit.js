@@ -98,6 +98,13 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({slideData: slideData_$array})
 	}
 
+	const toggleOverlay = () => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].overlay.enabled = !slideData_$array[currentSlide_$number].overlay.enabled;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
 	const toggleGradientPicker = () => {
 		const shallowArr = Array.from(slideData_$array);
 		const isGradient = shallowArr[currentSlide_$number].overlay.isGradient;
@@ -180,6 +187,7 @@ export default function Edit({ attributes, setAttributes }) {
 				"hasParallax": false,
 				"verticalAlign": "center",
 				"overlay": {
+					"enabled": false,
 					"color1": "#ffffff4D",
 					"color2": "#ffffff4D",
 					"direction": "bottom",
@@ -366,8 +374,8 @@ export default function Edit({ attributes, setAttributes }) {
 				<div className="slide-overlay-container">
 				<ToggleControl
 									label={ __( 'Use Overlay' ) }
-									checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
-									onChange={ () => setShowBackgroundOverlay_$boolean(!showBackgroundOverlay_$boolean) }
+									checked={ showBackgroundOverlay_$boolean }
+									onChange={ () => toggleOverlay() }
 								/>
 				{ showBackgroundOverlay_$boolean &&
 					<div className="block-inspector-overlay-settings-inner">
@@ -435,6 +443,7 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<div { ...useBlockProps() } style={ wordpressBlockCarouselStyles }>
 			<InspectorControls>
+				<h2 className="block-carousel-section-title">Block Carousel Settings</h2>
 				<Panel className="block-carousel-inspector-panel">
 					<div className="block-carousel-inspector-panel-inner">
 					<RangeControl
@@ -462,20 +471,23 @@ export default function Edit({ attributes, setAttributes }) {
 					/>
 					</div>
 				</Panel>
+				<PanelBody title={ __( 'Slide Buttons' ) }>
+					<Panel className="block-carousel-inspector-panel">
+						<div className="block-carousel-inspector-panel-inner">
+							<h3 className="block-editor-block-card__title">Slide index button color</h3>
+							<ColorPicker
+									color={ indexBtnColor_$string }
+									onChange={ color => setIndexBtnColor_$string(color)}
+									enableAlpha
+									defaultValue={indexBtnColor}
+							/>
+						</div>
+					</Panel>
+				</PanelBody>
 				<div className="block-carousel-inspector-panel">
+					<h2 className="block-carousel-section-title">Current Slide Settings</h2>
 						{createSlidePanels()}
 				</div>
-				<Panel className="block-carousel-inspector-panel">
-					<div className="block-carousel-inspector-panel-inner">
-						<h3 className="block-editor-block-card__title">Slide index button color</h3>
-						<ColorPicker
-								color={ indexBtnColor_$string }
-								onChange={ color => setIndexBtnColor_$string(color)}
-								enableAlpha
-								defaultValue={indexBtnColor}
-						/>
-					</div>
-				</Panel>
 			</InspectorControls>
 			<div className="slide" style={ slideStyles }>
 				<BlockControls group="other">
