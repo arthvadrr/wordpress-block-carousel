@@ -321,21 +321,15 @@ export default function Edit({ attributes, setAttributes }) {
 							) }
 							{slideData_$array[currentSlide_$number].backgroundImageUrl &&
 									<TextareaControl
-										label={ __(
-											'Alt text (alternative text)'
-										) }
+										label={ __('Alt text (alternative text)') }
 										value={ slideData_$array[currentSlide_$number].backgroundImageAltText }
 										onChange={ ( newAlt ) => setSlideBackgroundImageAltText(newAlt)}
 										help={
 											<>
 												<ExternalLink href="https://www.w3.org/WAI/tutorials/images/decision-tree">
-													{ __(
-														'Describe the purpose of the image'
-													) }
+													{ __('Describe the purpose of the image') }
 												</ExternalLink>
-												{ __(
-													'Leave empty if the image is purely decorative.'
-												) }
+												{ __('Leave empty if the image is purely decorative.') }
 											</>
 										}
 									/>
@@ -387,7 +381,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 						{ slideData_$array[currentSlide_$number].overlay.isGradient &&
 							<div className="gradient-direction">
-								<h3 className="components-base-control__label">Gradient Direction</h3>
+								<h3 className="components-base-control__label">{__('Gradient Direction')}</h3>
 								{createGradientDirectionButtons()}
 							</div>
 						}
@@ -443,7 +437,7 @@ export default function Edit({ attributes, setAttributes }) {
 	return (
 		<div { ...useBlockProps() } style={ wordpressBlockCarouselStyles }>
 			<InspectorControls>
-				<h2 className="block-carousel-section-title">Block Carousel Settings</h2>
+				<h2 className="block-carousel-section-title">{__('Block Carousel Settings')}</h2>
 				<Panel className="block-carousel-inspector-panel">
 					<div className="block-carousel-inspector-panel-inner">
 					<RangeControl
@@ -474,7 +468,7 @@ export default function Edit({ attributes, setAttributes }) {
 				<PanelBody title={ __( 'Slide Buttons' ) }>
 					<Panel className="block-carousel-inspector-panel">
 						<div className="block-carousel-inspector-panel-inner">
-							<h3 className="block-editor-block-card__title">Slide index button color</h3>
+							<h3 className="block-editor-block-card__title">{__('Slide index button color')}</h3>
 							<ColorPicker
 									color={ indexBtnColor_$string }
 									onChange={ color => setIndexBtnColor_$string(color)}
@@ -485,7 +479,7 @@ export default function Edit({ attributes, setAttributes }) {
 					</Panel>
 				</PanelBody>
 				<div className="block-carousel-inspector-panel">
-					<h2 className="block-carousel-section-title">Current Slide Settings</h2>
+					<h2 className="block-carousel-section-title">{__('Current Slide Settings')}</h2>
 						{createSlidePanels()}
 				</div>
 			</InspectorControls>
@@ -516,7 +510,7 @@ export default function Edit({ attributes, setAttributes }) {
 						<button 
 							className={`wp-car-btn block-inspector-background-color-picker-toggle ${showSlideBackgroundColorPicker_$boolean && "toggled"}`}
 							onClick={ () => setShowSlideBackgroundColorPicker_$boolean(!showSlideBackgroundColorPicker_$boolean)}
-						>Background Color</button>
+						>{__('Background Color')}</button>
 						{ showSlideBackgroundColorPicker_$boolean &&
 							<ColorPicker
 								label={ __('Slide background color') }
