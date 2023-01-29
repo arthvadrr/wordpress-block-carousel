@@ -40,7 +40,6 @@
 	.block-inspector-overlay-settings-inner {
 		padding: 1rem;
 		background-color: #fff;
-		display: flex;
 
 		label {
 			display: block;
@@ -48,8 +47,7 @@
 
 		.gradient-direction {
 			display: flex;
-			flex-direction: column;
-			width: 145px;
+			flex-wrap: wrap;
 
 			.set-gradient-dir {
 				padding: 4px;

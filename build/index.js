@@ -351,14 +351,14 @@ function Edit(_ref) {
       onChange: color => setOverlayColor(color, "color1"),
       defaultValue: slideData_$array[currentSlide_$number].overlay["color1"],
       enableAlpha: true
-    }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color end'),
       className: "slide-background-color-picker",
       color: slideData_$array[currentSlide_$number].overlay["color2"],
       onChange: color => setOverlayColor(color, "color2"),
       defaultValue: slideData_$array[currentSlide_$number].overlay["color2"],
       enableAlpha: true
-    })))));
+    }))))));
   };
   const createSlideBtns = () => {
     const btnArr = [];

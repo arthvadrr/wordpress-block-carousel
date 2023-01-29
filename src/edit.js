@@ -383,7 +383,6 @@ export default function Edit({ attributes, setAttributes }) {
 								{createGradientDirectionButtons()}
 							</div>
 						}
-
 						<ColorPicker
 							label={ __('Slide overlay color start') }
 							className={"slide-background-color-picker"}
@@ -395,16 +394,17 @@ export default function Edit({ attributes, setAttributes }) {
 
 						{
 							slideData_$array[currentSlide_$number].overlay.isGradient && 
-							<ColorPicker
-								label={ __('Slide overlay color end') }
-								className={"slide-background-color-picker"}
-								color={ slideData_$array[currentSlide_$number].overlay["color2"]}
-								onChange={ color => setOverlayColor(color, "color2")}
-								defaultValue={slideData_$array[currentSlide_$number].overlay["color2"]}
-								enableAlpha
-							/>
+							<>
+								<ColorPicker
+									label={ __('Slide overlay color end') }
+									className={"slide-background-color-picker"}
+									color={ slideData_$array[currentSlide_$number].overlay["color2"]}
+									onChange={ color => setOverlayColor(color, "color2")}
+									defaultValue={slideData_$array[currentSlide_$number].overlay["color2"]}
+									enableAlpha
+								/>
+							</>
 						}
-
 					</div>
 				}
 				</div>								
