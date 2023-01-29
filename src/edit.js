@@ -37,7 +37,6 @@ import {
 
 import { 
 	useBlockProps,
-	InnerBlocks,
 	BlockControls,
 	InspectorControls,
 	MediaUpload,
@@ -54,7 +53,6 @@ import {
 import './editor.scss';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
-
 export default function Edit({ attributes, setAttributes }) {
 	const { 
 		slideData, 
@@ -74,7 +72,6 @@ export default function Edit({ attributes, setAttributes }) {
 	const [slideHeight_$number, setSlideHeight_$number] = useState(slideHeight);
 	const [verticalAlignment_$string, setVerticalAlignment_$string] = useState(verticalAlignment);
 	const [innerContentMaxWidth_$number, setInnerContentMaxWidth_$number] = useState(innerContentMaxWidth);
-	const [showBackgroundOverlay_$boolean, setShowBackgroundOverlay_$boolean] = useState(false);
 	
 	// React state
 	const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = useState(false);
@@ -100,7 +97,8 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const toggleOverlay = () => {
 		const shallowArr = Array.from(slideData_$array);
-		shallowArr[currentSlide_$number].overlay.enabled = !slideData_$array[currentSlide_$number].overlay.enabled;
+		let enabled = shallowArr[currentSlide_$number].overlay.enabled;
+		shallowArr[currentSlide_$number].overlay.enabled = !enabled;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array});
 	}
@@ -368,10 +366,10 @@ export default function Edit({ attributes, setAttributes }) {
 				<div className="slide-overlay-container">
 				<ToggleControl
 									label={ __( 'Use Overlay' ) }
-									checked={ showBackgroundOverlay_$boolean }
+									checked={ slideData_$array[currentSlide_$number].overlay.enabled }
 									onChange={ () => toggleOverlay() }
 								/>
-				{ showBackgroundOverlay_$boolean &&
+				{ slideData_$array[currentSlide_$number].overlay.enabled &&
 					<div className="block-inspector-overlay-settings-inner">
 						<ToggleControl
 							label={ __( 'Use Gradient' ) }

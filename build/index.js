@@ -76,7 +76,6 @@ function Edit(_ref) {
   const [slideHeight_$number, setSlideHeight_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(slideHeight);
   const [verticalAlignment_$string, setVerticalAlignment_$string] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(verticalAlignment);
   const [innerContentMaxWidth_$number, setInnerContentMaxWidth_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(innerContentMaxWidth);
-  const [showBackgroundOverlay_$boolean, setShowBackgroundOverlay_$boolean] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
 
   // React state
   const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
@@ -107,7 +106,8 @@ function Edit(_ref) {
   };
   const toggleOverlay = () => {
     const shallowArr = Array.from(slideData_$array);
-    shallowArr[currentSlide_$number].overlay.enabled = !slideData_$array[currentSlide_$number].overlay.enabled;
+    let enabled = shallowArr[currentSlide_$number].overlay.enabled;
+    shallowArr[currentSlide_$number].overlay.enabled = !enabled;
     setSlideData_$array(shallowArr);
     setAttributes({
       slideData: slideData_$array
@@ -332,9 +332,9 @@ function Edit(_ref) {
       className: "slide-overlay-container"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Use Overlay'),
-      checked: showBackgroundOverlay_$boolean,
+      checked: slideData_$array[currentSlide_$number].overlay.enabled,
       onChange: () => toggleOverlay()
-    }), showBackgroundOverlay_$boolean && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    }), slideData_$array[currentSlide_$number].overlay.enabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
       className: "block-inspector-overlay-settings-inner"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Use Gradient'),
@@ -344,7 +344,7 @@ function Edit(_ref) {
       className: "gradient-direction"
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h3", {
       className: "components-base-control__label"
-    }, "Gradient Direction"), createGradientDirectionButtons()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Direction')), createGradientDirectionButtons()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color start'),
       className: "slide-background-color-picker",
       color: slideData_$array[currentSlide_$number].overlay["color1"],
@@ -377,7 +377,7 @@ function Edit(_ref) {
     style: wordpressBlockCarouselStyles
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.InspectorControls, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h2", {
     className: "block-carousel-section-title"
-  }, "Block Carousel Settings"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Panel, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Block Carousel Settings')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.Panel, {
     className: "block-carousel-inspector-panel"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
     className: "block-carousel-inspector-panel-inner"
@@ -409,7 +409,7 @@ function Edit(_ref) {
     className: "block-carousel-inspector-panel-inner"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h3", {
     className: "block-editor-block-card__title"
-  }, "Slide index button color"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide index button color')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
     color: indexBtnColor_$string,
     onChange: color => setIndexBtnColor_$string(color),
     enableAlpha: true,
@@ -418,7 +418,7 @@ function Edit(_ref) {
     className: "block-carousel-inspector-panel"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h2", {
     className: "block-carousel-section-title"
-  }, "Current Slide Settings"), createSlidePanels())), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Current Slide Settings')), createSlidePanels())), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
     className: "slide",
     style: slideStyles
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_5__.BlockControls, {
@@ -442,7 +442,7 @@ function Edit(_ref) {
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
     className: `wp-car-btn block-inspector-background-color-picker-toggle ${showSlideBackgroundColorPicker_$boolean && "toggled"}`,
     onClick: () => setShowSlideBackgroundColorPicker_$boolean(!showSlideBackgroundColorPicker_$boolean)
-  }, "Background Color"), showSlideBackgroundColorPicker_$boolean && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+  }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Background Color')), showSlideBackgroundColorPicker_$boolean && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide background color'),
     className: "slide-background-color-picker",
     color: slideData_$array[currentSlide_$number].backgroundColor,
