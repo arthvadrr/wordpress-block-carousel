@@ -370,42 +370,56 @@ export default function Edit({ attributes, setAttributes }) {
 									onChange={ () => toggleOverlay() }
 								/>
 				{ slideData_$array[currentSlide_$number].overlay.enabled &&
-					<div className="block-inspector-overlay-settings-inner">
+					<>
 						<ToggleControl
-							label={ __( 'Use Gradient' ) }
-							checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
-							onChange={ () => toggleGradientPicker() }
+									label={ __( 'Use Gradient' ) }
+									checked={ slideData_$array[currentSlide_$number].overlay.isGradient }
+									onChange={ () => toggleGradientPicker() }
 						/>
-
-						{ slideData_$array[currentSlide_$number].overlay.isGradient &&
-							<div className="gradient-direction">
-								<h3 className="components-base-control__label">{__('Gradient Direction')}</h3>
-								{createGradientDirectionButtons()}
-							</div>
-						}
-						<ColorPicker
-							label={ __('Slide overlay color start') }
-							className={"slide-background-color-picker"}
-							color={ slideData_$array[currentSlide_$number].overlay["color1"]}
-							onChange={ color => setOverlayColor(color, "color1")}
-							defaultValue={slideData_$array[currentSlide_$number].overlay["color1"]}
-							enableAlpha
-						/>
-
-						{
-							slideData_$array[currentSlide_$number].overlay.isGradient && 
+						<div className="block-inspector-overlay-settings-inner">
+							{ slideData_$array[currentSlide_$number].overlay.isGradient &&
 							<>
-								<ColorPicker
-									label={ __('Slide overlay color end') }
-									className={"slide-background-color-picker"}
-									color={ slideData_$array[currentSlide_$number].overlay["color2"]}
-									onChange={ color => setOverlayColor(color, "color2")}
-									defaultValue={slideData_$array[currentSlide_$number].overlay["color2"]}
-									enableAlpha
-								/>
+								<h3 className="components-base-control__label">{__('Gradient Direction')}</h3>
+								<div className="gradient-direction">
+									{createGradientDirectionButtons()}
+								</div>
+								<label 
+								className="wpbc-inspector-label components-base-control__label"
+								for="wpbc-slide-overlay-start-color"
+								>{__('Gradient Start Color')}</label>
 							</>
-						}
-					</div>
+							}
+							<ColorPicker
+								label={ __('Slide overlay color start') }
+								className={"slide-background-color-picker"}
+								color={ slideData_$array[currentSlide_$number].overlay["color1"]}
+								onChange={ color => setOverlayColor(color, "color1")}
+								defaultValue={slideData_$array[currentSlide_$number].overlay["color1"]}
+								id="wpbc-slide-overlay-start-color"
+								enableAlpha
+							/>
+
+							{
+								slideData_$array[currentSlide_$number].overlay.isGradient && 
+								<>
+									
+							<label 
+								className="wpbc-inspector-label components-base-control__label"
+								for="wpbc-slide-overlay-end-color"
+							>Gradient End Color</label>
+									<ColorPicker
+										label={ __('Slide overlay color end') }
+										className={"slide-background-color-picker"}
+										color={ slideData_$array[currentSlide_$number].overlay["color2"]}
+										onChange={ color => setOverlayColor(color, "color2")}
+										defaultValue={slideData_$array[currentSlide_$number].overlay["color2"]}
+										id="wpbc-slide-overlay-end-color"
+										enableAlpha
+									/>
+								</>
+							}
+						</div>
+					</>
 				}
 				</div>								
 			</PanelBody>

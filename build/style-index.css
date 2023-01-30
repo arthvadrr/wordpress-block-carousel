@@ -27,6 +27,10 @@
   position: relative;
 }
 
+.wpbc-inspector-label {
+  margin: 10px 5px 0;
+}
+
 .slide-overlay-container {
   display: grid;
   position: relative;
@@ -43,8 +47,11 @@
   display: block;
 }
 .slide-overlay-container .block-inspector-overlay-settings-inner .gradient-direction {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas: ". . ." ". . ." ". . .";
 }
 .slide-overlay-container .block-inspector-overlay-settings-inner .gradient-direction .set-gradient-dir {
   padding: 4px;

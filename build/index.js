@@ -334,31 +334,39 @@ function Edit(_ref) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Use Overlay'),
       checked: slideData_$array[currentSlide_$number].overlay.enabled,
       onChange: () => toggleOverlay()
-    }), slideData_$array[currentSlide_$number].overlay.enabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-      className: "block-inspector-overlay-settings-inner"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+    }), slideData_$array[currentSlide_$number].overlay.enabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Use Gradient'),
       checked: slideData_$array[currentSlide_$number].overlay.isGradient,
       onChange: () => toggleGradientPicker()
-    }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-      className: "gradient-direction"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h3", {
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+      className: "block-inspector-overlay-settings-inner"
+    }, slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h3", {
       className: "components-base-control__label"
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Direction')), createGradientDirectionButtons()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Direction')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+      className: "gradient-direction"
+    }, createGradientDirectionButtons()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("label", {
+      className: "wpbc-inspector-label components-base-control__label",
+      for: "wpbc-slide-overlay-start-color"
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Start Color'))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color start'),
       className: "slide-background-color-picker",
       color: slideData_$array[currentSlide_$number].overlay["color1"],
       onChange: color => setOverlayColor(color, "color1"),
       defaultValue: slideData_$array[currentSlide_$number].overlay["color1"],
+      id: "wpbc-slide-overlay-start-color",
       enableAlpha: true
-    }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    }), slideData_$array[currentSlide_$number].overlay.isGradient && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("label", {
+      className: "wpbc-inspector-label components-base-control__label",
+      for: "wpbc-slide-overlay-end-color"
+    }, "Gradient End Color"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color end'),
       className: "slide-background-color-picker",
       color: slideData_$array[currentSlide_$number].overlay["color2"],
       onChange: color => setOverlayColor(color, "color2"),
       defaultValue: slideData_$array[currentSlide_$number].overlay["color2"],
+      id: "wpbc-slide-overlay-end-color",
       enableAlpha: true
-    }))))));
+    })))))));
   };
   const createSlideBtns = () => {
     const btnArr = [];
