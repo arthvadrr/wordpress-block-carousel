@@ -269,14 +269,14 @@ function Edit(_ref) {
     });
   };
   const createGradientDirectionButtons = () => {
-    const dirArr = [["top", "↑"], ["top right", "↗"], ["right", "→"], ["bottom", "↓"], ["bottom right", "↘"], ["bottom left", "↙"], ["left", "←"], ["top left", "↖"]];
+    const dirArr = [["top left", "↖"], ["top", "↑"], ["top right", "↗"], ["left", "←"], ["", ""], ["right", "→"], ["bottom left", "↙"], ["bottom", "↓"], ["bottom right", "↘"]];
     return dirArr.map((arr, index) => {
-      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, arr[0] !== '' && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
         key: index,
         "aria-label": `to ${arr[0]}`,
         onClick: () => updateGradientDirection(arr[0]),
         className: slideData_$array[currentSlide_$number].overlay.direction === arr[0] ? 'set-gradient-dir active' : 'set-gradient-dir'
-      }, arr[1]);
+      }, arr[1]), arr[0] === '' && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", null));
     });
   };
   const createSlidePanels = () => {
@@ -344,10 +344,12 @@ function Edit(_ref) {
       className: "components-base-control__label"
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Direction')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
       className: "gradient-direction"
-    }, createGradientDirectionButtons()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("label", {
+    }, createGradientDirectionButtons())), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+      className: "wpbc-inspector-row"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("label", {
       className: "wpbc-inspector-label components-base-control__label",
       for: "wpbc-slide-overlay-start-color"
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Start Color'))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Start Color')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color start'),
       className: "slide-background-color-picker",
       color: slideData_$array[currentSlide_$number].overlay["color1"],
@@ -366,7 +368,7 @@ function Edit(_ref) {
       defaultValue: slideData_$array[currentSlide_$number].overlay["color2"],
       id: "wpbc-slide-overlay-end-color",
       enableAlpha: true
-    })))))));
+    }))))))));
   };
   const createSlideBtns = () => {
     const btnArr = [];

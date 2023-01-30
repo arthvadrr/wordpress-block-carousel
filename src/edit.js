@@ -261,25 +261,33 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const createGradientDirectionButtons = () => {
 		const dirArr = [
+			["top left", "↖"],
 			["top", "↑"], 
 			["top right", "↗"], 
-			["right", "→"], 
-			["bottom", "↓"], 
-			["bottom right", "↘"], 
-			["bottom left", "↙"], 
 			["left", "←"], 
-			["top left", "↖"]
+			["", ""],
+			["right", "→"], 
+			["bottom left", "↙"], 
+			["bottom", "↓"], 
+			["bottom right", "↘"]
 		];
 
 		return dirArr.map((arr, index) => {
 			return (
-				<button 
-					key={index} 
-					aria-label={`to ${arr[0]}`} 
-					onClick={() => updateGradientDirection(arr[0])}
-					className={slideData_$array[currentSlide_$number].overlay.direction === arr[0] ? 'set-gradient-dir active' : 'set-gradient-dir'}
-					>{arr[1]}
-				</button>
+				<>
+					{ arr[0] !== '' && (
+					<button 
+						key={index} 
+						aria-label={`to ${arr[0]}`} 
+						onClick={() => updateGradientDirection(arr[0])}
+						className={slideData_$array[currentSlide_$number].overlay.direction === arr[0] ? 'set-gradient-dir active' : 'set-gradient-dir'}
+						>{arr[1]}
+					</button>
+					)}
+					{ arr[0] === '' && (
+						<div></div>
+					)}
+				</>
 			)
 		})
 	}
@@ -383,30 +391,28 @@ export default function Edit({ attributes, setAttributes }) {
 								<div className="gradient-direction">
 									{createGradientDirectionButtons()}
 								</div>
+							</>
+							}
+							<div className="wpbc-inspector-row">
 								<label 
 								className="wpbc-inspector-label components-base-control__label"
 								for="wpbc-slide-overlay-start-color"
 								>{__('Gradient Start Color')}</label>
-							</>
-							}
-							<ColorPicker
-								label={ __('Slide overlay color start') }
-								className={"slide-background-color-picker"}
-								color={ slideData_$array[currentSlide_$number].overlay["color1"]}
-								onChange={ color => setOverlayColor(color, "color1")}
-								defaultValue={slideData_$array[currentSlide_$number].overlay["color1"]}
-								id="wpbc-slide-overlay-start-color"
-								enableAlpha
-							/>
-
-							{
-								slideData_$array[currentSlide_$number].overlay.isGradient && 
+								<ColorPicker
+									label={ __('Slide overlay color start') }
+									className={"slide-background-color-picker"}
+									color={ slideData_$array[currentSlide_$number].overlay["color1"]}
+									onChange={ color => setOverlayColor(color, "color1")}
+									defaultValue={slideData_$array[currentSlide_$number].overlay["color1"]}
+									id="wpbc-slide-overlay-start-color"
+									enableAlpha
+								/>
+							{slideData_$array[currentSlide_$number].overlay.isGradient && 
 								<>
-									
-							<label 
-								className="wpbc-inspector-label components-base-control__label"
-								for="wpbc-slide-overlay-end-color"
-							>Gradient End Color</label>
+									<label 
+										className="wpbc-inspector-label components-base-control__label"
+										for="wpbc-slide-overlay-end-color"
+									>Gradient End Color</label>
 									<ColorPicker
 										label={ __('Slide overlay color end') }
 										className={"slide-background-color-picker"}
@@ -418,6 +424,7 @@ export default function Edit({ attributes, setAttributes }) {
 									/>
 								</>
 							}
+							</div>
 						</div>
 					</>
 				}
