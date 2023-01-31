@@ -370,6 +370,16 @@ export default function Edit({ attributes, setAttributes }) {
 								) }
 							</PanelRow>
 			</PanelBody>
+			<PanelBody title={ __( 'Background Color' ) }>
+			<ColorPicker
+								label={ __('Slide background color') }
+								className={"slide-background-color-picker"}
+								color={ slideData_$array[currentSlide_$number].backgroundColor }
+								onChange={ color => updateSlideBackgroundColor( color )} 
+								enableAlpha
+								defaultValue={indexBtnColor}
+							/>
+			</PanelBody>
 			<PanelBody title={ __( 'Overlay Settings' ) }>
 				<div className="slide-overlay-container">
 				<ToggleControl
@@ -521,26 +531,8 @@ export default function Edit({ attributes, setAttributes }) {
 							)}
 						/>					
 					</MediaUploadCheck>
-					<div 
-						className="slide-background-color-picker-container"
-					>
-						<button 
-							className={`wp-car-btn block-inspector-background-color-picker-toggle ${showSlideBackgroundColorPicker_$boolean && "toggled"}`}
-							onClick={ () => setShowSlideBackgroundColorPicker_$boolean(!showSlideBackgroundColorPicker_$boolean)}
-						>{__('Background Color')}</button>
-						{ showSlideBackgroundColorPicker_$boolean &&
-							<ColorPicker
-								label={ __('Slide background color') }
-								className={"slide-background-color-picker"}
-								color={ slideData_$array[currentSlide_$number].backgroundColor }
-								onChange={ color => updateSlideBackgroundColor( color )} 
-								enableAlpha
-								defaultValue={indexBtnColor}
-							/>
-						}
-					</div>
 				</BlockControls>
-				<div className="slide-overlay-container" style={ overlayStyles }>
+				<div className="slide-overlay-container" style={ slideData_$array[currentSlide_$number].overlay.enabled ?overlayStyles: {} }>
 					<div className="slide-content">
 						<div 
 							className="slide-content-inner"  

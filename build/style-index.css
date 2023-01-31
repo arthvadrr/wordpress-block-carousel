@@ -65,10 +65,6 @@
   background-color: #007CBA;
   color: #ffffff;
 }
-.slide-overlay-container .slide-background-color-picker {
-  margin: 0 5px;
-  border: 1px solid #1E1E1E;
-}
 .slide-overlay-container .components-toggle-control {
   width: 210px;
 }
