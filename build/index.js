@@ -245,10 +245,9 @@ function Edit(_ref) {
   };
   const wordpressBlockCarouselStyles = {
     height: `${slideHeight_$number}vh`,
-    backgroundColor: slideData_$array[currentSlide_$number].backgroundColor
+    backgroundColor: slideData_$array[currentSlide_$number].useBackgroundColor ? slideData_$array[currentSlide_$number].backgroundColor : 'transparent'
   };
   const overlayStyles = {
-    backgroundColor: slideData_$array[currentSlide_$number].overlay["color1"],
     backgroundImage: slideData_$array[currentSlide_$number].overlay.isGradient ? `linear-gradient(to ${slideData_$array[currentSlide_$number].overlay.direction}, ${slideData_$array[currentSlide_$number].overlay["color1"]}, ${slideData_$array[currentSlide_$number].overlay["color2"]}` : ''
   };
   const slideStyles = {
