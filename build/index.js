@@ -344,12 +344,10 @@ function Edit(_ref) {
       className: "components-base-control__label"
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Direction')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
       className: "gradient-direction"
-    }, createGradientDirectionButtons())), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-      className: "wpbc-inspector-row"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("label", {
+    }, createGradientDirectionButtons()), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("label", {
       className: "wpbc-inspector-label components-base-control__label",
       for: "wpbc-slide-overlay-start-color"
-    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Start Color')), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Gradient Start Color'))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide overlay color start'),
       className: "slide-background-color-picker",
       color: slideData_$array[currentSlide_$number].overlay["color1"],
@@ -368,7 +366,7 @@ function Edit(_ref) {
       defaultValue: slideData_$array[currentSlide_$number].overlay["color2"],
       id: "wpbc-slide-overlay-end-color",
       enableAlpha: true
-    }))))))));
+    })))))));
   };
   const createSlideBtns = () => {
     const btnArr = [];

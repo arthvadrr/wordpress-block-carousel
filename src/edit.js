@@ -391,13 +391,12 @@ export default function Edit({ attributes, setAttributes }) {
 								<div className="gradient-direction">
 									{createGradientDirectionButtons()}
 								</div>
-							</>
-							}
-							<div className="wpbc-inspector-row">
 								<label 
 								className="wpbc-inspector-label components-base-control__label"
 								for="wpbc-slide-overlay-start-color"
 								>{__('Gradient Start Color')}</label>
+							</>
+							}
 								<ColorPicker
 									label={ __('Slide overlay color start') }
 									className={"slide-background-color-picker"}
@@ -424,7 +423,6 @@ export default function Edit({ attributes, setAttributes }) {
 									/>
 								</>
 							}
-							</div>
 						</div>
 					</>
 				}
