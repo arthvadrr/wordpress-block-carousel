@@ -72,9 +72,6 @@ export default function Edit({ attributes, setAttributes }) {
 	const [slideHeight_$number, setSlideHeight_$number] = useState(slideHeight);
 	const [verticalAlignment_$string, setVerticalAlignment_$string] = useState(verticalAlignment);
 	const [innerContentMaxWidth_$number, setInnerContentMaxWidth_$number] = useState(innerContentMaxWidth);
-	
-	// React state
-	const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = useState(false);
 
 	useEffect(() => {
 		setAttributes({slideData: slideData_$array});
@@ -116,6 +113,14 @@ export default function Edit({ attributes, setAttributes }) {
 		shallowArr[currentSlide_$number].overlay[pos] = color;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array});
+	}
+
+	const toggleUseBackgroundColor = () => {
+		const shallowArr = Array.from(slideData_$array);
+		const useBackgroundColor = shallowArr[currentSlide_$number].useBackgroundColor;
+		shallowArr[currentSlide_$number].useBackgroundColor = !useBackgroundColor;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array})
 	}
 
 	const toggleParallax = () => {
@@ -171,6 +176,7 @@ export default function Edit({ attributes, setAttributes }) {
 					"padding": 0,
 					"reversed": false 
 				},
+				"useBackgroundColor": false,
 				"backgroundColor": "#ffffff",
 				"backgroundImageUrl": "",
 				"backgroundSizeContain": false,
@@ -371,14 +377,21 @@ export default function Edit({ attributes, setAttributes }) {
 							</PanelRow>
 			</PanelBody>
 			<PanelBody title={ __( 'Background Color' ) }>
-			<ColorPicker
-								label={ __('Slide background color') }
-								className={"slide-background-color-picker"}
-								color={ slideData_$array[currentSlide_$number].backgroundColor }
-								onChange={ color => updateSlideBackgroundColor( color )} 
-								enableAlpha
-								defaultValue={indexBtnColor}
-							/>
+				<ToggleControl
+					label={ __( 'Use Background Color' ) }
+					checked={ slideData_$array[currentSlide_$number].useBackgroundColor }
+					onChange={ () => toggleUseBackgroundColor() }
+				/>
+				{ slideData_$array[currentSlide_$number].useBackgroundColor &&
+					<ColorPicker
+						label={ __('Slide background color') }
+						className={"slide-background-color-picker"}
+						color={ slideData_$array[currentSlide_$number].backgroundColor }
+						onChange={ color => updateSlideBackgroundColor( color )} 
+						enableAlpha
+						defaultValue={indexBtnColor}
+					/>
+				}
 			</PanelBody>
 			<PanelBody title={ __( 'Overlay Settings' ) }>
 				<div className="slide-overlay-container">

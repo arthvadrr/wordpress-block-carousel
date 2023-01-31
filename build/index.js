@@ -76,9 +76,6 @@ function Edit(_ref) {
   const [slideHeight_$number, setSlideHeight_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(slideHeight);
   const [verticalAlignment_$string, setVerticalAlignment_$string] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(verticalAlignment);
   const [innerContentMaxWidth_$number, setInnerContentMaxWidth_$number] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(innerContentMaxWidth);
-
-  // React state
-  const [showSlideBackgroundColorPicker_$boolean, setShowSlideBackgroundColorPicker_$boolean] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(false);
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
     setAttributes({
       slideData: slideData_$array
@@ -125,6 +122,15 @@ function Edit(_ref) {
   const setOverlayColor = (color, pos) => {
     const shallowArr = Array.from(slideData_$array);
     shallowArr[currentSlide_$number].overlay[pos] = color;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
+  const toggleUseBackgroundColor = () => {
+    const shallowArr = Array.from(slideData_$array);
+    const useBackgroundColor = shallowArr[currentSlide_$number].useBackgroundColor;
+    shallowArr[currentSlide_$number].useBackgroundColor = !useBackgroundColor;
     setSlideData_$array(shallowArr);
     setAttributes({
       slideData: slideData_$array
@@ -183,6 +189,7 @@ function Edit(_ref) {
           "padding": 0,
           "reversed": false
         },
+        "useBackgroundColor": false,
         "backgroundColor": "#ffffff",
         "backgroundImageUrl": "",
         "backgroundSizeContain": false,
@@ -328,7 +335,11 @@ function Edit(_ref) {
       onClick: () => updateSlideBackgroundImageUrl("")
     }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Clear Media')))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.PanelBody, {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Background Color')
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ToggleControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Use Background Color'),
+      checked: slideData_$array[currentSlide_$number].useBackgroundColor,
+      onChange: () => toggleUseBackgroundColor()
+    }), slideData_$array[currentSlide_$number].useBackgroundColor && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.ColorPicker, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Slide background color'),
       className: "slide-background-color-picker",
       color: slideData_$array[currentSlide_$number].backgroundColor,
@@ -665,7 +676,7 @@ function _extends() {
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"content":""},"subtitle":{"enabled":false,"content":""},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"enabled":false,"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"content":""},"subtitle":{"enabled":false,"content":""},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"useBackgroundColor":false,"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"enabled":false,"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 
