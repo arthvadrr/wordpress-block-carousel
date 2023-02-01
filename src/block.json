@@ -14,6 +14,7 @@
 				{
 					"title" : {
 						"enabled": true,
+						"headingLevel": "h2",
 						"content": ""
 					},
 					"subtitle" : {

@@ -20,8 +20,6 @@ X. When an image is selected, "Choose image" should say "replace"
 */ 
 import { __ } from '@wordpress/i18n';
 
-import { select } from '@wordpress/data';
-
 import {
 	Button, 
 	RangeControl,
@@ -29,10 +27,12 @@ import {
 	PanelBody,
 	PanelRow,
 	TextareaControl,
+	TextControl,
 	ExternalLink,
 	FocalPointPicker,
 	ToggleControl,
-	ColorPicker
+	ColorPicker,
+	SelectControl
 } from '@wordpress/components';
 
 import { 
@@ -53,6 +53,7 @@ import {
 import './editor.scss';
 
 const ALLOWED_MEDIA_TYPES = ['image'];
+
 export default function Edit({ attributes, setAttributes }) {
 	const { 
 		slideData, 
@@ -90,6 +91,28 @@ export default function Edit({ attributes, setAttributes }) {
 		shallowArr[currentSlide_$number].backgroundImageAltText = newAltText;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array})
+	}
+
+	const setSlideTitle = ( value ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].title.content = value;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const setTitleHeadingLevel = ( value ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].title.headingLevel = value;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const toggleTitle = () => {
+		const shallowArr = Array.from(slideData_$array);
+		let enabled = shallowArr[currentSlide_$number].title.enabled;
+		shallowArr[currentSlide_$number].title.enabled = !enabled;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
 	}
 
 	const toggleOverlay = () => {
@@ -301,6 +324,37 @@ export default function Edit({ attributes, setAttributes }) {
 		return (
 			<Fragment>
 				<PanelBody title={ __( 'Media settings' ) }>
+				<ToggleControl
+						label={ __( 'Title' ) }
+						checked={ slideData_$array[currentSlide_$number].title.enabled }
+						onChange={ () => toggleTitle() }
+					/>
+				{ slideData_$array[currentSlide_$number].title.enabled &&
+					<>
+						<TextControl
+							label="Slide Title"
+							value={ slideData_$array[currentSlide_$number].title.content }
+							onChange={ ( value ) => setSlideTitle( value ) }
+						>
+						</TextControl>
+						<SelectControl
+							label="Heading Level"
+							value={ slideData_$array[currentSlide_$number].title.headingLevel }
+							options={ [
+									{ label: 'H1', value: 'h1' },
+									{ label: 'H2', value: 'h2' },
+									{ label: 'H3', value: 'h3' },
+									{ label: 'H4', value: 'h4' },
+									{ label: 'H5', value: 'h5' },
+									{ label: 'H6', value: 'h6' },
+							] }
+							onChange={ ( value ) => setTitleHeadingLevel( value ) }
+							>
+						</SelectControl>
+					</>
+				}
+				</PanelBody>				
+				<PanelBody title={ __( 'Media settings' ) }>
 				{ !! slideData_$array[currentSlide_$number].backgroundImageUrl && (
 					<Fragment>
 								<Panel>
@@ -454,6 +508,15 @@ export default function Edit({ attributes, setAttributes }) {
 		);
 	}
 
+	const createInnerBlocks = () => {
+		const HeadingLevel = slideData_$array[currentSlide_$number].title.headingLevel;
+		const Title = slideData_$array[currentSlide_$number].title.content;
+
+		return (
+			<HeadingLevel>{ __(Title) }</HeadingLevel>
+		)
+	}
+
 	const createSlideBtns = () => {
 		const btnArr = [];
 		
@@ -550,7 +613,7 @@ export default function Edit({ attributes, setAttributes }) {
 							className="slide-content-inner"  
 							style={ slideContentInnerStyles }
 						>
-							TODO insert pre-defined blocks
+							{ createInnerBlocks() }
 						</div>
 					</div>
 					<div className="slide-btn-container">
