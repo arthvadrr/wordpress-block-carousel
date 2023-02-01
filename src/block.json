@@ -14,11 +14,12 @@
 				{
 					"title" : {
 						"enabled": true,
-						"headingLevel": "h2",
+						"tagname": "h2",
 						"content": ""
 					},
 					"subtitle" : {
 						"enabled": false,
+						"tagname": "p",
 						"content": ""
 					},
 					"slideInnerBlock": {

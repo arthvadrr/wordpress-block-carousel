@@ -100,9 +100,23 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({slideData: slideData_$array});
 	}
 
+	const setSlideSubtitle = ( value ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].subtitle.content = value;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const setSubtitleTagname = ( value ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].subtitle.tagname = value;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
 	const setTitleHeadingLevel = ( value ) => {
 		const shallowArr = Array.from(slideData_$array);
-		shallowArr[currentSlide_$number].title.headingLevel = value;
+		shallowArr[currentSlide_$number].title.tagname = value;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array});
 	}
@@ -111,6 +125,14 @@ export default function Edit({ attributes, setAttributes }) {
 		const shallowArr = Array.from(slideData_$array);
 		let enabled = shallowArr[currentSlide_$number].title.enabled;
 		shallowArr[currentSlide_$number].title.enabled = !enabled;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const toggleSubtitle = () => {
+		const shallowArr = Array.from(slideData_$array);
+		let enabled = shallowArr[currentSlide_$number].subtitle.enabled;
+		shallowArr[currentSlide_$number].subtitle.enabled = !enabled;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array});
 	}
@@ -188,10 +210,12 @@ export default function Edit({ attributes, setAttributes }) {
 			for (let i = 0; i < diff; i++) shallowArr.push({
 				"title" : {
 					"enabled": true,
+					"tagname": "h2",
 					"content": ""
 				},
 				"subtitle" : {
 					"enabled": false,
+					"tagname": "p",
 					"content": ""
 				},
 				"slideInnerBlock": {
@@ -325,10 +349,10 @@ export default function Edit({ attributes, setAttributes }) {
 			<Fragment>
 				<PanelBody title={ __( 'Media settings' ) }>
 				<ToggleControl
-						label={ __( 'Title' ) }
-						checked={ slideData_$array[currentSlide_$number].title.enabled }
-						onChange={ () => toggleTitle() }
-					/>
+					label={ __( 'Title' ) }
+					checked={ slideData_$array[currentSlide_$number].title.enabled }
+					onChange={ () => toggleTitle() }
+				/>
 				{ slideData_$array[currentSlide_$number].title.enabled &&
 					<>
 						<TextControl
@@ -339,7 +363,7 @@ export default function Edit({ attributes, setAttributes }) {
 						</TextControl>
 						<SelectControl
 							label="Heading Level"
-							value={ slideData_$array[currentSlide_$number].title.headingLevel }
+							value={ slideData_$array[currentSlide_$number].title.tagname }
 							options={ [
 									{ label: 'H1', value: 'h1' },
 									{ label: 'H2', value: 'h2' },
@@ -348,7 +372,35 @@ export default function Edit({ attributes, setAttributes }) {
 									{ label: 'H5', value: 'h5' },
 									{ label: 'H6', value: 'h6' },
 							] }
-							onChange={ ( value ) => setTitleHeadingLevel( value ) }
+							onChange={ ( tagname ) => setTitleHeadingLevel( tagname ) }
+							>
+						</SelectControl>
+					</>
+				}
+				<ToggleControl
+					label={ __( 'Subtitle' ) }
+					checked={ slideData_$array[currentSlide_$number].subtitle.enabled }
+					onChange={ () => toggleSubtitle() }
+				/>
+				{ slideData_$array[currentSlide_$number].subtitle.enabled &&
+					<>
+						<TextControl
+							label={__("Slide Subtitle")}
+							value={ slideData_$array[currentSlide_$number].subtitle.content }
+							onChange={ ( value ) => setSlideSubtitle( value ) }
+						>
+						</TextControl>
+						<SelectControl
+							label={__("HTML Element")}
+							value={ slideData_$array[currentSlide_$number].subtitle.tagname }
+							options={ [
+									{ label: '<p>', value: 'p' },
+									{ label: '<div>', value: 'div' },
+									{ label: '<small>', value: 'small' },
+									{ label: '<strong>', value: 'strong' },
+									{ label: '<b>', value: 'b' },
+							] }
+							onChange={ ( value ) => setSubtitleTagname( value ) }
 							>
 						</SelectControl>
 					</>
@@ -509,11 +561,25 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	const createInnerBlocks = () => {
-		const HeadingLevel = slideData_$array[currentSlide_$number].title.headingLevel;
+		const TitleEnabled = slideData_$array[currentSlide_$number].title.enabled;
 		const Title = slideData_$array[currentSlide_$number].title.content;
+		const TitleTagName = slideData_$array[currentSlide_$number].title.tagname;
+
+		const SubtitleEnabled = slideData_$array[currentSlide_$number].subtitle.enabled;
+		const Subtitle = slideData_$array[currentSlide_$number].subtitle.content;
+		const SubtitleTagName = slideData_$array[currentSlide_$number].subtitle.tagname;
 
 		return (
-			<HeadingLevel>{ __(Title) }</HeadingLevel>
+			<>
+				{ TitleEnabled && (
+						<TitleTagName>{ __(Title) }</TitleTagName>
+					) 
+				}
+				{ SubtitleEnabled && (
+						<SubtitleTagName>{ __(Subtitle) }</SubtitleTagName>
+					) 
+				}
+			</>
 		)
 	}
 
