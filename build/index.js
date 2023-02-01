@@ -106,6 +106,22 @@ function Edit(_ref) {
       slideData: slideData_$array
     });
   };
+  const setTitleFontSize = value => {
+    const shallowArr = Array.from(slideData_$array);
+    shallowArr[currentSlide_$number].title.fontSize = value;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
+  const setSubtitleFontSize = value => {
+    const shallowArr = Array.from(slideData_$array);
+    shallowArr[currentSlide_$number].subtitle.fontSize = value;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
   const setSlideSubtitle = value => {
     const shallowArr = Array.from(slideData_$array);
     shallowArr[currentSlide_$number].subtitle.content = value;
@@ -226,11 +242,13 @@ function Edit(_ref) {
         "title": {
           "enabled": true,
           "tagname": "h2",
+          "fontSize": "inherit",
           "content": ""
         },
         "subtitle": {
           "enabled": false,
           "tagname": "p",
+          "fontSize": "inherit",
           "content": ""
         },
         "slideInnerBlock": {
@@ -368,6 +386,10 @@ function Edit(_ref) {
         value: 'h6'
       }],
       onChange: tagname => setTitleHeadingLevel(tagname)
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.__experimentalUnitControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Size'),
+      value: slideData_$array[currentSlide_$number].title.fontSize,
+      onChange: value => setTitleFontSize(value)
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Subtitle'),
       checked: slideData_$array[currentSlide_$number].subtitle.enabled,
@@ -396,6 +418,10 @@ function Edit(_ref) {
         value: 'b'
       }],
       onChange: value => setSubtitleTagname(value)
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.__experimentalUnitControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Font Size"),
+      value: slideData_$array[currentSlide_$number].subtitle.fontSize,
+      onChange: value => setSubtitleFontSize(value)
     }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Media settings')
     }, !!slideData_$array[currentSlide_$number].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
@@ -498,13 +524,29 @@ function Edit(_ref) {
     })))))));
   };
   const createInnerBlocks = () => {
-    const TitleEnabled = slideData_$array[currentSlide_$number].title.enabled;
-    const Title = slideData_$array[currentSlide_$number].title.content;
-    const TitleTagName = slideData_$array[currentSlide_$number].title.tagname;
-    const SubtitleEnabled = slideData_$array[currentSlide_$number].subtitle.enabled;
-    const Subtitle = slideData_$array[currentSlide_$number].subtitle.content;
-    const SubtitleTagName = slideData_$array[currentSlide_$number].subtitle.tagname;
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, TitleEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(TitleTagName, null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)(Title)), SubtitleEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(SubtitleTagName, null, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)(Subtitle)));
+    const {
+      enabled: TitleEnabled,
+      content: Title,
+      tagname: TitleTagName,
+      fontSize: TitleFontSize
+    } = slideData_$array[currentSlide_$number].title;
+    const {
+      enabled: SubtitleEnabled,
+      content: Subtitle,
+      tagname: SubtitleTagName,
+      fontSize: SubtitleFontSize
+    } = slideData_$array[currentSlide_$number].subtitle;
+    const TitleStyles = {
+      fontSize: TitleFontSize
+    };
+    const SubtitleStyles = {
+      fontSize: SubtitleFontSize
+    };
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, TitleEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(TitleTagName, {
+      style: TitleStyles
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)(Title)), SubtitleEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(SubtitleTagName, {
+      style: SubtitleStyles
+    }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)(Subtitle)));
   };
   const createSlideBtns = () => {
     const btnArr = [];
@@ -784,7 +826,7 @@ function _extends() {
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"tagname":"h2","content":""},"subtitle":{"enabled":false,"tagname":"p","content":""},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"useBackgroundColor":false,"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"enabled":false,"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"tagname":"h2","fontSize":"inherit","content":""},"subtitle":{"enabled":false,"tagname":"p","fontSize":"inherit","content":""},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"useBackgroundColor":false,"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"enabled":false,"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

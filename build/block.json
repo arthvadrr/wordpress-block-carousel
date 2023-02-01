@@ -15,11 +15,13 @@
           "title": {
             "enabled": true,
             "tagname": "h2",
+            "fontSize": "inherit",
             "content": ""
           },
           "subtitle": {
             "enabled": false,
             "tagname": "p",
+            "fontSize": "inherit",
             "content": ""
           },
           "slideInnerBlock": {

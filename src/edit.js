@@ -32,7 +32,8 @@ import {
 	FocalPointPicker,
 	ToggleControl,
 	ColorPicker,
-	SelectControl
+	SelectControl,
+	__experimentalUnitControl as UnitControl
 } from '@wordpress/components';
 
 import { 
@@ -96,6 +97,20 @@ export default function Edit({ attributes, setAttributes }) {
 	const setSlideTitle = ( value ) => {
 		const shallowArr = Array.from(slideData_$array);
 		shallowArr[currentSlide_$number].title.content = value;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const setTitleFontSize = ( value ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].title.fontSize = value;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const setSubtitleFontSize = ( value ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].subtitle.fontSize = value;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array});
 	}
@@ -211,11 +226,13 @@ export default function Edit({ attributes, setAttributes }) {
 				"title" : {
 					"enabled": true,
 					"tagname": "h2",
+					"fontSize": "inherit",
 					"content": ""
 				},
 				"subtitle" : {
 					"enabled": false,
 					"tagname": "p",
+					"fontSize": "inherit",
 					"content": ""
 				},
 				"slideInnerBlock": {
@@ -375,6 +392,11 @@ export default function Edit({ attributes, setAttributes }) {
 							onChange={ ( tagname ) => setTitleHeadingLevel( tagname ) }
 							>
 						</SelectControl>
+						<UnitControl
+							label={ __('Font Size') }
+							value={ slideData_$array[currentSlide_$number].title.fontSize}
+							onChange={ value => setTitleFontSize( value )}
+						></UnitControl>
 					</>
 				}
 				<ToggleControl
@@ -403,6 +425,12 @@ export default function Edit({ attributes, setAttributes }) {
 							onChange={ ( value ) => setSubtitleTagname( value ) }
 							>
 						</SelectControl>
+						<UnitControl
+							label={ __("Font Size") }
+							value={ slideData_$array[currentSlide_$number].subtitle.fontSize}
+							onChange={ value => setSubtitleFontSize( value )}
+						>
+						</UnitControl>
 					</>
 				}
 				</PanelBody>				
@@ -561,22 +589,36 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	const createInnerBlocks = () => {
-		const TitleEnabled = slideData_$array[currentSlide_$number].title.enabled;
-		const Title = slideData_$array[currentSlide_$number].title.content;
-		const TitleTagName = slideData_$array[currentSlide_$number].title.tagname;
+		const { 
+			enabled:  TitleEnabled,
+			content:  Title,
+			tagname:  TitleTagName,
+			fontSize: TitleFontSize
+		} = slideData_$array[currentSlide_$number].title
 
-		const SubtitleEnabled = slideData_$array[currentSlide_$number].subtitle.enabled;
-		const Subtitle = slideData_$array[currentSlide_$number].subtitle.content;
-		const SubtitleTagName = slideData_$array[currentSlide_$number].subtitle.tagname;
+		const { 
+			enabled:  SubtitleEnabled,
+			content:  Subtitle,
+			tagname:  SubtitleTagName,
+			fontSize: SubtitleFontSize
+		} = slideData_$array[currentSlide_$number].subtitle
+
+		const TitleStyles = {
+			fontSize: TitleFontSize
+		};
+
+		const SubtitleStyles = {
+			fontSize: SubtitleFontSize
+		}
 
 		return (
 			<>
 				{ TitleEnabled && (
-						<TitleTagName>{ __(Title) }</TitleTagName>
+						<TitleTagName style={TitleStyles}>{ __(Title) }</TitleTagName>
 					) 
 				}
 				{ SubtitleEnabled && (
-						<SubtitleTagName>{ __(Subtitle) }</SubtitleTagName>
+						<SubtitleTagName style={SubtitleStyles}>{ __(Subtitle) }</SubtitleTagName>
 					) 
 				}
 			</>
