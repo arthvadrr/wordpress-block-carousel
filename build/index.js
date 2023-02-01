@@ -114,6 +114,22 @@ function Edit(_ref) {
       slideData: slideData_$array
     });
   };
+  const setTitleTextAlign = value => {
+    const shallowArr = Array.from(slideData_$array);
+    shallowArr[currentSlide_$number].title.align = value;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
+  const setSubtitleTextAlign = value => {
+    const shallowArr = Array.from(slideData_$array);
+    shallowArr[currentSlide_$number].subtitle.align = value;
+    setSlideData_$array(shallowArr);
+    setAttributes({
+      slideData: slideData_$array
+    });
+  };
   const setSubtitleFontSize = value => {
     const shallowArr = Array.from(slideData_$array);
     shallowArr[currentSlide_$number].subtitle.fontSize = value;
@@ -243,13 +259,15 @@ function Edit(_ref) {
           "enabled": true,
           "tagname": "h2",
           "fontSize": "inherit",
-          "content": ""
+          "content": "",
+          "align": "start"
         },
         "subtitle": {
           "enabled": false,
           "tagname": "p",
           "fontSize": "inherit",
-          "content": ""
+          "content": "",
+          "align": "start"
         },
         "slideInnerBlock": {
           "margin": 0,
@@ -352,6 +370,29 @@ function Edit(_ref) {
       }, arr[1]), arr[0] === '' && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", null));
     });
   };
+  const AlignButtonGroup = _ref2 => {
+    let {
+      align,
+      setTextAlign
+    } = _ref2;
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ButtonGroup, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      varient: "primary",
+      isPressed: align === "start",
+      onClick: () => setTextAlign("start")
+    }, "None"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      varient: "primary",
+      isPressed: align === "left",
+      onClick: () => setTextAlign("left")
+    }, "Left"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      varient: "primary",
+      isPressed: align === "center",
+      onClick: () => setTextAlign("center")
+    }, "center"), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
+      varient: "primary",
+      isPressed: align === "right",
+      onClick: () => setTextAlign("right")
+    }, "Right"));
+  };
   const createSlidePanels = () => {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Media settings')
@@ -390,6 +431,9 @@ function Edit(_ref) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Size'),
       value: slideData_$array[currentSlide_$number].title.fontSize,
       onChange: value => setTitleFontSize(value)
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(AlignButtonGroup, {
+      align: slideData_$array[currentSlide_$number].title.align,
+      setTextAlign: setTitleTextAlign
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Subtitle'),
       checked: slideData_$array[currentSlide_$number].subtitle.enabled,
@@ -422,6 +466,9 @@ function Edit(_ref) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Font Size"),
       value: slideData_$array[currentSlide_$number].subtitle.fontSize,
       onChange: value => setSubtitleFontSize(value)
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(AlignButtonGroup, {
+      align: slideData_$array[currentSlide_$number].subtitle.align,
+      setTextAlign: setSubtitleTextAlign
     }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
       title: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Media settings')
     }, !!slideData_$array[currentSlide_$number].backgroundImageUrl && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Panel, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.ToggleControl, {
@@ -452,10 +499,10 @@ function Edit(_ref) {
       }, (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Describe the purpose of the image')), (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Leave empty if the image is purely decorative.'))
     })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelRow, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUpload, {
       onSelect: media => updateSlideBackgroundImageUrl(media.url),
-      render: _ref2 => {
+      render: _ref3 => {
         let {
           open
-        } = _ref2;
+        } = _ref3;
         return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Button, {
           onClick: open,
           variant: "secondary",
@@ -528,19 +575,23 @@ function Edit(_ref) {
       enabled: TitleEnabled,
       content: Title,
       tagname: TitleTagName,
-      fontSize: TitleFontSize
+      fontSize: TitleFontSize,
+      align: TitleAlign
     } = slideData_$array[currentSlide_$number].title;
     const {
       enabled: SubtitleEnabled,
       content: Subtitle,
       tagname: SubtitleTagName,
-      fontSize: SubtitleFontSize
+      fontSize: SubtitleFontSize,
+      align: SubtitleAlign
     } = slideData_$array[currentSlide_$number].subtitle;
     const TitleStyles = {
-      fontSize: TitleFontSize
+      fontSize: TitleFontSize,
+      textAlign: TitleAlign
     };
     const SubtitleStyles = {
-      fontSize: SubtitleFontSize
+      fontSize: SubtitleFontSize,
+      textAlign: SubtitleAlign
     };
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, TitleEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(TitleTagName, {
       style: TitleStyles
@@ -616,10 +667,10 @@ function Edit(_ref) {
     value: verticalAlignment_$string
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUploadCheck, null, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_4__.MediaUpload, {
     onSelect: media => updateSlideBackgroundImageUrl(media.url),
-    render: _ref3 => {
+    render: _ref4 => {
       let {
         open
-      } = _ref3;
+      } = _ref4;
       return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
         onClick: open,
         className: "wp-car-btn"
@@ -826,7 +877,7 @@ function _extends() {
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"tagname":"h2","fontSize":"inherit","content":""},"subtitle":{"enabled":false,"tagname":"p","fontSize":"inherit","content":""},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"useBackgroundColor":false,"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"enabled":false,"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"tagname":"h2","fontSize":"inherit","content":"","align":"start"},"subtitle":{"enabled":false,"tagname":"p","fontSize":"inherit","content":"","align":"start"},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"useBackgroundColor":false,"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"enabled":false,"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

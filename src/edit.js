@@ -21,7 +21,8 @@ X. When an image is selected, "Choose image" should say "replace"
 import { __ } from '@wordpress/i18n';
 
 import {
-	Button, 
+	Button,
+	ButtonGroup, 
 	RangeControl,
 	Panel,
 	PanelBody,
@@ -104,6 +105,20 @@ export default function Edit({ attributes, setAttributes }) {
 	const setTitleFontSize = ( value ) => {
 		const shallowArr = Array.from(slideData_$array);
 		shallowArr[currentSlide_$number].title.fontSize = value;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const setTitleTextAlign = ( value ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].title.align = value;
+		setSlideData_$array(shallowArr);
+		setAttributes({slideData: slideData_$array});
+	}
+
+	const setSubtitleTextAlign = ( value ) => {
+		const shallowArr = Array.from(slideData_$array);
+		shallowArr[currentSlide_$number].subtitle.align = value;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array});
 	}
@@ -227,13 +242,15 @@ export default function Edit({ attributes, setAttributes }) {
 					"enabled": true,
 					"tagname": "h2",
 					"fontSize": "inherit",
-					"content": ""
+					"content": "",
+					"align": "start"
 				},
 				"subtitle" : {
 					"enabled": false,
 					"tagname": "p",
 					"fontSize": "inherit",
-					"content": ""
+					"content": "",
+					"align": "start"
 				},
 				"slideInnerBlock": {
 					"margin": 0,
@@ -361,6 +378,33 @@ export default function Edit({ attributes, setAttributes }) {
 		})
 	}
 
+	const AlignButtonGroup = ( {align, setTextAlign} ) => {
+		return (
+			<ButtonGroup>
+				<Button 
+					varient="primary"
+					isPressed={align === "start"}
+					onClick={() => setTextAlign("start") }
+				>None</Button>
+				<Button 
+					varient="primary"
+					isPressed={align === "left"}
+					onClick={() => setTextAlign("left") }
+				>Left</Button>
+				<Button 
+					varient="primary"
+					isPressed={align === "center"}
+					onClick={() => setTextAlign("center") }
+				>center</Button>
+				<Button 
+					varient="primary"
+					isPressed={align === "right"}
+					onClick={() => setTextAlign("right") }
+				>Right</Button>
+			</ButtonGroup>
+		)
+	}
+
 	const createSlidePanels = () => {
 		return (
 			<Fragment>
@@ -397,6 +441,10 @@ export default function Edit({ attributes, setAttributes }) {
 							value={ slideData_$array[currentSlide_$number].title.fontSize}
 							onChange={ value => setTitleFontSize( value )}
 						></UnitControl>
+						<AlignButtonGroup 
+							align={ slideData_$array[currentSlide_$number].title.align } 
+							setTextAlign={ setTitleTextAlign } 
+						/>
 					</>
 				}
 				<ToggleControl
@@ -431,6 +479,10 @@ export default function Edit({ attributes, setAttributes }) {
 							onChange={ value => setSubtitleFontSize( value )}
 						>
 						</UnitControl>
+						<AlignButtonGroup 
+							align={ slideData_$array[currentSlide_$number].subtitle.align } 
+							setTextAlign={ setSubtitleTextAlign } 
+						/>
 					</>
 				}
 				</PanelBody>				
@@ -593,22 +645,26 @@ export default function Edit({ attributes, setAttributes }) {
 			enabled:  TitleEnabled,
 			content:  Title,
 			tagname:  TitleTagName,
-			fontSize: TitleFontSize
+			fontSize: TitleFontSize,
+			align:    TitleAlign
 		} = slideData_$array[currentSlide_$number].title
 
 		const { 
 			enabled:  SubtitleEnabled,
 			content:  Subtitle,
 			tagname:  SubtitleTagName,
-			fontSize: SubtitleFontSize
+			fontSize: SubtitleFontSize,
+			align:    SubtitleAlign
 		} = slideData_$array[currentSlide_$number].subtitle
 
 		const TitleStyles = {
-			fontSize: TitleFontSize
+			fontSize: TitleFontSize,
+			textAlign: TitleAlign
 		};
 
 		const SubtitleStyles = {
-			fontSize: SubtitleFontSize
+			fontSize: SubtitleFontSize,
+			textAlign: SubtitleAlign
 		}
 
 		return (

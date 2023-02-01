@@ -16,13 +16,15 @@
             "enabled": true,
             "tagname": "h2",
             "fontSize": "inherit",
-            "content": ""
+            "content": "",
+            "align": "start"
           },
           "subtitle": {
             "enabled": false,
             "tagname": "p",
             "fontSize": "inherit",
-            "content": ""
+            "content": "",
+            "align": "start"
           },
           "slideInnerBlock": {
             "margin": 0,
