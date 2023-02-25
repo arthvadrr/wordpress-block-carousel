@@ -1,7 +1,5 @@
 /*
 TODO
-1. fix media settings accordion
-1. Index btn types
 X. width settings
 1. block margin/padding
 1. overlay
@@ -89,109 +87,114 @@ export default function Edit({ attributes, setAttributes }) {
 	])
  
 	const setSlideBackgroundImageAltText = newAltText => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].backgroundImageAltText = newAltText;
 		setSlideData_$array(shallowArr);
 		setAttributes({slideData: slideData_$array})
 	}
-
+	
 	const setSlideTitle = ( value ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].title.content = value;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const setTitleFontSize = ( value ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].title.fontSize = value;
-		setSlideData_$array(shallowArr);
+		updateSlideArray( shallowArr )
+	}
+
+	const setTitlePadding = ( value ) => {
+		const shallowArr = [...slideData_$array];
+		console.log(value)
+		shallowArr[currentSlide_$number].title.padding = value;
+		updateSlideArray( shallowArr )
+	}
+
+	const updateSlideArray = ( shallow ) => {
+		setSlideData_$array( shallow );
 		setAttributes({slideData: slideData_$array});
 	}
 
 	const setTitleTextAlign = ( value ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].title.align = value;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const setSubtitleTextAlign = ( value ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].subtitle.align = value;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
+	}
+
+	const setSubtitlePadding = ( value ) => {
+		const shallowArr = [...slideData_$array];
+		shallowArr[currentSlide_$number].subtitle.padding = value;
+		updateSlideArray( shallowArr )
 	}
 
 	const setSubtitleFontSize = ( value ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].subtitle.fontSize = value;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const setSlideSubtitle = ( value ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].subtitle.content = value;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const setSubtitleTagname = ( value ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].subtitle.tagname = value;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const setTitleHeadingLevel = ( value ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].title.tagname = value;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const toggleTitle = () => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		let enabled = shallowArr[currentSlide_$number].title.enabled;
 		shallowArr[currentSlide_$number].title.enabled = !enabled;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const toggleSubtitle = () => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		let enabled = shallowArr[currentSlide_$number].subtitle.enabled;
 		shallowArr[currentSlide_$number].subtitle.enabled = !enabled;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const toggleOverlay = () => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		let enabled = shallowArr[currentSlide_$number].overlay.enabled;
 		shallowArr[currentSlide_$number].overlay.enabled = !enabled;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const toggleGradientPicker = () => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		const isGradient = shallowArr[currentSlide_$number].overlay.isGradient;
 		shallowArr[currentSlide_$number].overlay.isGradient = !isGradient;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const setOverlayColor = (color, pos) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].overlay[pos] = color;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const toggleUseBackgroundColor = () => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		const useBackgroundColor = shallowArr[currentSlide_$number].useBackgroundColor;
 		shallowArr[currentSlide_$number].useBackgroundColor = !useBackgroundColor;
 		setSlideData_$array(shallowArr);
@@ -199,7 +202,7 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	const toggleParallax = () => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		const hasParallax = shallowArr[currentSlide_$number].hasParallax 
 		shallowArr[currentSlide_$number].hasParallax = !hasParallax
 		setSlideData_$array(shallowArr);
@@ -207,24 +210,22 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	const toggleBackgroundSizeContain = () => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		const backgroundSize = shallowArr[currentSlide_$number].backgroundSizeContain;
 		shallowArr[currentSlide_$number].backgroundSizeContain = !backgroundSize;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	
 	const toggleBackgroundRepeat = () => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		const backgroundRepeat = shallowArr[currentSlide_$number].backgroundRepeat;
 		shallowArr[currentSlide_$number].backgroundRepeat = !backgroundRepeat;
-		setSlideData_$array(shallowArr);
-		setAttributes({slideData: slideData_$array});
+		updateSlideArray( shallowArr )
 	}
 
 	const updateSlideAmount = value => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		const diff = Math.abs(value - slideAmount_$number);
 
 		if (value < slideAmount_$number) {
@@ -241,6 +242,7 @@ export default function Edit({ attributes, setAttributes }) {
 				"title" : {
 					"enabled": true,
 					"tagname": "h2",
+					"padding": "2rem",
 					"fontSize": "inherit",
 					"content": "",
 					"align": "start"
@@ -248,6 +250,7 @@ export default function Edit({ attributes, setAttributes }) {
 				"subtitle" : {
 					"enabled": false,
 					"tagname": "p",
+					"padding": "2rem",
 					"fontSize": "inherit",
 					"content": "",
 					"align": "start"
@@ -290,21 +293,21 @@ export default function Edit({ attributes, setAttributes }) {
 	const setVerticalAlignment = alignment => setVerticalAlignment_$string(alignment);
 
 	const updateGradientDirection = dir => {
-		const shallowArr = Array.from(slideData_$array);
+const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].overlay.direction = dir;
 		setSlideData_$array(shallowArr);
 		setAttributes( {slideData: slideData_$array} );
 	}
 
 	const updateSlideBackgroundImageUrl = ( url ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].backgroundImageUrl = url;
 		setSlideData_$array(shallowArr);
 		setAttributes( {slideData: slideData_$array} );
 	}
 
 	const updateSlideBackgroundColor = ( color ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].backgroundColor = color;
 		setSlideData_$array(shallowArr);
 		setAttributes( {slideData: slideData_$array} )
@@ -339,7 +342,7 @@ export default function Edit({ attributes, setAttributes }) {
 	}
 
 	const setFocalPoint = ( newFocalPoint ) => {
-		const shallowArr = Array.from(slideData_$array);
+		const shallowArr = [...slideData_$array];
 		shallowArr[currentSlide_$number].focalPoint = newFocalPoint
 		setSlideData_$array(shallowArr);
 		setAttributes( {slideData: slideData_$array} )
@@ -441,6 +444,11 @@ export default function Edit({ attributes, setAttributes }) {
 							value={ slideData_$array[currentSlide_$number].title.fontSize}
 							onChange={ value => setTitleFontSize( value )}
 						></UnitControl>
+						<UnitControl
+							label={ __('Title Padding') }
+							value={ slideData_$array[currentSlide_$number].title.padding}
+							onChange={ value => setTitlePadding( value )}
+						></UnitControl>
 						<AlignButtonGroup 
 							align={ slideData_$array[currentSlide_$number].title.align } 
 							setTextAlign={ setTitleTextAlign } 
@@ -478,6 +486,11 @@ export default function Edit({ attributes, setAttributes }) {
 							value={ slideData_$array[currentSlide_$number].subtitle.fontSize}
 							onChange={ value => setSubtitleFontSize( value )}
 						>
+						<UnitControl
+							label={ __('Subtitle Padding') }
+							value={ slideData_$array[currentSlide_$number].subtitle.padding}
+							onChange={ value => setSubtitlePadding( value )}
+						></UnitControl>
 						</UnitControl>
 						<AlignButtonGroup 
 							align={ slideData_$array[currentSlide_$number].subtitle.align } 
@@ -646,7 +659,8 @@ export default function Edit({ attributes, setAttributes }) {
 			content:  Title,
 			tagname:  TitleTagName,
 			fontSize: TitleFontSize,
-			align:    TitleAlign
+			align:    TitleAlign,
+			padding:  TitlePadding
 		} = slideData_$array[currentSlide_$number].title
 
 		const { 
@@ -654,17 +668,20 @@ export default function Edit({ attributes, setAttributes }) {
 			content:  Subtitle,
 			tagname:  SubtitleTagName,
 			fontSize: SubtitleFontSize,
-			align:    SubtitleAlign
+			align:    SubtitleAlign,
+			padding:  SubtitlePadding
 		} = slideData_$array[currentSlide_$number].subtitle
 
 		const TitleStyles = {
-			fontSize: TitleFontSize,
-			textAlign: TitleAlign
+			fontSize:  TitleFontSize,
+			textAlign: TitleAlign,
+			padding:   TitlePadding
 		};
 
 		const SubtitleStyles = {
-			fontSize: SubtitleFontSize,
-			textAlign: SubtitleAlign
+			fontSize:  SubtitleFontSize,
+			textAlign: SubtitleAlign,
+			padding:   SubtitlePadding
 		}
 
 		return (

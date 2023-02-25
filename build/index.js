@@ -26,8 +26,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /*
 TODO
-1. fix media settings accordion
-1. Index btn types
 X. width settings
 1. block margin/padding
 1. overlay
@@ -91,7 +89,7 @@ function Edit(_ref) {
     });
   }, [slideData_$array, slideAmount_$number, currentSlide_$number]);
   const setSlideBackgroundImageAltText = newAltText => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].backgroundImageAltText = newAltText;
     setSlideData_$array(shallowArr);
     setAttributes({
@@ -99,115 +97,93 @@ function Edit(_ref) {
     });
   };
   const setSlideTitle = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].title.content = value;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const setTitleFontSize = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].title.fontSize = value;
-    setSlideData_$array(shallowArr);
+    updateSlideArray(shallowArr);
+  };
+  const setTitlePadding = value => {
+    const shallowArr = [...slideData_$array];
+    console.log(value);
+    shallowArr[currentSlide_$number].title.padding = value;
+    updateSlideArray(shallowArr);
+  };
+  const updateSlideArray = shallow => {
+    setSlideData_$array(shallow);
     setAttributes({
       slideData: slideData_$array
     });
   };
   const setTitleTextAlign = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].title.align = value;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const setSubtitleTextAlign = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].subtitle.align = value;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
+  };
+  const setSubtitlePadding = value => {
+    const shallowArr = [...slideData_$array];
+    shallowArr[currentSlide_$number].subtitle.padding = value;
+    updateSlideArray(shallowArr);
   };
   const setSubtitleFontSize = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].subtitle.fontSize = value;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const setSlideSubtitle = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].subtitle.content = value;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const setSubtitleTagname = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].subtitle.tagname = value;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const setTitleHeadingLevel = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].title.tagname = value;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const toggleTitle = () => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     let enabled = shallowArr[currentSlide_$number].title.enabled;
     shallowArr[currentSlide_$number].title.enabled = !enabled;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const toggleSubtitle = () => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     let enabled = shallowArr[currentSlide_$number].subtitle.enabled;
     shallowArr[currentSlide_$number].subtitle.enabled = !enabled;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const toggleOverlay = () => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     let enabled = shallowArr[currentSlide_$number].overlay.enabled;
     shallowArr[currentSlide_$number].overlay.enabled = !enabled;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const toggleGradientPicker = () => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     const isGradient = shallowArr[currentSlide_$number].overlay.isGradient;
     shallowArr[currentSlide_$number].overlay.isGradient = !isGradient;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const setOverlayColor = (color, pos) => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].overlay[pos] = color;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const toggleUseBackgroundColor = () => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     const useBackgroundColor = shallowArr[currentSlide_$number].useBackgroundColor;
     shallowArr[currentSlide_$number].useBackgroundColor = !useBackgroundColor;
     setSlideData_$array(shallowArr);
@@ -216,7 +192,7 @@ function Edit(_ref) {
     });
   };
   const toggleParallax = () => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     const hasParallax = shallowArr[currentSlide_$number].hasParallax;
     shallowArr[currentSlide_$number].hasParallax = !hasParallax;
     setSlideData_$array(shallowArr);
@@ -225,25 +201,19 @@ function Edit(_ref) {
     });
   };
   const toggleBackgroundSizeContain = () => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     const backgroundSize = shallowArr[currentSlide_$number].backgroundSizeContain;
     shallowArr[currentSlide_$number].backgroundSizeContain = !backgroundSize;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const toggleBackgroundRepeat = () => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     const backgroundRepeat = shallowArr[currentSlide_$number].backgroundRepeat;
     shallowArr[currentSlide_$number].backgroundRepeat = !backgroundRepeat;
-    setSlideData_$array(shallowArr);
-    setAttributes({
-      slideData: slideData_$array
-    });
+    updateSlideArray(shallowArr);
   };
   const updateSlideAmount = value => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     const diff = Math.abs(value - slideAmount_$number);
     if (value < slideAmount_$number) {
       if (currentSlide_$number > value - 1) {
@@ -258,6 +228,7 @@ function Edit(_ref) {
         "title": {
           "enabled": true,
           "tagname": "h2",
+          "padding": "2rem",
           "fontSize": "inherit",
           "content": "",
           "align": "start"
@@ -265,6 +236,7 @@ function Edit(_ref) {
         "subtitle": {
           "enabled": false,
           "tagname": "p",
+          "padding": "2rem",
           "fontSize": "inherit",
           "content": "",
           "align": "start"
@@ -305,7 +277,7 @@ function Edit(_ref) {
   };
   const setVerticalAlignment = alignment => setVerticalAlignment_$string(alignment);
   const updateGradientDirection = dir => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].overlay.direction = dir;
     setSlideData_$array(shallowArr);
     setAttributes({
@@ -313,7 +285,7 @@ function Edit(_ref) {
     });
   };
   const updateSlideBackgroundImageUrl = url => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].backgroundImageUrl = url;
     setSlideData_$array(shallowArr);
     setAttributes({
@@ -321,7 +293,7 @@ function Edit(_ref) {
     });
   };
   const updateSlideBackgroundColor = color => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].backgroundColor = color;
     setSlideData_$array(shallowArr);
     setAttributes({
@@ -352,7 +324,7 @@ function Edit(_ref) {
     backgroundColor: `${indexBtnColor_$string}`
   };
   const setFocalPoint = newFocalPoint => {
-    const shallowArr = Array.from(slideData_$array);
+    const shallowArr = [...slideData_$array];
     shallowArr[currentSlide_$number].focalPoint = newFocalPoint;
     setSlideData_$array(shallowArr);
     setAttributes({
@@ -431,6 +403,10 @@ function Edit(_ref) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Font Size'),
       value: slideData_$array[currentSlide_$number].title.fontSize,
       onChange: value => setTitleFontSize(value)
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.__experimentalUnitControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Title Padding'),
+      value: slideData_$array[currentSlide_$number].title.padding,
+      onChange: value => setTitlePadding(value)
     }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(AlignButtonGroup, {
       align: slideData_$array[currentSlide_$number].title.align,
       setTextAlign: setTitleTextAlign
@@ -466,7 +442,11 @@ function Edit(_ref) {
       label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)("Font Size"),
       value: slideData_$array[currentSlide_$number].subtitle.fontSize,
       onChange: value => setSubtitleFontSize(value)
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(AlignButtonGroup, {
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.__experimentalUnitControl, {
+      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Subtitle Padding'),
+      value: slideData_$array[currentSlide_$number].subtitle.padding,
+      onChange: value => setSubtitlePadding(value)
+    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(AlignButtonGroup, {
       align: slideData_$array[currentSlide_$number].subtitle.align,
       setTextAlign: setSubtitleTextAlign
     }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
@@ -576,22 +556,26 @@ function Edit(_ref) {
       content: Title,
       tagname: TitleTagName,
       fontSize: TitleFontSize,
-      align: TitleAlign
+      align: TitleAlign,
+      padding: TitlePadding
     } = slideData_$array[currentSlide_$number].title;
     const {
       enabled: SubtitleEnabled,
       content: Subtitle,
       tagname: SubtitleTagName,
       fontSize: SubtitleFontSize,
-      align: SubtitleAlign
+      align: SubtitleAlign,
+      padding: SubtitlePadding
     } = slideData_$array[currentSlide_$number].subtitle;
     const TitleStyles = {
       fontSize: TitleFontSize,
-      textAlign: TitleAlign
+      textAlign: TitleAlign,
+      padding: TitlePadding
     };
     const SubtitleStyles = {
       fontSize: SubtitleFontSize,
-      textAlign: SubtitleAlign
+      textAlign: SubtitleAlign,
+      padding: SubtitlePadding
     };
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.Fragment, null, TitleEnabled && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(TitleTagName, {
       style: TitleStyles
@@ -877,7 +861,7 @@ function _extends() {
   \************************/
 /***/ (function(module) {
 
-module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"tagname":"h2","fontSize":"inherit","content":"","align":"start"},"subtitle":{"enabled":false,"tagname":"p","fontSize":"inherit","content":"","align":"start"},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"useBackgroundColor":false,"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"enabled":false,"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
+module.exports = JSON.parse('{"$schema":"https://schemas.wp.org/trunk/block.json","apiVersion":2,"name":"create-block/wordpress-block-carousel","version":"0.1.0","title":"Wordpress Block Carousel","category":"widgets","icon":"cover-image","description":"Example block scaffolded with Create Block tool.","attributes":{"slideData":{"type":"array","default":[{"title":{"enabled":true,"tagname":"h2","padding":"2rem","fontSize":"inherit","content":"","align":"start"},"subtitle":{"enabled":false,"tagname":"p","padding":"2rem","fontSize":"inherit","content":"","align":"start"},"slideInnerBlock":{"margin":0,"padding":0,"reversed":false},"useBackgroundColor":false,"backgroundColor":"#ffffff","backgroundImageUrl":"","backgroundSizeContain":false,"backgroundRepeat":false,"backgroundImageAltText":"","showFocalPointPicker":"","imperativeFocalPointPreview":"","focalPoint":{"x":0.5,"y":0.5},"hasParallax":false,"verticalAlign":"center","overlay":{"enabled":false,"color1":"#ffffff4D","color2":"#ffffff4D","direction":"bottom","isGradient":true}}]},"innerContentMaxWidth":{"type":"number"},"verticalAlignment":{"type":"string"},"slideHeight":{"type":"number","default":30},"indexBtnColor":{"type":"string","default":"#ffffff"},"slideAmount":{"type":"number","default":1},"currentSlide":{"type":"number","default":0}},"supports":{"html":false,"align":true},"textdomain":"wordpress-block-carousel","editorScript":"file:./index.js","editorStyle":"file:./index.css","style":"file:./style-index.css"}');
 
 /***/ })
 

@@ -15,6 +15,7 @@
 					"title" : {
 						"enabled": true,
 						"tagname": "h2",
+						"padding": "2rem",
 						"fontSize": "inherit",
 						"content": "",
 						"align": "start"
@@ -22,6 +23,7 @@
 					"subtitle" : {
 						"enabled": false,
 						"tagname": "p",
+						"padding": "2rem", 
 						"fontSize": "inherit",
 						"content": "",
 						"align": "start"
